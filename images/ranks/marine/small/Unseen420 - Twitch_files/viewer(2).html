@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!-- saved from url=(0213)https://fe5a78xkj1lnk9wefpk295p6x3dsvl.ext-twitch.tv/fe5a78xkj1lnk9wefpk295p6x3dsvl/0.1.98/a2b8dfeadc817af124b9ae218fa52271/viewer.html?anchor=panel&language=en&locale=en-US&mode=viewer&state=released&platform=web -->
+<html lang=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Stream Avatars</title>
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://streamavatars.com/img/100x100.png">
+  <meta property="fb:app_id" content="1291059624421258">
+  <meta name="description" content="Extension Panel">
+  
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="./viewer.css" type="text/css">
+  <link rel="stylesheet" href="./fontawesome-all.min.css">
+  <link rel="stylesheet" href="./input-range.css" type="text/css">
+  <link rel="stylesheet" href="./twitch-dark-theme.css" type="text/css">
+  <link rel="stylesheet" href="./component.css" type="text/css">
+  <script src="./twitch-ext.min.js.download"></script>
+</head>
+<body class="dark" data-bind="visible: loaded, event: { dblclick: disableDoubleClick }, css: { component: isComponent, &#39;hidden-mode&#39; : hiddenMode, &#39;initial-load&#39;: initialLoad }" style="">
+  <div class="bounding-box">
+    <div class="component-toggle background" data-bind="click: toggleHiddenMode">
+      <img class="component-logo" src="./small-logo.png">
+      <div class="component-toggle-label" data-bind="html: componentToggleLabel">hide</div>
+    </div>
+
+    <div class="container background" data-bind="css: { hiddenMode : hiddenMode }">
+      <div class="chatlog" data-bind="visible: chatIdentity()" style="display: none;">
+        <div class="chat-messages-container" data-bind="foreach: chatlog"></div>
+        <div class="wait-to-chat" data-bind="visible: showWaitToChat, text: config.lang.waitToChat" style="display: none;">Wait a bit before chatting again</div>
+        <div class="chat-input-wrapper">
+          <div class="chat-input-container">
+            <input class="chat-input" type="text" placeholder="chat" data-bind="textInput: chatMessageInput, attr: { placeholder: config.lang.chat }, event: { keypress: sendChatClick }">
+          </div>
+          <div class="chat-button-container">
+            <button data-bind="click: sendChatClick, html: config.lang.chat, css: { disabled: !canChat() }">chat</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="header" data-bind="with: viewer">
+        <img class="logo" src="./logo.png">
+        <div class="preview">
+          <img class="preview-avatar" data-bind="attr: { src: avatar().image }">
+          <div class="preview-gears" data-bind="foreach: gearPreviews"></div>
+        </div>
+      </div>
+
+      <div class="selection" data-bind="visible: loadingView.loaded(), css: { &#39;menu-open&#39;: menu.menuOpen }" style="display: none">
+        <div class="menu-icon" data-bind="click: menu.toggleMenu">
+          <div class="nav-bars"><i class="fas fa-bars"></i></div>
+          <div class="nav" data-bind="foreach: menu.menuOptions, css: { &#39;columns-2&#39;: menu.menuColumns() == 2 }">
+            <div class="nav-item" data-bind="click: $root.menu.onClick, clickBubble: false">
+              <div class="nav-item-icon" data-bind="html: icon"><i class="fas fa-child"></i></div>
+              <div class="nav-item-label" data-bind="html: label">avatars</div>
+            </div>
+          </div>
+        </div>
+        <div class="selection-title" data-bind="html: menu.title, click: menu.openMenu">avatars</div>
+        <div class="nav-currency" data-bind="visible: config.showCurrency">
+          <span data-bind="html: viewer.points">0</span>
+          <span class="nav-currency-name" data-bind="html: config.lang.currency">Points</span>
+        </div>
+      </div>
+
+      <div class="action-pane" data-bind="visible: showActionPane() &amp;&amp; !list.store.active()" style="display: none;">
+        <div class="custom-command">
+          <div class="chat-command-label" data-bind="html: config.lang.chat_command">Chat Command:</div>
+          <div><input type="text" class="custom-command-input" data-bind="textInput: collections.customCommandText, attr: { placeholder: &#39;!&#39; + collections.controllerActions().jump.item.label },
+              event: { keyup: collections.customCommandTextChange }" placeholder="!undefined"></div>
+          <div><button data-bind="click: collections.customCommandClick, html: collections.customCommandButtonLabel">Send</button></div>
+        </div>
+
+        <div class="controller-wrapper">
+          <div class="action-controller-bg icon-controller">
+            <div class="dpad">
+              <div></div>
+              <!-- ko with: collections.controllerActions().stand -->
+                <div class="dpad-up lock-container" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked }">
+                  <i class="fas fa-caret-up dpad-icon"></i>
+                  <div class="lock dpad-lock-container" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock dpad-lock"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+              <!-- ko with: collections.controllerActions().moveLeft -->
+                <div class="dpad-left lock-container" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked }">
+                  <i class="fas fa-caret-left dpad-icon"></i>
+                  <div class="lock dpad-lock-container" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock dpad-lock"></i></div>
+                </div>
+              <!-- /ko -->
+              <div class="dpad-center"></div>
+              <!-- ko with: collections.controllerActions().moveRight -->
+                <div class="dpad-right lock-container" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked }">
+                  <i class="fas fa-caret-right dpad-icon"></i>
+                  <div class="lock dpad-lock-container" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock dpad-lock"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+              <!-- ko with: collections.controllerActions().sit -->
+                <div class="dpad-down lock-container" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked }">
+                  <i class="fas fa-caret-down dpad-icon"></i>
+                  <div class="lock dpad-lock-container" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock dpad-lock"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+            </div>
+
+            <div class="bpad">
+              <div></div>
+              <!-- ko with: collections.controllerActions().dance -->
+                <div class="dpad-up lock-container missing" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked, missing: item.empty }">
+                  <i class="icon-dance bpad-icon"></i>
+                  <div class="bpad-lock-container lock" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock bpad-lock"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+              <!-- ko with: collections.controllerActions().bomb -->
+                <div class="dpad-left lock-container missing" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked, missing: item.empty }">
+                  <i class="fas fa-bomb bpad-icon"></i>
+                  <div class="bpad-lock-container lock" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock bpad-lock" data-bind="visible: item.locked" style="display: none;"></i></div>
+                </div>
+              <!-- /ko -->
+              <div class="dpad-center"></div>
+              <!-- ko with: collections.controllerActions().fart -->
+                <div class="dpad-right lock-container missing" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked, missing: item.empty }">
+                  <i class="icon-fart bpad-icon"></i>
+                  <div class="bpad-lock-container lock" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock bpad-lock" data-bind="visible: item.locked" style="display: none;"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+              <!-- ko with: collections.controllerActions().jump -->
+                <div class="dpad-down lock-container missing" data-bind="click: handleClick.bind(item, item, $root), css: { clicked: clicked, missing: item.empty }">
+                  <i class="icon-jump bpad-icon"></i>
+                  <div class="bpad-lock-container lock" data-bind="visible: item.locked" style="display: none;"><i class="fas fa-lock bpad-lock" data-bind="visible: item.locked" style="display: none;"></i></div>
+                </div>
+              <!-- /ko -->
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="target-actions" data-bind="visible: collections.allTargetableActions().length &gt; 0" style="display: none;">
+
+          <div class="target-actions-buttons">
+            <div class="target-actions-left next-prev-arrow" data-bind="click: collections.targetableActions.decPage">
+              <i class="fas fa-chevron-left" data-bind="style: { visibility: collections.targetableActions.left() }" style="visibility: hidden;"></i>
+            </div>
+            <!-- ko foreach: collections.targetableActions.pagedItems --><!-- /ko -->
+            <div class="target-actions-right next-prev-arrow" data-bind="click: collections.targetableActions.incPage">
+              <i class="fas fa-chevron-right" data-bind="style: { visibility: collections.targetableActions.right() }" style="visibility: hidden;"></i>
+            </div>
+          </div>
+          <div class="target-actions-target"><input type="text" data-bind="textInput: $root.collections.target, attr: { placeholder: $root.config.lang.target }" placeholder="target"></div>
+
+        </div>
+
+        <div class="sling-n-slots" data-bind="visible: collections.controllerActions().sling || collections.controllerActions().slots" style="display: none;">
+
+          <div class="lock-container" data-bind="visible: collections.controllerActions().sling" style="display: none;">
+            <!-- ko with: collections.controllerActions().sling --><!-- /ko -->
+          </div>
+          <div data-bind="visible: collections.controllerActions().sling" style="display: none;"><input type="text" class="angle" data-bind="textInput: collections.slingAngle, attr: { placeholder: config.lang.angle }" placeholder="angle"></div>
+          <div data-bind="visible: collections.controllerActions().sling" style="display: none;"><input type="text" class="power" data-bind="textInput: collections.slingPower, attr: { placeholder: config.lang.power }" placeholder="power"></div>
+          <div class="lock-container" data-bind="visible: collections.controllerActions().slots" style="display: none;">
+            <!-- ko with: collections.controllerActions().slots --><!-- /ko -->
+          </div>
+          <div data-bind="visible: collections.controllerActions().slots" style="display: none;"><input type="text" class="slots" data-bind="textInput: collections.slotsBet, attr: { placeholder: config.lang.bet }" placeholder="bet"></div>
+        </div>
+
+        <div class="custom-actions" data-bind="visible: collections.allSimpleActions().length &gt; 0" style="display: none;">
+
+          <div class="custom-actions-left next-prev-arrow" data-bind="click: collections.simpleActions.decPage">
+            <i class="fas fa-chevron-left" data-bind="style: { visibility: collections.simpleActions.left() }" style="visibility: hidden;"></i>
+          </div>
+          <!-- ko foreach: collections.simpleActions.pagedItems --><!-- /ko -->
+          <div class="custom-actions-right next-prev-arrow" data-bind="click: collections.simpleActions.incPage">
+            <i class="fas fa-chevron-right" data-bind="style: { visibility: collections.simpleActions.right() }" style="visibility: hidden;"></i>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="nav-blocker" data-bind="visible: menu.menuOpen &amp;&amp; loadingView.loaded(), click: menu.closeMenu" style="display: none"></div>
+
+      <div class="content" data-bind="visible: itemListVisible" style="display: none">
+
+        <div class="search-bar">
+          <input type="text" placeholder="search" data-bind="textInput: $root.list.searchFilter, attr: { placeholder: config.lang.search }">
+          <i class="fas fa-search search-icon"></i>
+        </div>
+
+        <div class="viewport" id="viewport" data-bind="css: { &#39;padded&#39;: list.padded }">
+          <div class="list" data-bind="foreach: list.currentItems"></div>
+        </div>
+        <div class="footer background">
+          <div class="footer-item disabled" data-bind="click: list.prev, css: { disabled: !list.canPrev() }">
+            <i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="footer-item disabled" data-bind="click: list.next, css: { disabled: !list.canNext() }">
+            <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-right"></i><i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="content" data-bind="visible: menu.selected() == &#39;leaderboards&#39; &amp;&amp; loadingView.loaded()" style="display: none">
+        <div class="viewport leaderboards">
+          <div class="leaderboard-ranks leaderboard-header">
+            <div class="leaderboard-item">
+              <div class="leaderboard-rank" data-bind="html: leaderboards.current().rankLabel">rank</div>
+              <div class="leaderboard-name" data-bind="html: leaderboards.current().nameLabel">name</div>
+              <div class="leaderboard-points" data-bind="html: leaderboards.current().valueLabel"></div>
+            </div>
+          </div>
+          <div class="leaderboard-ranks" data-bind="with: leaderboards.current()">
+            <div data-bind="foreach: leaders"></div>
+          </div>
+        </div>
+
+        <div class="leaderboard-footer">
+          <div class="leaderboard-nav" data-bind="foreach: leaderboards.boards"></div>
+        </div>
+      </div>
+
+      <div class="content loading-container" data-bind="visible: !loadingView.loaded()">
+        <div class="viewport loading">
+
+          <div data-bind="html: loadingView.spawningRule.message, css: { hidden: !loadingView.spawningRule.message() }" class="spawning-message info-box hidden"></div>
+
+          <div data-bind="css: { hidden: loadingView.viewerLoaded() }, html: config.lang.installing_viewer" class="info-box">...Waiting for your avatar...</div>
+
+          <div data-bind="css: { hidden: loadingView.avatarsLoaded() }, html: config.lang.installing_avatars" class="info-box">...Installing avatars...</div>
+
+          <button class="authorize-button" data-bind="visible: platform.id != &#39;youtube&#39;, click: platform.onRequestAuthorize, html: config.lang.click_to_auth, css: { hidden: loadingView.authorized() }">Click to Authorize</button>
+
+          <div class="youtube-button-container" data-bind="visible: platform.id == &#39;youtube&#39;, css: { hidden: loadingView.authorized() }" style="display: none;">
+            <a class="youtube-button" data-bind="click: platform.onRequestAuthorize"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="content store" data-bind="visible: list.store.active, with: list.store.item" style="display: none">        
+        <div data-bind="visible: style ==&#39;image&#39;"><img data-bind="attr: { src: image, height: fixHeight, width: fixWidth }"></div>
+        <div class="store-label" data-bind="html: storeDisplayLabel">undefined </div>
+
+        <div class="lock-container" data-bind="visible: bitsLocked" style="display: none;">
+          <i class="fas fa-lock lock"></i>
+          <button class="store-buy-button" data-bind="click: $root.startBitsPurchase">
+            <span data-bind="html: $root.list.store.bitsButtonLabel">Unlock with 0 bits</span>
+          </button>
+        </div>
+
+        <div data-bind="visible: !bitsLocked()">
+          <div class="store-requirements-box" data-bind="visible: parentLocked" style="display: none;">
+            <div class="lock-container">
+              <div data-bind="foreach: parents"></div>
+              <i class="fas fa-lock lock"></i>
+            </div>
+          </div>
+          <i class="fas fa-plus store-requirements-seperator" data-bind="visible: parentLocked() &amp;&amp; accessLocked()" style="display: none;"></i>
+          <div class="store-requirements-box" data-bind="visible: membershipLocked() || priceLocked(), css: { &#39;borderless&#39;: priceLocked() &amp;&amp; !membershipLocked() }" style="display: none;">
+            <div data-bind="visible: membershipLocked" class="lock-container" style="display: none;">
+              <span data-bind="visible: showFollowLock, html: $root.config.lang.follow" style="display: none;">follow</span>
+              <span data-bind="visible: showSubLock, html: $root.config.lang.subscribe" style="display: none;">sub</span>
+              <i class="fas fa-lock lock"></i>
+            </div>
+            <div class="store-membership-seperator" data-bind="visible: membershipLocked() &amp;&amp; priceLocked(), html: checkCondition() ? $root.config.lang.and : $root.config.lang.or" style="display: none;">- or -</div>
+            <div data-bind="visible: priceLocked" style="display: none;">
+              <div data-bind="visible: parentLocked" style="display: none;">
+                <span data-bind="html: $root.list.store.buyButtonLabel">Buy for 0 Points</span>
+              </div>
+              <div class="lock-container" data-bind="visible: !parentLocked()">
+                <i class="fas fa-lock lock" data-bind="visible: checkCondition &amp;&amp; membershipLocked" style="display: none;"></i>
+                <button class="store-buy-button" data-bind="click: checkCondition &amp;&amp; membershipLocked ? $root.list.doNothing : $root.list.purchaseAction">
+                  <span data-bind="html: $root.list.store.buyButtonLabel">Buy for 0 Points</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button class="store-close-button" data-bind="click: $root.list.store.close, html: $root.config.lang.close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block-interaction-overlay" data-bind="visible: blockInteraction" style="display: none;">
+
+  </div>
+
+  <canvas id="canvas" class="canvas"></canvas>
+
+  
+  <script src="./ko.js.download"></script>
+  <script src="./jquery-3.2.1.min.js.download"></script>
+  <script src="./helper.js.download"></script>
+  <script src="./env.js.download"></script>
+  <script src="./viewer.js(1).download"></script>
+  <script src="./tests.js.download"></script>
+
+
+</body></html>

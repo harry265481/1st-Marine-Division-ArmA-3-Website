@@ -1,0 +1,291 @@
+/*global $,setTimeout, Twitch*/
+
+
+(function () {
+
+    var channelId = null;
+    var latestFollow = null;
+    var startTime = null;
+    var firstCall = true;
+    var initialized = false;
+    var demoing = false;
+    var bitAmount = 25;
+    var maxFollowsToShow = 100;
+
+    var FOLLOW_TIMEOUT = 30000;
+
+    var $latestFollowers = $('.latest-followers');
+    var $train = $('.train');
+
+    var setFollowsTimeout = function () {
+        setTimeout(function () {
+            getFollows(channelId)
+        }, FOLLOW_TIMEOUT);
+    };
+
+    var clean = function () {
+        var $printedFollowers = $('.latest-followers__follower');
+        var printedFollowersCount = $printedFollowers.length;
+        if (printedFollowersCount > maxFollowsToShow) {
+            while (printedFollowersCount > maxFollowsToShow - 1) {
+                $($('.latest-followers__follower')[printedFollowersCount]).remove();
+                printedFollowersCount -= 1;
+            }
+        }
+    };
+
+    var getFollowTime = function (follower) {
+        if (follower.follow_time) {
+            var followPeriod = Math.ceil(follower.follow_time) == 1 ? 'day' : 'days';
+            return Math.ceil(follower.follow_time) + ' ' + followPeriod;
+        }
+    };
+
+    var printFollower = function (follower, delay, special, message, demo) {
+        delay = typeof delay !== 'undefined' ? delay + 300 : '0.5s';
+        var imgUrl = follower.profile_image_url !== '' ? follower.profile_image_url : 'img/placeholder.png';
+        var $thisFollower = $('<div class="latest-followers__follower' + (special ? ' latest-followers__follower--special' : '') + '"' + (!special ? ' style="transition-delay: ' + delay + 'ms, 0s"' : '') + '><img class="latest-followers__image" src="' + imgUrl + '">' + follower.display_name + (message ? ' <span class="latest-followers__message"> - ' + message + '</span>' : '') + '</div>');
+        $latestFollowers.prepend($thisFollower);
+
+        setTimeout(function () {
+            $thisFollower.addClass('latest-followers__follower--visible');
+        }, 1);
+
+        if (demo) {
+            setTimeout(function () {
+                $thisFollower.removeClass('latest-followers__follower--visible');
+                setTimeout(function () {
+                    $thisFollower.remove();
+                    demoing = false;
+                }, 1000);
+            }, 5000);
+        }
+    };
+
+    var getUsers = function (users) {
+        var idString = '';
+        var i = 0;
+        var usersLength = users.length;
+
+        for (i; i < usersLength; i += 1) {
+            idString += '&id=' + users[i].from_id;
+        }
+        $.ajax({
+            url: 'https://api.twitch.tv/helix/users?' + idString,
+            type: 'GET',
+            headers: {
+                'Client-ID': 'wb3bnc8np7tdnxj2sfbk0aa3vklulo',
+            },
+            success: function (data) {
+                var j = 0;
+                for (j; j < users.length; j++) {
+
+                    var thisUser = data.data.find(x => x.id === users[j].from_id);
+
+                    if (thisUser) {
+                        var isSpecial = typeof users[j].special !== 'undefined' ? true : false;
+                        printFollower(thisUser, 0.1 * (users.length - j), isSpecial, getFollowTime(users[j]));
+                    }
+                }
+
+                clean();
+
+                setFollowsTimeout();
+            }
+        });
+    };
+
+    var getFollows = function (channelId) {
+        var cacheBuster = new Date().getTime();
+
+        $.ajax({
+            url: 'https://api.twitch.tv/helix/users/follows?first=100&to_id=' + channelId + '&cacheBuster=' + cacheBuster,
+            type: 'GET',
+            headers: {
+                'Client-ID': 'wb3bnc8np7tdnxj2sfbk0aa3vklulo',
+            },
+            success: function (data) {
+                var newFollows = [];
+                var train = 0;
+
+                if (latestFollow === null) {
+                    latestFollow = {
+                        from_id: data.data[0].from_id,
+                        followed_at: data.data[0].followed_at
+                    };
+                }
+                var latestDate = new Date(latestFollow.followed_at).getTime();
+
+                var i = 0;
+                var dataLength = data.data.length;
+
+                var since = firstCall === true ? startTime : latestDate;
+
+                for (i; i < dataLength; i += 1) {
+                    var thisFollowDate = new Date(data.data[i].followed_at).getTime();
+
+                    if ((thisFollowDate > since || firstCall) && i < 100) {
+                        data.data[i].time = thisFollowDate / 1000;
+                        newFollows.push(data.data[i]);
+
+                        if (i === 0) {
+                            latestFollow = {
+                                from_id: data.data[0].from_id,
+                                followed_at: data.data[0].followed_at
+                            };
+                        }
+                    }
+
+                    if (thisFollowDate > startTime) {
+                        train += 1;
+                    }
+                }
+
+                if (firstCall) {
+                    if (Twitch.ext.configuration.broadcaster &&
+                        Twitch.ext.configuration.broadcaster.content &&
+                        $.parseJSON(Twitch.ext.configuration.broadcaster.content).enabled == 'true' &&
+                        $.parseJSON(Twitch.ext.configuration.broadcaster.content).celebrations) {
+
+                        var celebrations = $.parseJSON(Twitch.ext.configuration.broadcaster.content).celebrations;
+                        var k = 0;
+                        var celebrationsLength = celebrations.length;
+                        for (k; k < celebrationsLength; k++) {
+                            newFollows.push(celebrations[k]);
+                        }
+                    }
+
+
+                    if (Twitch.ext.configuration.broadcaster &&
+                        Twitch.ext.configuration.broadcaster.content &&
+                        $.parseJSON(Twitch.ext.configuration.broadcaster.content).maxFollowsToShow) {
+                        maxFollowsToShow = $.parseJSON(Twitch.ext.configuration.broadcaster.content).maxFollowsToShow;
+                    }
+
+                    var obj = {};
+
+                    for (var j = 0, len = newFollows.length; j < len; j++) {
+                        obj[newFollows[j]['from_name']] = newFollows[j];
+                    }
+
+                    newFollows = new Array();
+                    for (var key in obj) {
+                        newFollows.push(obj[key]);
+                    }
+
+                    newFollows.sort(function (a, b) {
+                        return a.time - b.time
+                    });
+
+                    newFollows = newFollows.slice(0, 100);
+                }
+
+
+                if (newFollows.length > 0) {
+                    getUsers(newFollows);
+                } else {
+                    setFollowsTimeout();
+                }
+                firstCall = false;
+
+                train = train === 100 ? '100+' : train;
+                if (train !== $train.attr('data-train')) {
+                    $train.addClass('train--counting')
+                    setTimeout(function () {
+                        $train.attr('data-train', train);
+                        $train.removeClass('train--counting');
+                    }, 600);
+                }
+            }
+        });
+    };
+
+    $('.buy').click(function () {
+        Twitch.ext.bits.useBits('casperr-follows-' + bitAmount);
+    });
+
+    Twitch.ext.configuration.onChanged(function () {
+        if (typeof Twitch.ext.configuration.broadcaster !== 'undefined' && typeof Twitch.ext.configuration.broadcaster.content !== 'undefined') {
+            if ($.parseJSON(Twitch.ext.configuration.broadcaster.content).amount) {
+                bitAmount = $.parseJSON(Twitch.ext.configuration.broadcaster.content).amount;
+            }
+        }
+        $('.bit-amount').html(bitAmount);
+    });
+
+    Twitch.ext.bits.onTransactionComplete(function (transaction) {
+        var ajaxData = {
+            token: transaction.transactionReceipt,
+            name: transaction.displayName,
+            viewer_id: transaction.userId,
+            channel_id: channelId,
+            bit_amount: bitAmount
+        };
+
+        if (transaction.initiator === "current_user") {
+            $.ajax({
+                data: ajaxData,
+                url: 'https://james.ovh/services/latest-followers.php',
+                type: 'POST',
+                success: function (data) {
+                    if ($.parseJSON(data) && $.parseJSON(data).validated === true) {}
+                }
+            });
+        }
+    });
+
+    Twitch.ext.onAuthorized(function (auth) {
+        if (initialized === false) {
+            channelId = auth.channelId;
+
+            var hasConfig = typeof Twitch.ext.configuration.broadcaster !== 'undefined' &&
+                typeof Twitch.ext.configuration.broadcaster.content !== 'undefined' &&
+                typeof $.parseJSON(Twitch.ext.configuration.broadcaster.content).enabled !== 'undefined' &&
+                $.parseJSON(Twitch.ext.configuration.broadcaster.content).enabled !== null ? true : false;
+
+            var isMonetized = (hasConfig && $.parseJSON(Twitch.ext.configuration.broadcaster.content).enabled == 'true') || !hasConfig ? true : false;
+
+            $.ajax({
+                url: 'https://api.twitch.tv/helix/streams?user_id=' + channelId,
+                type: 'GET',
+                headers: {
+                    'Client-ID': 'wb3bnc8np7tdnxj2sfbk0aa3vklulo',
+                },
+                success: function (data) {
+                    if (data.data.length > 0) {
+                        startTime = new Date(data.data[0].started_at).getTime();
+                    } else {
+                        startTime = new Date().getTime();
+                    }
+                    getFollows(channelId);
+                    if (Twitch.ext.features.isBitsEnabled && $.parseJSON(isMonetized)) {
+
+                        $('.demo').click(function () {
+                            if (!demoing) {
+                                demoing = true;
+                                var follower = {
+                                    display_name: 'Your_Name_Here',
+                                    profile_image_url: ''
+                                }
+                                printFollower(follower, 0, true, ' X days', true);
+                            }
+                        });
+                    } else {
+                        $('.controls').hide();
+                    }
+
+                    Twitch.ext.listen("broadcast", function (target, contentType, message) {
+                        var follower = $.parseJSON(message);
+                        printFollower(follower, 0, true, getFollowTime(follower), false);
+                    });
+                }
+            });
+
+            if (window.location.href.indexOf('legacyComponentDesign') === -1) {
+                $('.hide').remove();
+            }
+
+            initialized = true;
+        }
+    });
+})();

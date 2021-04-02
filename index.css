@@ -1,0 +1,23 @@
+body {
+    background-color: #202225!important;
+}
+
+.spacer {
+    height:100px!important;
+    background-color: #000;
+}
+
+@media screen and (max-width: 1024px) {
+    .spacer {
+        height: 66px!important;
+    }
+}
+
+.title {
+    padding: 40px
+}
+
+.grey {
+    background-color: #202225;
+    color: white;
+}

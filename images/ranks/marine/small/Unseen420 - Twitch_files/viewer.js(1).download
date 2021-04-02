@@ -1,0 +1,2680 @@
+var testLang = false;
+var AND = 1;
+var OR = 2;
+function SpawningRuleModel(cfg) {
+  var self = this;
+  self.when = ko.observable();
+  self.who = ko.observable();
+
+  self.message = ko.computed(function () {
+    if (cfg.lang.spawning_message()) {
+      return cfg.lang.spawning_message();
+    }
+    if (self.when() == 'active_in_chat') {
+      switch (self.who()) {
+        case 'whitelist_only':
+          return cfg.lang.spawning_message_chatters_whitelist;
+        case 'everyone':
+          return cfg.lang.spawning_message_chatters_everyone;
+        case 'follow_sub_only':
+          return cfg.lang.spawning_message_chatters_follow_sub;
+        case 'sub_only':
+          return cfg.lang.spawning_message_chatters_sub;
+      }
+    }
+    else if (self.when() == 'join_chat') {
+      switch (self.who()) {
+        case 'whitelist_only':
+          return cfg.lang.spawning_message_whitelist;
+        case 'everyone':
+          return cfg.lang.spawning_message_everyone;
+        case 'follow_sub_only':
+          return cfg.lang.spawning_message_follow_sub;
+        case 'sub_only':
+          return cfg.lang.spawning_message_sub;
+      }
+    }
+  });
+
+  self.visibility = ko.computed(function () {
+    return self.message() ? 'visible' : 'hidden';
+  });
+}
+
+function LoadingViewModel(cfg) {
+  var self = this;
+  self.spawningRule = new SpawningRuleModel(cfg);
+  self.avatarsLoaded = ko.observable(false);
+  self.viewerLoaded = ko.observable(false);
+  self.authorized = ko.observable(false);
+  self.loaded = ko.computed(function () {
+    var avatarsLoaded = self.avatarsLoaded();
+    var viewerLoaded = self.viewerLoaded();
+    var authorized = self.authorized();
+    return avatarsLoaded && viewerLoaded && authorized;
+  });
+}
+
+function LocalPlatform(model) {
+  var self = this;
+  self.model = model;
+
+  self.onRequestAuthorize = function () {
+    fetch(`/test/createExtJwt?channel_id=20044053&viewer_id=210894908`)
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (err) { })
+      .then(function (json) {
+        self.onAuthorize({
+          channelId: json.channelId,
+          viewerId: json.viewerId,
+          token: json.token
+        });
+      })
+      .catch(function (err) { });
+  };
+
+  self.init = function () {
+    window.setTimeout(function () {
+      self.onRequestAuthorize();
+    }, 10);
+  };
+}
+
+function TwitchOAuthPlatform(model) {
+  var self = this;
+  self.model = model;
+  self.id = 'twitch';
+  self.authUrl = 'https://id.twitch.tv/oauth2/authorize';
+  self.clientId = env.twitchClientId;
+  self.redirectUri = env.oAuthRedirectUri();
+  self.scope = '';
+  self.init();
+}
+
+function ServerOAuthPlatform() {
+  this.identity = {
+    viewerId: null,
+    channelId: null,
+    jwt: null
+  };
+
+  this.init = function () {
+    var params = Helper.getParams();
+    if (params["code"]) {
+      var code = params["code"];
+      var channelId = params["channel_id"];
+
+      window.history.pushState('', '', '?channel_id=' + channelId + '&platform=' + this.id);
+
+      this.onAuthorize({ code: code, channelId: channelId });
+    }
+  };
+
+  this.onRequestAuthorize = function () {
+    var params = Helper.getParams();
+    var channelId = params["channel_id"];
+    if (!channelId) {
+      alert('oops this link seems to be broken you should tell the streamer');
+      return;
+    }
+
+    var state = encodeURIComponent("channel_id=" + channelId + "&platform=" + this.id);
+
+    document.location.href = this.authUrl +
+      '?client_id=' + this.clientId +
+      '&redirect_uri=' + this.redirectUri +
+      '&response_type=code&scope=' + this.scope + '&state=' + state;
+  };
+
+  this.onAuthorize = function (auth) {
+    SocketManager.connect(auth.channelId, auth.code);
+
+    this.model.loadingView.authorized(true);
+  };
+}
+
+function OAuthPlatform() {
+  this.identity = {
+    viewerId: null,
+    channelId: null,
+    jwt: null
+  };
+
+  this.init = function () {
+    var params = Helper.getParams();
+    if (params["access_token"]) {
+      var accessToken = params["access_token"];
+      var channelId = params["channel_id"];
+
+      window.history.pushState('', '', '?channel_id=' + channelId + '&platform=' + this.id);
+
+      this.onAuthorize({ accessToken: accessToken, channelId: channelId });
+    }
+  };
+
+  this.onRequestAuthorize = function () {
+    var params = Helper.getParams();
+    var channelId = params["channel_id"];
+    if (!channelId) {
+      alert('oops this link seems to be broken you should tell the streamer');
+      return;
+    }
+
+    var state = encodeURIComponent("channel_id=" + channelId + "&platform=" + this.id);
+
+    document.location.href = this.authUrl +
+      '?client_id=' + this.clientId +
+      '&redirect_uri=' + this.redirectUri +
+      '&response_type=token&scope=' + this.scope + '&state=' + state;
+  };
+
+  this.onAuthorize = function (auth) {
+    SocketManager.connect(auth.channelId, auth.accessToken);
+
+    this.model.loadingView.authorized(true);
+  };
+}
+
+function DLiveOAuthPlatform(model) {
+  var self = this;
+  self.model = model;
+  self.id = 'dlive';
+  self.authUrl = 'https://dlive.tv/o/authorize';
+  self.clientId = '2965087060';
+  self.redirectUri = env.oAuthRedirectUri();
+  self.scope = 'identity';
+  self.init();
+}
+
+function FacebookOAuthPlatform(model) {
+  var self = this;
+  self.model = model;
+  self.id = 'facebook';
+  self.authUrl = 'https://www.facebook.com/v8.0/dialog/oauth';
+  self.clientId = '1291059624421258';
+  self.redirectUri = env.oAuthRedirectUri();
+  self.scope = '';
+  self.init();
+
+  setInterval(function () {
+    SocketManager.spawn();
+  }, 1000 * 60 * 3);
+}
+
+function MixerOAuthPlatform(model) {
+  var self = this;
+  self.model = model;
+  self.id = 'mixer';
+  self.authUrl = 'https://mixer.com/oauth/authorize';
+  self.clientId = 'ae10f183458e8cafc9f8ca1102e4cfd1dcd4cdef35cd593a';
+  self.redirectUri = env.oAuthRedirectUri();
+  self.scope = '';
+  self.init();
+}
+
+function YouTubeOAuthPlatform(model) {
+  var self = this;
+  self.model = model;
+  self.id = 'youtube';
+  self.authUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+  self.clientId = '88749378002-fotnrmhs4nld24ferparnvoh8ngs38vn.apps.googleusercontent.com';//'275005080776-due7dqrstilq7tuaqp4e3orriilb6iom.apps.googleusercontent.com'
+  self.redirectUri = env.oAuthRedirectUri();
+  self.scope = 'https://www.googleapis.com/auth/youtube.readonly';
+  self.init();
+}
+
+function TwitchExtensionPlatform(model) {
+  var self = this;
+  this.model = model;
+
+  this.id = 'twitch_ext';
+
+  this.identity = {
+    viewerId: null,
+    channelId: null,
+    jwt: null
+  };
+
+  this.onRequestAuthorize = function () {
+    window.Twitch.ext.actions.requestIdShare();
+  };
+
+  this.onAuthorize = function (auth) {
+    if (auth.channelId) {
+      this.identity.channelId = auth.channelId;
+    }
+
+    var token = auth.token;
+    if (auth.token) {
+      var parts = token.split('.');
+      try {
+        var json = atob(parts[1]);
+        var payload = JSON.parse(json);
+        if (payload.user_id) {
+          this.identity.jwt = token;
+          if ((this.identity.channelId != payload.channel_id) ||
+            (this.identity.viewerId != payload.user_id)) {
+            this.identity.channelId = payload.channel_id;
+            this.identity.viewerId = payload.user_id;
+
+            SocketManager.connect();
+
+            this.model.loadingView.authorized(true);
+          }
+        }
+      }
+      catch (ex) {
+        log('failed to decode payload ' + token);
+      }
+    }
+  };
+
+  this.init = function () {
+    if (window.Twitch.ext) {
+      window.Twitch.ext.onAuthorized((function (auth) {
+        log("onAuthorized");
+        log(auth);
+        this.onAuthorize(auth);
+      }).bind(this));
+
+      window.Twitch.ext.onContext(function (context, contextFields) {
+        log("onContext");
+        log(context);
+        log(contextFields);
+      });
+
+      window.Twitch.ext.onError(function (err) {
+        log("onError");
+        log(err);
+      });
+    }
+  };
+}
+
+TwitchOAuthPlatform.prototype = new OAuthPlatform();
+MixerOAuthPlatform.prototype = new OAuthPlatform();
+FacebookOAuthPlatform.prototype = new OAuthPlatform();
+YouTubeOAuthPlatform.prototype = new OAuthPlatform();
+DLiveOAuthPlatform.prototype = new ServerOAuthPlatform();
+LocalPlatform.prototype = new TwitchExtensionPlatform();
+
+
+function AppViewModel() {
+  var self = this;
+  self.viewer = new ViewerModel();
+  self.config = new ConfigModel();
+  self.collections = new CollectionsModel(self.viewer, self.config);
+  self.isComponent = ko.observable(false);
+  self.loaded = ko.observable(true);
+  self.initialLoad = ko.observable(true);
+  self.bitsEnabled = ko.observable(false);
+  self.blockInteraction = ko.observable(false);
+  self.fakeBitsTransaction = ko.observable();
+
+  self.chatMessage = ko.observable('');
+  self.chatMessageInput = ko.computed({
+    read: function () {
+      return self.chatMessage();
+    },
+    write: function (value) {
+      self.chatMessage(value);
+    }
+  });
+
+  self.turnLinksToHyperLinks = function () {
+
+  };
+
+  self.chatlog = ko.observableArray([]);
+  self.formatChatMessage = function (chatMessage) {
+    var message = chatMessage.message;
+
+    message = message.replace(/</gi, '&lt;')
+      .replace(/>/gi, '&gt;');
+
+    if (chatMessage.bot) {
+      var reg = /(https?:\/\/[^\s]+)/gi;
+      message = message.replace(reg, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    }
+
+    return {
+      displayName: chatMessage.displayName,
+      message: message,
+      bot: chatMessage.bot
+    };
+  };
+  self.receiveChatMessage = function (chatMessage) {
+    var chatlog = self.chatlog();
+    chatlog.push(self.formatChatMessage(chatMessage));
+    if (chatlog.length > 30) {
+      var over = chatlog.length - 30;
+      chatlog.splice(0, over);
+    }
+    self.chatlog(chatlog);
+  };
+
+  self.chatIdentity = ko.observable();
+
+  self.canChat = ko.observable(true);
+  self.showWaitToChat = ko.observable(false);
+  self.sendChatClick = function (data, event) {
+    if (event.keyCode && event.keyCode != 13) {
+      return true;
+    }
+    var chatMessage = self.chatMessage();
+    if (chatMessage.length == 0) {
+      return;
+    }
+
+    if (!self.canChat()) {
+      self.showWaitToChat(true);
+      return true;
+    }
+
+    self.canChat(false);
+    setTimeout(function () {
+      self.canChat(true);
+      self.showWaitToChat(false);
+    }, 3000);
+
+    self.chatMessage('');
+    SocketManager._send('chat', {
+      message: chatMessage,
+      identity: self.chatIdentity(),
+    });
+  };
+
+  self.startBitsPurchase = function (item) {
+    if (!self.bitsEnabled()) return;
+
+    self.blockInteraction(true);
+    Twitch.ext.bits.useBits(item.bitsSku());
+  };
+
+  self.completeBitsPurchase = function (trans) {
+    if (self.fakeBitsTransaction()) {
+      trans = self.fakeBitsTransaction();
+    }
+
+    var store = self.list.store;
+    var item = store.item();
+    SocketManager._send('bitsPurchase', {
+      transJwt: trans.transactionReceipt,
+      bitsJwt: item.bitsJwt(),
+    });
+    item.owned(true);
+    store.close();
+  };
+
+  self.showActionPane = ko.observable(false);
+
+  window.setTimeout(function () {
+    self.initialLoad(false);
+  }, 1000 * 10);
+
+  self.disableDoubleClick = function (model, evt) {
+    evt.stopPropagation();
+  };
+
+  self.componentToggleLabel = ko.observable(self.config.lang.hide());
+  self.hiddenMode = ko.observable(false);
+  self.toggleHiddenMode = function () {
+    self.initialLoad(false);
+    self.hiddenMode(!self.hiddenMode());
+  };
+
+  self.componentToggleLabel = ko.computed(function () {
+    var openLabel = self.config.lang.open();
+    var hideLabel = self.config.lang.hide();
+    if (self.hiddenMode()) {
+      return openLabel;
+    }
+    else {
+      return hideLabel;
+    }
+  });
+
+  self.detectPlatform = function () {
+    var params = Helper.getParams();
+    var platform = params['platform'];
+    var anchor = params['anchor'];
+    var legacyComponentDesign = params['legacycomponentdesign'];
+
+    if (legacyComponentDesign && anchor == 'component') {
+      self.isComponent(true);
+      self.hiddenMode(true);
+    }
+    switch (platform) {
+      case 'youtube':
+        return new YouTubeOAuthPlatform(self);
+      case 'mixer':
+        return new MixerOAuthPlatform(self);
+      case 'twitch':
+        return new TwitchOAuthPlatform(self);
+      case 'dlive':
+        return new DLiveOAuthPlatform(self);
+      case 'facebook':
+        return new FacebookOAuthPlatform(self);
+    }
+    if (platform == 'web' || platform == 'mobile') {
+      return new TwitchExtensionPlatform(self);
+    }
+    return new LocalPlatform(self);
+  };
+
+  self.loadingView = new LoadingViewModel(self.config);
+  self.platform = self.detectPlatform();
+  self.platform.init();
+  self.showItemList = ko.observable(false);
+
+  var showAvatars = function () {
+    self.list.padded(false);
+    self.list.hideLabel(false);
+    self.list.setItems(self.collections.uniqueAvatars());
+    self.showItemList(true);
+    self.collections.colors([]);
+    self.showActionPane(false);
+    self.list.searchFilter('');
+  };
+
+  var showColors = function () {
+    self.list.padded(false);
+    self.list.hideLabel(false);
+    var colors = self.collections.findColors(self.viewer.avatar().id);
+    self.collections.colors(colors);
+    self.list.setItems(colors);
+    self.showItemList(true);
+    self.showActionPane(false);
+    self.list.searchFilter('');
+  };
+
+  var showNametags = function () {
+    self.list.padded(true);
+    self.list.hideLabel(true);
+    self.list.setItems(self.collections.nametags());
+    self.showItemList(true);
+    self.collections.colors([]);
+    self.showActionPane(false);
+    self.list.searchFilter('');
+  };
+
+  var showActions = function () {
+    self.showActionPane(true);
+    self.showItemList(false);
+    self.collections.colors([]);
+  };
+
+  var showGear = function (item) {
+    self.list.padded(false);
+    self.list.hideLabel(false);
+    self.list.setItems(self.collections.gears()[item.id]);
+    self.showItemList(true);
+    self.collections.colors([]);
+    self.showActionPane(false);
+    self.list.searchFilter('');
+  };
+
+  var showLeaderboards = function () {
+    self.showItemList(false);
+    self.collections.colors([]);
+    self.showActionPane(false);
+  };
+
+  self.menuChangeEvents = {
+    showAvatars: showAvatars,
+    showLeaderboards: showLeaderboards,
+    showNametags: showNametags,
+    showActions: showActions,
+    showGear: showGear,
+    showColors: showColors,
+  };
+
+  self.leaderboards = new LeaderboardsModel();
+  self.menu = new MenuModel(self.config.lang, self.viewer.avatar, self.collections,
+    self.leaderboards.boards, self.menuChangeEvents, self);
+  self.list = new ListModel(self.viewer.avatar, self.viewer.points, self.config, self.bitsEnabled);
+
+  var firstMenuChosen = false;
+  self.setAvatars = function (models) {
+    self.collections.avatars(models);
+    if (!firstMenuChosen) {
+      self.menuChangeEvents.showAvatars();
+      firstMenuChosen = true;
+    }
+  };
+
+  self.select = function (item) {
+    if (!self.list.store.open(item)) {
+      if (item.clickAction) {
+        item.clickAction();
+      }
+    }
+  };
+
+  self.deselect = function () {
+    var category = self.list.items()[0].category;
+    self.viewer.removeGear(category);
+  };
+
+  self.back = function () {
+    self.menuChangeEvents.showAvatars();
+    self.menu.selected('avatars');
+  };
+
+  self.itemListVisible = ko.computed(function () {
+    return self.showItemList() &&
+      !self.list.store.active() &&
+      self.loadingView.loaded() &&
+      !self.showActionPane();
+  });
+}
+
+
+var canvas = document.getElementById('canvas');
+
+var piped = [];
+var pipe = function (fn) {
+  var next = function () {
+    piped.shift();
+    if (piped.length > 0) {
+      piped[0]();
+    }
+  };
+  var item = function () {
+    fn(next);
+  };
+  var len = piped.length;
+  piped.push(item);
+  if (len == 0) {
+    item();
+  }
+};
+
+var maxCanvasWidth = 0;
+var maxCanvasHeight = 0;
+
+var generatePreview = function (src, width, height, colorSwaps, cb) {
+  var generate = function (next) {
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+    img.crossOrigin = "Anonymous";
+
+    if (width > maxCanvasWidth) {
+      maxCanvasWidth = width;
+    }
+
+    if (height > maxCanvasHeight) {
+      maxCanvasHeight = height;
+    }
+
+    ctx.clearRect(0, 0, maxCanvasWidth, maxCanvasHeight);
+    canvas.width = width;
+    canvas.height = height;
+
+    img.src = src;
+
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+      var imgstuff = ctx.getImageData(0, 0, width, height);
+      var data = imgstuff.data;
+
+      for (var i = 0; i < data.length; i += 4) {
+        if (colorSwaps[data[i]]) {
+          if (colorSwaps[data[i]][data[i + 1]]) {
+            if (colorSwaps[data[i]][data[i + 1]][data[i + 2]]) {
+              if (colorSwaps[data[i]][data[i + 1]][data[i + 2]][data[i + 3]]) {
+                var swap = colorSwaps[data[i]][data[i + 1]][data[i + 2]][data[i + 3]];
+                data[i] = swap.red;
+                data[i + 1] = swap.green;
+                data[i + 2] = swap.blue;
+                data[i + 3] = swap.alpha;
+              }
+            }
+          }
+        }
+      }
+
+      ctx.clearRect(0, 0, maxCanvasWidth, maxCanvasHeight);
+      ctx.putImageData(imgstuff, 0, 0);
+      var dataUrl = canvas.toDataURL();
+
+      cb(src, dataUrl);
+      next();
+    }
+  };
+
+  pipe(generate);
+};
+
+function ViewerModel(opts) {
+  var self = this;
+  opts = opts || {};
+  self.points = ko.observable(opts.points || 0);
+  self.avatar = ko.observable({});
+  self.gears = ko.observable({});
+
+  self.follower = ko.observable(false);
+  self.subscriber = ko.observable(false);
+  self.moderator = ko.observable(false);
+  self.ownsEverything = ko.observable(false);
+
+  self.gearsList = ko.computed(function () {
+    return Object.entries(self.gears()).reduce(function (acc, cur) {
+      acc.push(cur[1]);
+      return acc;
+    }, []);
+  });
+
+  self.addGear = function (gearPiece) {
+    var gears = self.gears();
+    gears[gearPiece.category] = gearPiece;
+    self.gears(gears);
+  };
+
+  self.removeGear = function (gear) {
+    var gears = self.gears();
+    var gearPiece = gears[gear];
+    if (gearPiece) {
+      delete gears[gear];
+      self.gears(gears);
+      gearPiece.undoAction(gearPiece);
+    }
+  };
+
+  self.recompute = ko.observable(false);
+
+  self.gearPreviews = ko.computed(function () {
+    var fixHeight = 80;
+    self.recompute(); // cheat. allows for creating event to recompute this computable
+    var avatar = self.avatar();
+    var gearsList = self.gearsList();
+    var previews = [];
+    if (!avatar || !avatar.offsets) return previews;
+    for (var i = 0; i < gearsList.length; i++) {
+      var gear = gearsList[i];
+      if (!avatar.offsets[gear.category] || !avatar.offsets[gear.category][gear.id])
+        continue;
+
+      var offset = avatar.offsets[gear.category][gear.id];
+
+      var a = {
+        w: avatar.width * avatar.scale,
+        h: avatar.height * avatar.scale,
+        s: avatar.scale
+      };
+
+      var g = {
+        ox: offset.x * a.s,
+        oy: offset.y * a.s,
+        w: gear.width * gear.scale,
+        h: gear.height * gear.scale,
+        s: gear.scale
+      };
+
+      var px = ((a.w - g.w) / 2 - g.ox);
+      var py = g.oy;
+
+      if (a.h != fixHeight) {
+        var limitScale = fixHeight / a.h;
+        px *= limitScale;
+        py *= limitScale;
+      }
+      else {
+        var limitScale = 1;
+      }
+
+      var scaled = {
+        image: gear.image(),
+        width: g.w * limitScale + 'px',
+        offsetX: px + 'px',
+        offsetY: py + 'px',
+        zIndex: 100 + gear.zIndex
+      };
+
+      if (avatar.gearSwaps && avatar.gearSwaps[gear.image()]) {
+        scaled.image = avatar.gearSwaps[gear.image()];
+      }
+      else if (avatar.colorSwaps && gear.useAvatarColorSwaps) {
+        generatePreview(scaled.image, parseInt(gear.width), parseInt(gear.height), avatar.colorSwaps, function (originalSrc, coloredSrc) {
+          if (!avatar.gearSwaps) avatar.gearSwaps = {};
+          avatar.gearSwaps[originalSrc] = coloredSrc;
+          self.recompute(!self.recompute());
+        });
+      }
+
+      previews.push(scaled);
+    }
+
+    return previews;
+  });
+}
+
+function ConfigModel() {
+  var self = this;
+  self.lang = new LanguageModel();
+  self.version = ko.observable(0);
+  self.showCurrency = ko.computed(function () {
+    return !!self.lang.currency();
+  });
+}
+
+function LanguageModel() {
+  var self = this;
+  self.currency = ko.observable('Points');
+  self.avatars = ko.observable('avatars');
+  self.colors = ko.observable('colors');
+  self.actions = ko.observable('actions');
+  self.nametags = ko.observable('nametags');
+  self.leaderboard = ko.observable('leaderboard');
+  self.subscribe = ko.observable('sub');
+  self.follow = ko.observable('follow');
+  self.or = ko.observable('- or -');
+  self.and = ko.observable('- and -');
+  self.buy = ko.observable('Buy for {currencyValue} {currencyName}');
+  self.close = ko.observable('Close');
+  self.search = ko.observable('search');
+  self.target = ko.observable('target');
+  self.hide = ko.observable('hide');
+  self.open = ko.observable('open');
+
+  self.chat_command = ko.observable('Chat Command:');
+  self.send = ko.observable('Send');
+  self.resend = ko.observable('Resend');
+  self.angle = ko.observable('angle');
+  self.power = ko.observable('power');
+  self.bet = ko.observable('bet');
+
+  self.installing_avatars = ko.observable('...Installing avatars...');
+  self.installing_viewer = ko.observable('...Waiting for your avatar...');
+  self.click_to_auth = ko.observable('Click to Authorize');
+  self.insufficient_points = ko.observable('... insufficient points ...');
+
+  self.spawning_message = ko.observable('');
+
+  self.action_movement_left = ko.observable('move left {offset}');
+  self.action_movement_select = ko.observable('slider chooses movement');
+  self.action_movement_right = ko.observable('move right {offset}');
+
+  self.bits_unavailable = ko.observable('Unlock Unavailable');
+  self.bits_unlock = ko.observable('Unlock with {cost} bits');
+
+  self.left = ko.observable('left');
+  self.right = ko.observable('right');
+
+  self.spawning_message_chatters_whitelist = 'Want an avatar? Sorry only a chosen few get one';
+  self.spawning_message_chatters_everyone = 'Want an avatar? Stay active in chat';
+  self.spawning_message_chatters_follow_sub = 'Want an avatar? Join the chat and follow or sub';
+  self.spawning_message_chatters_sub = 'Want an avatar? Join the chat and sub';
+  self.spawning_message_whitelist = 'Want an avatar? Sorry only a chosen few get one';
+  self.spawning_message_everyone = 'You\'ll get an avatar soon';
+  self.spawning_message_follow_sub = 'Want an avatar? Follow or sub';
+  self.spawning_message_sub = 'Want an avatar? Sub';
+
+  self.chat = ko.observable('chat');
+  self.waitToChat = ko.observable('Wait a bit before chatting again');
+
+  if (testLang) {
+    for (var x in self) {
+      if (typeof self[x] == 'function') self[x]('xxx' + self[x]());
+    }
+  }
+}
+
+function ListModel(viewerAvatar, viewerPoints, cfg, bitsEnabled) {
+  var self = this;
+  self.items = ko.observableArray([]);
+  self.setItems = function (items) {
+    self.selectedPage(0);
+    self.items(items);
+  };
+  self.searchText = ko.observable('');
+  self.searchFilter = ko.computed({
+    read: function () {
+      return self.searchText();
+    },
+    write: function (value) {
+      self.selectedPage(0);
+      self.searchText(value);
+    }
+  });
+  // observable
+  self.viewerAvatar = viewerAvatar;
+  self.viewerPoints = viewerPoints;
+  self.hideLabel = ko.observable(false);
+
+
+  self.filteredItems = ko.computed(function () {
+    var filter = self.searchText().toLowerCase();
+    var filtered = self.items().filter(function (x) {
+      return (x.tags || '').indexOf(filter) != -1;
+    });
+    filtered = filtered.filter(function (x) {
+      return x.avatarsFilter().length == 0 ||
+        x.avatarsFilter().indexOf(self.viewerAvatar().id) != -1;
+    });
+    filtered = filtered.filter(function (x) {
+      return x.visible();
+    });
+    return filtered;
+  });
+  self.doNothing = function (item) {
+
+  }
+
+  self.purchaseAction = function (item) {
+
+    if (self.viewerPoints() >= item.price()) {
+      self.viewerPoints(self.viewerPoints() - item.price());
+      item.purchaseAction(item);
+      item.owned(true);
+      self.store.close();
+    }
+    else {
+      self.store.showInsufficientPoints();
+    }
+  };
+  self.padded = ko.observable(false);
+  self.windowDimensions = { width: 0, height: 0 };
+  self.viewportDimensions = { width: 0, height: 0 };
+  self.groupedItems = ko.computed(function () {
+    var items = self.filteredItems();
+
+    var calcPerPage = function (items, windowWidth, windowHeight, xPadding, yPadding) {
+      //log({windowHeight, windowWidth, items, xPadding, yPadding});
+
+      if (windowHeight == 0 || windowWidth == 0) return [[]];
+
+      var rows = [[]];
+
+      var usedRowWidth = 0;
+      for (var i = 0; i < items.length; i++) {
+
+        var item = items[i];
+
+        switch (item.rowSpace) {
+          case 'row':
+            var width = windowWidth;
+            var height = item.fixHeight + yPadding;
+            break;
+          case 'half':
+            var width = windowWidth / 2;
+            var height = item.fixHeight + yPadding;
+            break;
+          default:
+            var width = item.fixWidth + xPadding;
+            if (item.useThumbnail()) {
+              var height = item.fixHeight + yPadding;
+            }
+            else if (item.width > item.fixWidth) {
+              var height = item.fixWidth * (item.height / item.width) + yPadding;
+            }
+            else {
+              var height = item.height + yPadding;
+            }
+        }
+
+        if (i == 0 && item.undoAction) {
+          usedRowWidth += width;
+          rows[rows.length - 1].push({
+            item: new ItemModel({
+              rowSpace: item.rowSpace,
+              fixWidth: width,
+              style: 'remove'
+            }),
+            width: width,
+            height: 1
+          });
+        }
+
+        var rowFull = Math.floor(usedRowWidth + width) > windowWidth;
+        if (!rowFull) {
+          usedRowWidth += width;
+          rows[rows.length - 1].push({
+            item: item,
+            width: width,
+            height: height
+          });
+        }
+        else {
+          rows[rows.length] = [];
+          i--;
+          usedRowWidth = 0;
+        }
+      }
+
+      if (rows.length > 1) {
+        var lastRow = rows[rows.length - 1];
+        if (lastRow) {
+          var lastRowWidth = 0;
+          var width = 0;
+          var rowSpace = '';
+          for (var i = 0; i < lastRow.length; i++) {
+            lastRowWidth += lastRow[i].width;
+            width = lastRow[i].width;
+            rowSpace = lastRow[i].item.rowSpace;
+          }
+          while (lastRowWidth + width <= windowWidth) {
+            rows[rows.length - 1].push({
+              item: new ItemModel({
+                rowSpace: rowSpace,
+                fixWidth: width,
+                style: 'fake'
+              }),
+              height: 1,
+              width: width
+            });
+            lastRowWidth += width;
+          }
+        }
+      }
+      //log(rows)
+
+      var usedPageHeight = 0;
+      var pagedItems = [[]];
+      for (var i = 0; i < rows.length; i++) {
+        var rowHeight = rows[i]
+          .map(function (item) {
+            return item.height
+          })
+          .reduce(function (acc, cur) {
+            if (cur > acc) return cur;
+            return acc;
+          }, 0);
+
+        var pageFull = usedPageHeight + rowHeight > windowHeight;
+        if (!pageFull || usedPageHeight == 0) {
+          usedPageHeight += rowHeight;
+          pagedItems[pagedItems.length - 1] = pagedItems[pagedItems.length - 1]
+            .concat(rows[i].map(function (item) {
+              return item.item;
+            }));
+        }
+        else {
+          pagedItems[pagedItems.length] = [];
+          i--;
+          usedPageHeight = 0;
+        }
+      }
+
+      return pagedItems;
+    }
+
+    //log({items});
+    items = calcPerPage(items,
+      self.viewportDimensions.width,
+      self.viewportDimensions.height,
+      0, 12);
+    //log({items});
+    return items;
+  });
+  self.resizeViewport = function () {
+    var width = document.body.offsetWidth;
+    var height = document.body.offsetHeight;
+
+    if (self.windowDimensions.width == width && self.windowDimensions.height == height) {
+      return;
+    };
+
+    var viewportWidth = document.getElementById('viewport').offsetWidth;
+    var viewportHeight = document.getElementById('viewport').offsetHeight;
+
+    if (width == 0 || height == 0 || viewportWidth == 0 || viewportHeight == 0) {
+      return;
+    };
+
+    self.windowDimensions.width = width;
+    self.windowDimensions.height = height;
+    self.viewportDimensions.width = viewportWidth;
+    self.viewportDimensions.height = viewportHeight;
+
+    self.setItems(self.items());
+  };
+  self.selectedPage = ko.observable(0);
+  self.currentItems = ko.computed(function () {
+    var selectedPage = self.selectedPage();
+    var groupedItems = self.groupedItems();
+    if (selectedPage > groupedItems.length - 1) {
+      self.selectedPage(groupedItems.length - 1);
+    }
+    return self.groupedItems()[self.selectedPage()];
+  });
+  self.canPrev = ko.computed(function () {
+    return self.selectedPage() > 0;
+  });
+  self.canNext = ko.computed(function () {
+    return self.selectedPage() < self.groupedItems().length - 1;
+  });
+  self.next = function () {
+    if (self.canNext()) {
+      self.selectedPage(self.selectedPage() + 1);
+    }
+  };
+  self.prev = function () {
+    if (self.canPrev()) {
+      self.selectedPage(self.selectedPage() - 1);
+    }
+  };
+  self.store = new StoreModel(cfg, bitsEnabled);
+
+  window.setInterval(self.resizeViewport, 50);
+}
+
+function StoreModel(cfg, bitsEnabled) {
+  var self = this; //shop1
+  self.open = function (item) {
+    if (!item.locked()) {
+      self.active(false);
+      return false;
+    }
+    self.item(item);
+    self.active(true);
+    return true;
+  };
+  self.close = function () {
+    self.active(false);
+  };
+  self.active = ko.observable(false);
+  self.item = ko.observable(new ItemModel());
+  self.priceLabel = ko.computed(function () {
+    var label = cfg.lang.buy()
+      .replace('{currencyValue}', self.item().price())
+      .replace('{currencyName}', cfg.lang.currency());
+
+    return label;
+  });
+  self.insufficientPoints = ko.observable(false);
+  self.buyButtonLabel = ko.computed(function () {
+    var insufficientPoints = self.insufficientPoints();
+    var insufficientLabel = cfg.lang.insufficient_points();
+    var priceLabel = self.priceLabel();
+    if (insufficientPoints) {
+      return insufficientLabel;
+    }
+    return priceLabel;
+  });
+  self.bitsButtonLabel = ko.computed(function () {
+    var bits_unlock = cfg.lang.bits_unlock();
+    var bits_unavailable = cfg.lang.bits_unavailable();
+    var bitsCost = self.item().bitsCost();
+    if (!bitsEnabled()) {
+      return bits_unavailable;
+    }
+
+    var label = bits_unlock.replace('{cost}', bitsCost);
+
+    return label;
+  });
+  self.showInsufficientPoints = function () {
+    self.insufficientPoints(true);
+    window.setTimeout(function () {
+      self.insufficientPoints(false);
+    }, 2000);
+  };
+}
+
+var hiddenFixedOrder = 1;
+function ItemModel(opts) {
+  opts = opts || {};
+  var self = this;
+  self.viewer = opts.viewer || new ViewerModel();
+  self.id = opts.id;
+  self.category = opts.category || '';
+  self.parents = ko.observableArray(opts.parents || []);
+  self.label = opts.label;
+  self.targetLabel = opts.targetLabel;
+  self.value = ko.observable(opts.value);
+  self.defaultDisplayLabel = opts.showCategory ? (self.category || self.label) : self.label;
+  self.labelRanges = opts.labelRanges;
+  self.min = opts.min;
+  self.max = opts.max;
+  self.tempDisplayLabel = ko.observable('');
+  self.order = ko.observable(opts.order || ('zzzzz' + hiddenFixedOrder++));
+  self.availableGear = ko.observable(opts.availableGear || []);
+  self.colorSwaps = opts.colorSwaps;
+  self.useAvatarColorSwaps = opts.useAvatarColorSwaps;
+  self.displayLabel = ko.computed(function () {
+    var value = self.value();
+    if (self.tempDisplayLabel()) {
+      return self.tempDisplayLabel();
+    }
+    if (self.labelRanges) {
+      if (!isNaN(parseInt(value))) {
+        for (var i = 0; i < self.labelRanges.length; i++) {
+          var range = self.labelRanges[i];
+          var mid = (self.max / 2) + self.min;
+          if (value >= range.min && value <= range.max) {
+            var offset = Math.abs(value - mid);
+            return range.label().replace('{value}', value).replace('{offset}', offset);
+          }
+        }
+      }
+    }
+    return self.defaultDisplayLabel;
+  });
+  self.storeDisplayLabel = ko.computed(function () {
+    return self.label + ' ' + self.category;
+  });
+  self.image = ko.observable(opts.image);
+  self.thumbnail = ko.observable(opts.thumbnail);
+  self.useThumbnail = ko.computed(function () {
+    return !!self.thumbnail();
+  });
+  self.thumbnailImage = ko.computed(function () {
+    var image = self.image();
+    var thumbnail = self.thumbnail();
+    if (self.useThumbnail()) {
+      return thumbnail;
+    }
+    return image;
+  });
+  self.tags = (self.label + ' ' + self.category).toLowerCase();
+  self.rowSpace = opts.rowSpace || 'auto';
+  self.height = opts.height || 38;
+  self.width = opts.width || 38;
+  self.scale = opts.scale || 1;
+  self.fixWidth = opts.fixWidth;
+  self.fixHeight = opts.fixHeight;
+  if (self.useThumbnail()) {
+    self.fixWidth = 62;
+    self.fixHeight = 62;
+  }
+  self.style = opts.style || 'image';
+  self.offsets = opts.offsets || {};
+  self.owned = ko.observable(opts.owned || false);
+  self.zIndex = opts.zIndex || 1;
+
+  self.children = ko.observableArray(opts.children || []);
+
+  self.condition = ko.observable(opts.condition);
+
+  self.subscriberOnly = ko.observable(!!opts.subscriberOnly);
+  self.followerOnly = ko.observable(!!opts.followerOnly);
+  self.moderatorOnly = ko.observable(!!opts.moderatorOnly);
+  self.giftedOnly = ko.observable(!!opts.giftedOnly);
+  self.price = ko.observable(opts.price || 0);
+  self.bitsCost = ko.observable(opts.bitsCost || 0);
+  self.bitsSku = ko.observable(opts.bitsSku || '');
+  self.bitsJwt = ko.observable(opts.bitsJwt || '');
+  self.bitsEnabled = opts.bitsEnabled || function () { return false };
+  self.membershipRequired = opts.membershipRequired || function () { return false; };
+
+  if (self.colorSwaps) {
+    generatePreview(self.image(), self.width, self.height, self.colorSwaps, (orig, palette) => {
+      self.image(palette);
+    });
+
+    if (self.useThumbnail()) {
+      generatePreview(self.thumbnail(), 62, 62, self.colorSwaps, (orig, palette) => {
+        self.thumbnail(palette);
+      });
+    }
+  }
+
+  if (self.style == 'input') {
+    self.value('');
+  }
+
+  self.clickAction = function () {
+    switch (self.style) {
+      case 'range':
+      case 'button':
+      case 'input':
+        if (!SocketManager.sendAction(self.id, self.value())) return;
+        self.tempDisplayLabel('...');
+        window.setTimeout(function () {
+          self.tempDisplayLabel('');
+        }, 1000);
+        break;
+      case 'image':
+        if (opts.clickAction) {
+          opts.clickAction(self);
+        }
+        break;
+    }
+  };
+
+  self.undoAction = opts.undoAction;
+
+  switch (self.rowSpace) {
+    case 'row':
+      self.rowCss = 'full-width';
+      break;
+    case 'half':
+      self.rowCss = 'half-width';
+      break;
+    default:
+      self.rowCss = 'auto-width';
+  }
+
+
+  self.purchaseAction = opts.purchaseAction;
+
+  self.avatarsFilter = ko.observableArray(opts.avatars || []);
+
+  self.showSubLock = ko.computed(function () {
+    var condition = self.condition;
+    var followerOnly = self.followerOnly();
+    var subscriberOnly = self.subscriberOnly();
+    if (condition == OR) {
+
+      return !followerOnly && subscriberOnly;
+    } else {
+      return subscriberOnly;
+    }
+  });
+
+  self.showFollowLock = ko.computed(function () {
+    return self.followerOnly();
+  });
+
+  self.parentLocked = ko.computed(function () {
+    var parents = self.parents();
+    if (self.parents().length == 0) return false;
+    var locked = false;
+    for (var i in parents) {
+      if (parents[i].locked && parents[i].locked()) locked = true;
+    }
+    return locked;
+  });
+
+  self.checkCondition = ko.computed(function () {
+    var condition = self.condition() == 1;
+    return condition;
+
+  });
+
+  self.membershipLocked = ko.computed(function () {
+
+    var follower = self.viewer.follower();
+    var subscriber = self.viewer.subscriber();
+    var subscriberOnly = self.subscriberOnly();
+    var followerOnly = self.followerOnly();
+
+    if (followerOnly || subscriberOnly) {
+      if (followerOnly && follower) return false;
+      if (subscriberOnly && subscriber) return false;
+      return true;
+    }
+    return null;
+  });
+
+  self.bitsLocked = ko.computed(function () {
+    return !!(self.bitsJwt() && self.bitsCost() > 0 && self.bitsSku());
+  });
+
+  self.priceLocked = ko.computed(function () {
+    return self.price() > 0;
+  });
+
+  self.accessLocked = ko.computed(function () {
+
+    var membershipLocked = self.membershipLocked();
+    var priceLocked = self.priceLocked();
+    var membershipRequired = self.membershipRequired();
+
+    if (membershipLocked === null) {
+      return priceLocked;
+    }
+    return membershipRequired ? membershipLocked && priceLocked : membershipLocked;
+  });
+
+
+
+  self.locked1 = ko.computed(function () {
+    
+    var bitsLocked = self.bitsLocked();
+    var ownsEverything = self.viewer.ownsEverything();
+    var parentLocked = self.parentLocked();
+
+    var condition = self.condition();
+
+    var isUserFollow = self.viewer.follower();
+    var isUserSub = self.viewer.subscriber();
+    var isUserMod = self.viewer.moderator();
+    var isUserOwned = self.owned();
+
+    var follower = self.followerOnly();
+    var subscriber = self.subscriberOnly();
+    var moderator = self.moderatorOnly();
+    var cost = self.price();
+    var gift = self.giftedOnly();
+
+
+    if (ownsEverything) {
+      return false;
+    }
+    if (parentLocked || (bitsLocked && !isUserOwned)) {
+      return true;
+    }
+
+    if (condition == OR && !gift) {
+      if (follower) {
+        return !(isUserFollow || isUserSub || isUserMod);
+      }
+      if (subscriber) {
+        return !(isUserSub);
+      }
+      if (moderator) {
+        return !(isUserMod);
+      }
+    } else if (condition == AND || gift) {
+
+      var canContinue = true;
+      if (follower) {
+        if (!isUserFollow) {
+          canContinue = false;
+        }
+      }
+      if (subscriber) {
+        if (!isUserSub) {
+          canContinue = false;
+        }
+      }
+      if (moderator) {
+        if (!isUserMod) {
+          canContinue = false;
+        }
+      }
+      return !(canContinue && (((cost > 0 || gift) && isUserOwned) || cost == 0));
+    }
+    return false;
+  });
+
+  self.locked = ko.computed(function () {
+
+    var condition = self.condition();
+    if (condition == AND) {
+      return self.locked1();
+    }
+    var parentLocked = self.parentLocked();
+    var accessLocked = self.accessLocked();
+    var owned = self.owned();
+    var ownsEverything = self.viewer.ownsEverything();
+    var moderator = self.viewer.moderator();
+    var moderatorOnly = self.moderatorOnly();
+    var bitsLocked = self.bitsLocked();
+
+    if (moderatorOnly && moderator) {
+      return false;
+    }
+
+    if (ownsEverything || owned) {
+      return false;
+    }
+
+    return parentLocked || accessLocked || bitsLocked;
+  });
+
+
+
+
+  self.visible1 = ko.computed(function () {
+
+    var condition = self.condition();
+    var ownsEverything = self.viewer.ownsEverything();
+    var isUserOwned = self.owned();
+    var gift = self.giftedOnly();
+    var parents = self.parents();
+
+    var moderator = self.viewer.moderator();
+    var moderatorOnly = self.moderatorOnly();
+
+
+    var allParentsVisible = parents.every(function (model) {
+      return model.visible && model.visible();
+    });
+
+
+    if (ownsEverything) {
+      return true;
+    }
+
+    if (!allParentsVisible) {
+      return false;
+    }
+
+    if (condition == AND) {
+      if (moderatorOnly && !moderator) {
+        return false;
+      }
+      if (gift && !isUserOwned) {
+        return false;
+      }
+    }
+    return true;
+  })
+
+
+  self.visible = ko.computed(function () {
+
+    var condition = self.condition();
+    if (condition == AND) {
+      return self.visible1();
+    }
+
+    var moderator = self.viewer.moderator();
+    var moderatorOnly = self.moderatorOnly();
+    var giftedOnly = self.giftedOnly();
+    var parents = self.parents();
+    var owned = self.owned();
+    var ownsEverything = self.viewer.ownsEverything();
+    var accessAvailable = self.subscriberOnly() || self.followerOnly() || self.priceLocked();
+
+    var allParentsVisible = parents.every(function (model) {
+      return model.visible && model.visible();
+    });
+
+    if (ownsEverything || owned) return true;
+    if (giftedOnly) return false;
+    if (!allParentsVisible) return false;
+    if (accessAvailable) return true;
+    if (moderatorOnly && !moderator) return false;
+    return true;
+  });
+}
+
+function LeaderboardsModel() {
+  var self = this;
+  self.boards = ko.observableArray([]);
+  self.current = ko.observable(new LeaderboardModel());
+  self.changeBoard = function (leaderboard) {
+    self.current(leaderboard);
+  };
+}
+
+function LeaderboardModel(name, rankLabel, nameLabel, valueLabel) {
+  var self = this;
+  self.name = name;
+  self.leaders = new ko.observableArray([]);
+  self.rankLabel = rankLabel || 'rank';
+  self.nameLabel = nameLabel || 'name';
+  self.valueLabel = valueLabel;
+  self.leader = ko.computed(function () {
+    return self.leaders()[0] || new LeaderModel();
+  });
+  self.leaderList = ko.computed(function () {
+    return self.leaders().slice(1);
+  });
+}
+
+function LeaderModel(rank, name, points) {
+  var self = this;
+  self.rank = rank;
+  self.name = name;
+  self.points = points;
+  self.rankIcon = rank > 3 ? null : 'assets/images/leader-coin-' + rank + '.png';
+}
+
+function MenuModel(lang, viewerAvatar, collections, leaderboards, menuChangeEvents, root) {
+  var self = this;
+
+  menuChangeEvents = menuChangeEvents || {}
+
+  self.selected = ko.observable('avatars');
+  self.title = ko.computed(function () {
+    var title = '';
+    var avatars = lang.avatars();
+    var colors = lang.colors();
+    var nametags = lang.nametags();
+    var leaderboard = lang.leaderboard();
+    var actions = lang.actions();
+
+    switch (self.selected()) {
+      case 'avatars':
+        title = avatars;
+        break;
+      case 'colors':
+        title = colors;
+        break;
+      case 'nametags':
+        title = nametags;
+        break;
+      case 'leaderboards':
+        title = leaderboard;
+        break;
+      case 'actions':
+        title = actions;
+        break;
+      default:
+        title = self.selected();
+        break;
+    }
+    return title;
+  });
+  self.menuOpen = ko.observable(false);
+
+  self.openMenu = function () {
+    self.menuOpen(true);
+  };
+
+  self.toggleMenu = function () {
+    self.menuOpen(!self.menuOpen());
+  };
+
+  self.closeMenu = function () {
+    self.menuOpen(false);
+  };
+
+  self.onClick = function (item) {
+    if (item.id) {
+      self.selected(item.id);
+      item.onClick(item);
+    }
+    self.closeMenu();
+    root.list.store.close();
+  };
+
+  self.menuOptions = ko.computed(function () {
+    var items = [];
+    items.push({ id: 'avatars', icon: '<i class="fas fa-child"></i>', label: lang.avatars(), onClick: menuChangeEvents.showAvatars });
+
+    var colors = collections.findColors(viewerAvatar().id);
+    if (colors.length > 1) {
+      items.push({ id: 'colors', icon: '<i class="fas fa-palette"></i>', label: lang.colors(), onClick: menuChangeEvents.showColors });
+    }
+
+    if (collections.actions().length > 0) {
+      items.push({ id: 'actions', icon: '<i class="fas fa-gamepad"></i>', label: lang.actions(), onClick: menuChangeEvents.showActions });
+    }
+
+    if (collections.nametags().length > 0) {
+      items.push({ id: 'nametags', icon: '<i class="fas fa-comment-dots"></i>', label: lang.nametags(), onClick: menuChangeEvents.showNametags });
+    }
+
+    if (leaderboards().length > 0) {
+      items.push({ id: 'leaderboards', icon: '<i class="fas fa-crown"></i>', label: lang.leaderboard(), onClick: menuChangeEvents.showLeaderboards });
+    }
+
+    if (viewerAvatar().availableGear) {
+      items = items.concat(viewerAvatar().availableGear().map(function (x) {
+        return {
+          id: x,
+          icon: '<i class="fas fa-tshirt"></i>',
+          label: testLang ? 'xx' + x : x,
+          onClick: menuChangeEvents.showGear
+        }
+      }))
+    }
+
+    return items;
+  });
+
+  self.menuColumns = ko.computed(function () {
+    return self.menuOptions().length > 10 ? 2 : 1;
+  });
+}
+
+function MenuListModel(opts) {
+  var self = this;
+
+  self.menus = ko.observableArray([]);
+  if (opts.menus) {
+    self.menus(opts.menus.map(function (x) {
+      return new MenuItemModel(x.content, x.label, x.container, x.avatars);
+    }));
+  }
+  else {
+    self.menus.push(new MenuItemModel(opts.content, opts.label, opts.container));
+  }
+
+  // observable
+  self.viewerAvatar = opts.viewerAvatar;
+
+  self.hidden = ko.observable(opts.hidden);
+  self.arrow = !!opts.arrow;
+
+  self.selectedMenu = ko.observable();
+
+  self.availableMenus = ko.computed(function () {
+    var filtered = self.menus();
+    var viewerAvatar = self.viewerAvatar();
+    var avatarId = viewerAvatar ? viewerAvatar.id : '';
+
+    filtered = filtered.filter(function (x) {
+      return !x.hasFilter || x.avatarsFilter().indexOf(avatarId) != -1;
+    });
+
+    if (filtered.length > 0) {
+      if (filtered.indexOf(self.selectedMenu()) == -1) {
+        self.selectedMenu(filtered[0]);
+      }
+    }
+
+    return filtered;
+  });
+
+  self.resetSelectedMenu = function () {
+    var def = self.availableMenus().length > 0 ? self.availableMenus()[0] : {};
+    self.selectedMenu(def);
+  };
+
+  self.resetSelectedMenu();
+
+  self.popupMenu = ko.computed(function () {
+    var selectedMenu = self.selectedMenu();
+    var menus = self.availableMenus();
+    return menus.filter(function (menu) {
+      return menu.content != selectedMenu.content;
+    });
+  });
+
+  self.hasPopup = ko.computed(function () {
+    return self.popupMenu().length > 0;
+  });
+}
+
+function MenuItemModel(content, label, container, avatars) {
+  var self = this;
+
+  self.content = content;
+  self.label = label;
+  self.container = container;
+
+  self.hasFilter = !!avatars;
+  self.avatarsFilter = ko.observableArray(avatars || []);
+}
+
+function FixedPagingList(items, itemsPerPage) {
+  var self = this;
+  self.items = items;
+
+  self.page = ko.observable(1);
+
+  self.lastPage = ko.computed(function () {
+    return Math.ceil(Math.round(self.items().length, 2) / itemsPerPage);
+  });
+
+  self.pagedItems = ko.computed(function () {
+    var startIndex = self.page() - 1;
+    return self.items().slice(startIndex * itemsPerPage, (startIndex + 1) * itemsPerPage);
+  });
+
+  self.left = ko.computed(function () {
+    return self.page() > 1 ? 'visible' : 'hidden';
+  });
+
+  self.right = ko.computed(function () {
+    return self.page() < self.lastPage() ? 'visible' : 'hidden';
+  });
+
+  self.incPage = function () {
+    if (self.page() == self.lastPage()) return;
+    self.page(self.page() + 1);
+  };
+
+  self.decPage = function () {
+    if (self.page() == 1) return;
+    self.page(self.page() - 1);
+  };
+}
+
+function CollectionsModel(viewerModel, config) {
+  var self = this;
+  var collections = self;
+  self.viewer = viewerModel;
+  self.avatars = ko.observableArray([]);
+  self.gears = ko.observable({});
+  self.actions = ko.observableArray([]);
+  self.nametags = ko.observableArray([]);
+  self.customCommandText = ko.observable('');
+  self.resend = ko.observable(false);
+  self.customCommandButtonLabel = ko.computed(function () {
+    return self.resend() ? config.lang.resend() : config.lang.send();
+  });
+
+  self.customCommandTextChange = function (data, event) {
+    if (event.keyCode == 13) {
+      self.customCommandClick();
+    } else {
+      self.resend(false);
+    }
+  }
+
+  var ControllerAction = function (item, customCommandText, customStartClick, customEndClick) {
+    
+    var self = this;
+    self.item = item || { empty: true };
+    self.clicked = ko.observable(false);
+
+    self.highlightRemoveTimer;
+
+    self.handleClick = function (item, root) {
+      if (self.item.empty) return;
+
+      if (self.item.locked()) {
+        root.select(self.item);
+        return;
+      }
+
+      var highlightRemove = function () {
+        self.clicked(false);
+        if (customEndClick) {
+          customEndClick();
+          root.select(self.item);
+        }
+      };
+
+      var customLabelText;
+      if (customStartClick) {
+        var customText = customStartClick(self.item);
+        customLabelText = customText;
+      }
+      else {
+        customLabelText = self.item.label;
+      }
+
+      var parts = customLabelText.split(' ');
+      if (parts.length == 2) {
+        if (parts[0] == 'move') {
+          var moveDistance = parseInt(parts[1]);
+          if (!isNaN(moveDistance)) {
+            if (moveDistance > 0) {
+              customLabelText = model.config.lang.right() + ' ' + moveDistance;
+            }
+            else {
+              customLabelText = model.config.lang.left() + ' ' + moveDistance;
+            }
+          }
+        }
+      }
+
+      customCommandText('!' + customLabelText);
+      collections.resend(true);
+
+      window.clearTimeout(self.highlightRemoveTimer);
+      self.clicked(true);
+      self.highlightRemoveTimer = window.setTimeout(highlightRemove, 1000);
+      if (!customEndClick) {
+        root.select(self.item);
+      }
+    };
+  }
+
+  self.avatarColorGroupingMode = ko.computed(function () {
+    return self.avatars().length > 15;
+  });
+
+  self.builtInActions = ['sit', 'stand', 'jump', 'dance', 'fart', 'bomb', 'sling', 'slots'];
+
+  self.allTargetableActions = ko.computed(function () {
+    return self.actions().filter(function (x) { return x.style == 'input' && self.builtInActions.indexOf(x.id) == -1; });
+  });
+
+  self.targetableActions = new FixedPagingList(self.allTargetableActions, 3);
+
+  self.allSimpleActions = ko.computed(function () {
+    return self.actions().filter(function (x) { return x.style == 'button' && self.builtInActions.indexOf(x.id) == -1; });
+  });
+
+  self.simpleActions = new FixedPagingList(self.allSimpleActions, 3);
+
+  self.target = ko.observable('');
+
+  self.simpleActionHandleClick = function (item, root) {
+    self.customCommandText('!' + item.label);
+    root.select(item);
+  };
+
+  self.targetableActionClick = function (item, root) {
+    item.value(self.target());
+    self.customCommandText('!' + item.label + ' ' + self.target());
+    root.select(item);
+  };
+
+  self.slingAngle = ko.observable('');
+  self.slingPower = ko.observable('');
+  self.slotsBet = ko.observable('');
+
+  self.controllerActions = ko.computed(function () {
+    var controllerActions = {};
+    for (var i in self.builtInActions) {
+      var id = self.builtInActions[i];
+      var customClick = null;
+      switch (id) {
+        case 'sling':
+          var exists = self.actions().find(function (x) { return x.id == id })
+          if (!exists) {
+            continue;
+          }
+          customClick = function (item) {
+            var angle = parseInt(self.slingAngle());
+            var power = parseInt(self.slingPower());
+            if (isNaN(angle)) angle = 60;
+            if (!isNaN(power)) angle += ' ' + power;
+            item.value(angle);
+            return item.label + ' ' + angle;
+          };
+          break;
+        case 'slots':
+          var exists = self.actions().find(function (x) { return x.id == id })
+          if (!exists) {
+            continue;
+          }
+          customClick = function (item) {
+            item.value(self.slotsBet());
+            return item.label + ' ' + self.slotsBet();
+          };
+          break;
+      }
+      
+      controllerActions[id] = new ControllerAction(self.actions().find(function (x) { return x.id == id }), self.customCommandText, customClick);
+    }
+    var move = self.actions().find(function (x) { return x.id == 'move'; });
+    var moveDistance = 0;
+    controllerActions.moveLeft = new ControllerAction(move, self.customCommandText, function (item) {
+      moveDistance -= 10;
+      if (moveDistance == 0) {
+        moveDistance = -10;
+      }
+      item.value(moveDistance + 100);
+      return item.label + ' ' + moveDistance;
+    }, function () {
+      moveDistance = 0;
+    });
+    controllerActions.moveRight = new ControllerAction(move, self.customCommandText, function (item) {
+      moveDistance += 10;
+      if (moveDistance == 0) {
+        moveDistance = 10;
+      }
+      item.value(moveDistance + 100);
+      return item.label + ' ' + moveDistance;
+    }, function () {
+      moveDistance = 0;
+    });
+    return controllerActions;
+  });
+
+  self.customCommandClick = function () {
+    var customCommandText = self.customCommandText() || ('!' + self.controllerActions().jump.item.label);
+    SocketManager._send('custom', { 'commandText': customCommandText });
+    self.resend(true);
+  };
+
+  self.uniqueAvatars = ko.computed(function () {
+    var avatars = self.avatars();
+    if (!self.avatarColorGroupingMode()) return avatars;
+    return avatars.filter(function (item) {
+      return !item.category;
+    });
+  });
+
+  self.findColors = function (id) {
+    return self.avatars().filter(function (item) {
+      return item.label == id;
+    });
+  };
+
+  self.back = new ItemModel({
+    fixWidth: 62,
+    style: 'back'
+  });
+
+  self.colors = ko.observableArray([]);
+}
+
+var SocketManager = {
+  ws: null,
+  model: null,
+
+  _secure: function (channelId, accessToken) {
+    var self = this;
+    self._send('secureConnection', {
+      platform: self.model.platform.id,
+      channelId: channelId,
+      accessToken: accessToken
+    });
+  },
+
+  _initRetryTimer: null,
+
+  connect: function (channelId, accessToken) {
+    var self = this;
+    if (self.ws) {
+      self.ws.closing = true;
+      self.ws.close();
+    }
+    try {
+      var ws = new WebSocket(env.serverWebSocket());
+      self.ws = ws;
+    }
+    catch (ex) {
+      return;
+    }
+    ws.onopen = function () {
+      if (channelId && accessToken) {
+        self._secure(channelId, accessToken);
+      }
+      else {
+        self.init();
+      }
+    };
+
+    self.init = function () {
+      self._send('init', {});
+      if (self._initRetryTimer) {
+        window.clearTimeout(self._initRetryTimer);
+      }
+      self._initRetryTimer = window.setTimeout(function () {
+        if (!self.model.loadingView.avatarsLoaded()) {
+          self.init();
+        }
+      }, Helper.randomSeconds(30, 60));
+    };
+    // keep alive?
+    ws.onmessage = function (e) {
+      var data = JSON.parse(e.data);
+      log(data);
+
+      if (data.messageType == 'joinchat') {
+        self.model.chatIdentity(data.chatIdentity);
+        return;
+      }
+
+      if (data.messageType === 'chat') {
+        self.model.receiveChatMessage(data);
+        return;
+      }
+
+      if (!self._processIncoming) {
+        return;
+      }
+
+      if (data.jwt) {
+        self.model.platform.identity.channelId = data.channelId;
+        self.model.platform.identity.viewerId = data.viewerId;
+        self.model.platform.identity.displayName = data.displayName;
+        self.model.platform.identity.jwt = data.jwt;
+        self.init();
+        return;
+      }
+
+      if (data.transactionReceipt) {
+        self.model.fakeBitsTransaction(data);
+        return;
+      }
+
+      if (data.currency != undefined) {
+        self._setLegacyCurrency(data.currency);
+      }
+
+      if (data.config) {
+        if (data.config.lang) {
+          self._setLanguage(data.config.lang);
+        }
+        if (data.config.version) {
+          self._setVersion(data.config.version);
+        }
+      }
+
+
+
+      if (data.avatars) {
+        self._setAvatars(data.avatars);
+        self._setGears(data.gears);
+        self._setNametags(data.nametags);
+        self._setSpawningRule(data.spawningRule);
+
+        self._setLeftRightLabels(data.avatars);
+
+        self.model.loadingView.avatarsLoaded(true);
+      }
+
+      if (data.leaderboards) {
+        self._setLeaderboards(data.leaderboards);
+      }
+
+      if (data.viewer) {
+        self._setViewer(data.viewer);
+      }
+    };
+    ws.onclose = function (e) {
+      log('closed');
+      log(e);
+      if (ws.closing) {
+        return;
+      }
+      model.loadingView.avatarsLoaded(false);
+      model.loadingView.viewerLoaded(false);
+      model.list.store.close();
+      window.setTimeout(function () {
+        self.connect(channelId, accessToken);
+      }, Helper.randomSeconds(30, 60));
+    };
+    ws.onerror = function (e) {
+      log('error');
+      log(e);
+    };
+  },
+
+  _setLanguage: function (lang) {
+    for (var i in lang) {
+      if (this.model.config.lang[i]) {
+        this.model.config.lang[i](testLang ? 'xx' + lang[i] : lang[i]);
+      }
+    }
+  },
+
+  _setVersion: function (version) {
+
+    if (this.model.config.version) {
+      this.model.config.version(version);
+    }
+
+  },
+
+
+  _setLegacyCurrency: function (currencyLabel) {
+    this.model.config.lang.currency(testLang ? 'xx' + currencyLabel : currencyLabel);
+  },
+
+  _setSpawningRule: function (spawningRule) {
+    this.model.loadingView.spawningRule.who(spawningRule.who);
+    this.model.loadingView.spawningRule.when(spawningRule.when);
+  },
+
+  _setViewer: function (viewer) {
+    var self = this;
+    if (!self.model.loadingView.avatarsLoaded()) {
+      window.setTimeout(function () {
+        self._setViewer(viewer);
+      }, 100);
+      return;
+    }
+    window.setTimeout(function () {
+      self.model.viewer.follower(viewer.follower);
+      self.model.viewer.subscriber(viewer.subscriber);
+      self.model.viewer.moderator(viewer.moderator);
+      self.model.viewer.points(viewer.currency);
+      self.model.viewer.ownsEverything(!!viewer.ownsEverything);
+
+      var viewerAvatar = self.model.collections.avatars().find(function (item) {
+        return item.id == viewer.avatar && item.category == viewer.color;
+      });
+
+      if (viewerAvatar) {
+        self._setViewerAvatar(viewerAvatar);
+        self._setViewerGearPieces(viewer.gear);
+      }
+
+      viewer.bitsPurchases = viewer.bitsPurchases || [];
+
+      self._setOwnedAvatars(viewer.owned.avatars, viewer.bitsPurchases.filter(function (x) { return x.product == 'avatar'; }));
+      self._setOwnedGearPieces(viewer.owned.gearPieces, viewer.bitsPurchases.filter(function (x) { return x.product == 'gearpiece'; }));
+      self._setOwnedActions(viewer.owned.actions, viewer.bitsPurchases.filter(function (x) { return x.product == 'action'; }));
+      self._setOwnedNametags(viewer.owned.nametags, viewer.bitsPurchases.filter(function (x) { return x.product == 'nametag'; }));
+
+      self.model.loadingView.viewerLoaded(true);
+    }, 50);
+  },
+
+  _setViewerAvatar: function (viewerAvatar) {
+    self.model.viewer.avatar(viewerAvatar);
+    self.model.collections.viewer.avatar(viewerAvatar);
+    self.model.collections.actions(viewerAvatar.children());
+  },
+
+  _setViewerGearPieces: function (viewerGear) {
+    self.model.viewer.gears({});
+    for (var i in viewerGear) {
+      var gears = self.model.collections.gears()[i];
+      if (gears) {
+        var gear = gears.find(function (item) {
+          return item.id == viewerGear[i];
+        });
+        if (gear) {
+          self.model.viewer.addGear(gear);
+        }
+      }
+    }
+  },
+
+  _setOwnedAvatars: function (ownedAvatars, bitsPurchases) {
+    ownedAvatars = ownedAvatars.concat(bitsPurchases);
+
+    var markOwnership = function (items, collection, filter) {
+      for (var i in items) {
+        var ownedItem = collection.find(function (model) {
+          return filter(items[i], model);
+        });
+        if (ownedItem) {
+          ownedItem.owned(true);
+        }
+      }
+    };
+
+    markOwnership(ownedAvatars,
+      self.model.collections.avatars(),
+      function (item, model) {
+        return model.id == item.name && model.category == item.color;
+      }
+    );
+  },
+
+  _setOwnedGearPieces: function (ownedGearPieces, bitsPurchases) {
+    ownedGearPieces = ownedGearPieces.concat(bitsPurchases);
+    for (var i in ownedGearPieces) {
+      var ownedGearPiece = ownedGearPieces[i];
+      var gear = self.model.collections.gears()[ownedGearPiece.gear];
+      if (gear) {
+        var gearPiece = gear.find(function (item) {
+          return item.id == ownedGearPiece.name;
+        });
+        if (gearPiece) {
+          gearPiece.owned(true);
+        }
+      }
+    }
+  },
+
+  _setOwnedActions: function (ownedActions, bitsPurchases) {
+    bitsPurchases = bitsPurchases.reduce(function (acc, cur) {
+      acc[cur.avatar] = acc[cur.avatar] || {};
+      acc[cur.avatar][cur.actionName] = true;
+      return acc;
+    }, {});
+
+    for (var i in bitsPurchases) {
+      ownedActions[i] = bitsPurchases[i];
+    }
+    for (var i in ownedActions) {
+      var avatarModel = self.model.collections.avatars().find(function (model) {
+        return model.id == i;
+      });
+      if (avatarModel && avatarModel.children()) {
+        for (var x in ownedActions[i]) {
+          var ownedItem = avatarModel.children().find(function (model) {
+            return model.id == x;
+          });
+          if (ownedItem) {
+            ownedItem.owned(true);
+          }
+        }
+      }
+    }
+  },
+
+  _setOwnedNametags: function (ownedNametags, bitsPurchases) {
+    bitsPurchases = bitsPurchases.reduce(function (acc, cur) {
+      acc[cur.nametag] = true;
+      return acc;
+    }, {});
+    for (var i in bitsPurchases) {
+      ownedNametags[i] = bitsPurchases[i];
+    }
+    for (var i in ownedNametags) {
+      var nametags = self.model.collections.nametags();
+      var ownedItem = nametags.find(function (model) {
+        return model.id == i;
+      });
+      if (ownedItem) {
+        ownedItem.owned(true);
+      }
+    }
+  },
+
+  _setActions: function (avatar) {
+    var self = this;
+
+    var actions = avatar.actions.filter(function (action) {
+      return action.id != 'right';
+    })
+      .map(function (action) {
+        if (action.id == 'left') {
+          action.id = 'move';
+          action.name = 'move';
+          action.min = 0;
+          action.max = 200;
+
+          action.labelRanges = [{
+            label: self.model.config.lang.action_movement_left,
+            min: 0,
+            max: 99
+          }, {
+            label: self.model.config.lang.action_movement_select,
+            min: 100,
+            max: 10
+          }, {
+            label: self.model.config.lang.action_movement_right,
+            min: 101,
+            max: 200
+          }]
+          return action;
+        }
+        return action;
+      })
+      .map(function (item) {
+        if (item.percentSlider) {
+          var rowSpace = 'row';
+          var fixHeight = 60;
+          var style = 'range';
+          var value = 100;
+        }
+        else if (item.targetable) {
+          var rowSpace = 'half';
+          var fixHeight = 60;
+          var style = 'input';
+          var value = '';
+        }
+        else {
+          var rowSpace = 'half';
+          var fixHeight = 30;
+          var style = 'button';
+          var value = undefined;
+        }
+        return new ItemModel({
+          viewer: self.model.viewer,
+          id: item.id,
+          label: testLang ? 'xx' + item.name : item.name,
+          targetLabel: item.targetLabel,
+          rowSpace: rowSpace,
+          value: value,
+          fixHeight: fixHeight,
+          style: style,
+          condition: item.condition,
+          price: item.cost,
+          bitsCost: item.bitsCost,
+          bitsSku: item.bitsSku,
+          bitsJwt: item.bitsJwt,
+          bitsEnabled: self.model.bitsEnabled,
+          min: item.min,
+          max: item.max,
+          order: item.order,
+          labelRanges: item.labelRanges,
+          subscriberOnly: item.permissions.subscribersOnly,
+          followerOnly: item.permissions.followersOnly,
+          giftedOnly: item.permissions.giftedOnly,
+          moderatorOnly: item.permissions.moderatorsOnly,
+          purchaseAction: function (item) {
+            self._send('purchaseAction', {
+              action: item.id,
+              avatar: avatar.name
+            });
+          },
+        });
+      });
+
+    actions.sort(alphaNumericSortItemSort);
+
+    return actions;
+  },
+
+  _setNametags: function (nametags) {
+    var self = this;
+    if (nametags) {
+      self.model.collections.nametags(nametags.map(function (item) {
+        return new ItemModel({
+          viewer: self.model.viewer,
+          id: item.name,
+          label: testLang ? 'xx' + item.name : item.name,
+          image: item.src,
+          thumbnail: item.thumbnailSrc,
+          rowSpace: 'row',
+          fixHeight: 50,
+          condition: item.condition,
+          price: item.cost,
+          bitsCost: item.bitsCost,
+          bitsSku: item.bitsSku,
+          bitsJwt: item.bitsJwt,
+          bitsEnabled: self.model.bitsEnabled,
+          order: item.order,
+          subscriberOnly: item.permissions.subscribersOnly,
+          followerOnly: item.permissions.followersOnly,
+          giftedOnly: item.permissions.giftedOnly,
+          moderatorOnly: item.permissions.moderatorsOnly,
+          clickAction: function (nametag) {
+            self._send('changeNametag', {
+              nametag: nametag.id
+            });
+          },
+          purchaseAction: function (item) {
+            self._send('purchaseNametag', {
+              nametag: item.id
+            });
+          },
+        });
+      }).sort(alphaNumericSortItemSort));
+    }
+  },
+
+  _setGears: function (gears) {
+    var self = this;
+    var gearsCollection = {};
+    for (var i in gears) {
+      var gear = gears[i];
+      var models = [];
+      for (var x in gear.gearPieces) {
+        var item = gear.gearPieces[x];
+        models.push(new ItemModel({
+          viewer: self.model.viewer,
+          id: item.name,
+          category: gear.name,
+          label: testLang ? 'xx' + item.name : item.name,
+          image: item.src,
+          thumbnail: item.thumbnailSrc,
+          width: item.dimensions.width,
+          height: item.dimensions.height,
+          scale: item.dimensions.scale,
+          zIndex: item.zIndex,
+          order: item.order,
+          condition: item.condition,
+          price: item.cost,
+          bitsCost: item.bitsCost,
+          bitsSku: item.bitsSku,
+          bitsJwt: item.bitsJwt,
+          bitsEnabled: self.model.bitsEnabled,
+          subscriberOnly: item.permissions.subscribersOnly,
+          followerOnly: item.permissions.followersOnly,
+          giftedOnly: item.permissions.giftedOnly,
+          moderatorOnly: item.permissions.moderatorsOnly,
+          fixWidth: 62,
+          useAvatarColorSwaps: item.useAvatarColorSwaps,
+          clickAction: function (item) {
+            var viewerGears = self.model.collections.viewer.gears();
+            viewerGears[item.category] = item;
+            self.model.collections.viewer.gears(viewerGears);
+
+            self._send('equipGearPiece', {
+              gear: item.category,
+              gearPiece: item.id
+            });
+          },
+          undoAction: function (item) {
+            self._send('equipGearPiece', {
+              gear: item.category,
+              gearPiece: ''
+            });
+          },
+          purchaseAction: function (item) {
+            self._send('purchaseGearPiece', {
+              gear: item.category,
+              name: item.id
+            });
+          },
+        }));
+      }
+      gearsCollection[gear.name] = models.sort(alphaNumericSortItemSort);
+    }
+    self.model.collections.gears(gearsCollection);
+  },
+
+  _setLeaderboards: function (leaderboards) {
+    var boards = [];
+    for (var i in leaderboards) {
+      var board = new LeaderboardModel(leaderboards[i].label,
+        leaderboards[i].rankLabel,
+        leaderboards[i].nameLabel,
+        leaderboards[i].valueLabel);
+      for (var x in leaderboards[i].leaders) {
+        var leader = leaderboards[i].leaders[x];
+        board.leaders.push(new LeaderModel(leader.rank, leader.label, leader.value));
+      }
+      boards.push(board);
+    }
+    this.model.leaderboards.boards(boards);
+    if (boards.length > 0) {
+      var currentBoard = this.model.leaderboards.boards().filter(function (board) {
+        return board.name == this.model.leaderboards.current().name;
+      });
+      if (currentBoard.length > 0) {
+        this.model.leaderboards.current(currentBoard[0]);
+      }
+      else {
+        this.model.leaderboards.current(boards[0]);
+      }
+    }
+  },
+
+  _setLeftRightLabels: function (avatars) {
+    if (avatars.length > 0) {
+      var left;
+      var right;
+      for (var i = 0; i < avatars.length; i++) {
+        for (var x = 0; x < avatars[i].actions.length; x++) {
+          if (avatars[i].actions[x].id == 'left') {
+            left = avatars[i].actions[x];
+          }
+          else if (avatars[i].actions[x].id == 'left') {
+            right = avatars[i].actions[x];
+          }
+          if (left && right) {
+            break;
+          }
+        }
+        if (left && right) {
+          break;
+        }
+      }
+
+      if (left) {
+        this.model.config.lang.left(left.name);
+      }
+      if (right) {
+        this.model.config.lang.right(right.name);
+      }
+    }
+  },
+
+  _setAvatars: function (avatars) {
+    var self = this;
+    var models = [];
+    var actionsLookup = [];
+    for (var i in avatars) {
+      var item = avatars[i];
+      if (!item.color) {
+        actionsLookup.push({ id: item.name, actions: self._setActions(item) });
+      }
+      if (item.colorSwaps) {
+        var base = avatars.find(function (x) {
+          return x.name == item.name && !x.color;
+        });
+        item.src = base.src;
+        item.thumbnailSrc = base.thumbnailSrc;
+      }
+      var model = new ItemModel({
+        viewer: self.model.viewer,
+        id: item.name,
+        category: item.color,
+        availableGear: item.availableGear,
+        label: testLang ? 'xx' + item.name : item.name,
+        showCategory: true,
+        image: item.src,
+        thumbnail: item.thumbnailSrc,
+        width: item.dimensions.width,
+        height: item.dimensions.height,
+        scale: item.dimensions.scale,
+        order: item.order,
+        offsets: item.offsets,
+        fixWidth: 62,
+        condition: item.condition,
+        price: item.cost,
+        bitsCost: item.bitsCost,
+        bitsSku: item.bitsSku,
+        bitsJwt: item.bitsJwt,
+        bitsEnabled: self.model.bitsEnabled,
+        parents: item.parents,
+        subscriberOnly: item.permissions.subscribersOnly,
+        followerOnly: item.permissions.followersOnly,
+        giftedOnly: item.permissions.giftedOnly,
+        moderatorOnly: item.permissions.moderatorsOnly,
+        colorSwaps: item.colorSwaps,
+        clickAction: function (item) {
+          if (self.model.collections.avatarColorGroupingMode() && self.model.collections.colors().length == 0) {
+            var colors = self.model.collections.findColors(item.id);
+            if (colors.length > 1) {
+              self.model.menu.selected('colors');
+              self.model.collections.colors(colors);
+              self.model.list.setItems([self.model.collections.back].concat(colors));
+              return;
+            }
+          }
+          self.model.collections.viewer.avatar(item);
+          self.model.collections.actions(item.children());
+
+          self._send('equipAvatar', {
+            avatar: item.id,
+            color: item.category
+          });
+        },
+        purchaseAction: function (item) {
+          self._send('purchaseAvatar', {
+            avatar: item.id,
+            color: item.category
+          });
+        },
+      });
+      models.push(model);
+    }
+
+    models.sort(alphaNumericSortItemSort);
+
+    for (var i in models) {
+      var model = models[i];
+
+      var lookup = actionsLookup.find(function (item) {
+        return item.id == model.id;
+      });
+
+      if (lookup) {
+        model.children(lookup.actions);
+      }
+
+      if (model.parents().length > 0) {
+        var parents = models.filter(function (item) {
+          return model.parents().indexOf(item.id) != -1 && !item.category;
+        })
+        model.parents(parents);
+      }
+    }
+    self.model.setAvatars(models);
+  },
+
+  spawn: function () {
+    this._send('spawn');
+  },
+
+  sendAction: function (id, value) {
+    if (value === 0 || value == undefined || value) {
+      this._send('action', {
+        action: id,
+        target: value
+      });
+      return true;
+    }
+    return false;
+  },
+
+  _processIncoming: true,
+  _delayIncomingTimer: null,
+  _delayIncoming: function () {
+    var self = this;
+    if (self._delayIncomingTimer) {
+      window.clearTimeout(this._delayIncomingTimer);
+    }
+    self._processIncoming = false;
+    self._delayIncomingTimer = window.setTimeout(function () {
+      self._processIncoming = true;
+    }, 1000 * 10);
+  },
+
+  _send: function (type, data) {
+    if (type != 'keepalive' && type != 'init' && type != 'secureConnection') {
+      this._delayIncoming();
+    }
+    var msg = {
+      channelId: this.model.platform.identity.channelId,
+      type: type,
+      userId: this.model.platform.identity.viewerId,
+      displayName: this.model.platform.identity.displayName,
+      jwt: this.model.platform.identity.jwt,
+      platform: this.model.platform.id
+    };
+    msg = JSON.stringify(Object.assign(msg, data));
+    try {
+      log(msg);
+      this.ws.send(msg, function (err) {
+        log('error sending2');
+        log(err);
+        this.ws.close();
+      });
+    }
+    catch (ex) {
+      log('error sending1');
+      log(ex);
+      this.ws.close();
+    }
+  }
+};
+
+function alphaNumericSortItemSort(a, b) {
+  return alphaNumericSort(a.order(), b.order());
+}
+
+function alphaNumericSort(a, b) {
+  var i = 0, x = 0;
+  while (i < a.length) {
+    if (i >= b.length) return 1;
+    if (x >= a.length) return -1;
+
+    if (isNaN(a[i]) && isNaN(b[x])) {
+      if (a[i] < b[x]) return -1;
+      if (a[i] > b[x]) return 1;
+      i++;
+      x++;
+    }
+    else if (!isNaN(a[i]) && !isNaN(b[x])) {
+      var num1 = '';
+      while (i < a.length && !isNaN(a[i])) {
+        num1 += a[i++];
+      }
+      num1 = parseInt(num1);
+
+      var num2 = '';
+      while (x < b.length && !isNaN(b[x])) {
+        num2 += b[x++];
+      }
+      num2 = parseInt(num2);
+
+      if (num1 < num2) return -1;
+      if (num1 > num2) return 1;
+    }
+    else {
+      if (isNaN(a[i])) return -1;
+      return 1;
+    }
+  }
+
+  if (a.length < b.length) return -1;
+  if (a.length > b.length) return 1;
+  return 0;
+}
+
+(function () {
+  var model = new AppViewModel();
+
+  if (window.Twitch) {
+    Twitch.ext.bits.onTransactionComplete(function (trans) {
+      model.blockInteraction(false);
+      if (trans.initiator != 'current_user') return;
+      if (model.list.store.item().bitsSku() != trans.product.sku) return;
+
+      model.completeBitsPurchase(trans);
+    });
+
+    Twitch.ext.bits.onTransactionCancelled(function () {
+      model.blockInteraction(false);
+    });
+
+    Twitch.ext.bits.getProducts().then(function (products) {
+      model.bitsEnabled(Twitch.ext.features.isBitsEnabled && products != null && products.length > 0);
+    });
+  }
+
+  SocketManager.model = model;
+
+  ko.applyBindings(model);
+
+  window.model = model;
+})()

@@ -1,0 +1,10 @@
+Records
+- Types
+- - Enlisted
+- - Retire/Discharge
+- - Promotion
+- - Demotions
+- - Transfers
+- - Graduating
+- - ELOA
+- - End of ELOA

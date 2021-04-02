@@ -1,0 +1,65 @@
+var Helper = {
+
+  randomSeconds: function(min, max) {
+    return 1000 * (Math.floor(Math.random() * (max - min + 1)) + min);
+  },
+
+  getParams: function() {
+    var query = this.getQuery();
+    var hash = this.getHash();
+    if (hash['state']) {
+      var state = this.parseQuery(decodeURIComponent(hash['state']));
+      Object.assign(hash, state);
+    } else if (query.state) {
+      Object.assign(query, this.parseQuery(query.state));
+    }
+    var final = Object.assign(hash, query);
+    return final;
+  },
+
+  getQuery: function() {
+    var href = document.location.href;
+    if (href.indexOf('?') == -1) return {};
+    var query = href.substr(href.indexOf('?') + 1);
+    return this.parseQuery(query);
+  },
+
+  getHash: function() {
+    var hash = document.location.hash;
+    if (!hash) return {};
+    var query = hash.substr(1);
+    return this.parseQuery(query);
+  },
+
+  parseQuery: function(query) {
+    return query.split('&').map(function(x) {
+      var values = x.split('=');
+      if (values.length == 2 && values[1]) {
+        return {
+          name: values[0].toLowerCase(),
+          value: decodeURIComponent(values[1])
+        };
+      }
+      return {
+        name: values[0].toLowerCase(),
+        value: undefined
+      };
+    }).reduce(function(acc, cur) {
+      acc[cur.name] = cur.value;
+      return acc;
+    }, {});
+  }
+}
+
+function log(msg) {
+  //console.log(msg);
+}
+
+function Environment(opts) {
+  opts = opts || {};
+  var hostname = opts.hostname || 'server.streamavatars.com';
+  var wssHostname = opts.wssHostname || 'server.streamavatars.com';
+  this.twitchClientId = opts.twitchClientId || 's1uo798aanza8wqjqcyuhey1zf514i';
+  this.serverWebSocket = function() { return 'wss://' + wssHostname; };
+  this.oAuthRedirectUri = function() { return 'https://' + hostname + '/viewer.html'; };
+}
