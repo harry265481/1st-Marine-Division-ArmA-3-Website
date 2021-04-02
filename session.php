@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $levelresult = mysqli_query($link, $query);
     $userrow = mysqli_fetch_row($levelresult);
     if($userrow[0] == 0) {
-        header("location: sign-in.php");
+        header("location: index.php");
         exit;
     }
 }
