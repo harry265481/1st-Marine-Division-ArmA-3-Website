@@ -37,6 +37,12 @@
                     Awards
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="awards.php">
+                    <span data-feather="Awards"></span>
+                    Policy
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
