@@ -1,5 +1,5 @@
 <?php
-    define('DB_SERVER', 'localhost');
+    define('DB_SERVER', '199.188.200.231');
     define('DB_USERNAME', 'rstmgvqt_1stmardiv');
     define('DB_PASSWORD', '&gnHrcG3eJzGN7iQP8LmYG');
     define('DB_NAME', 'rstmgvqt_1stmardiv');
