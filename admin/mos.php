@@ -27,48 +27,52 @@ include_once '../config.php'
                     </div>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped align-middle table-sm">
-                        <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            $query = "SELECT * FROM mos ORDER BY mos asc";
-                            $results = mysqli_query($link, $query);
-                            foreach ($results as $result)  {
-                                $type;
-                                switch($result['mostype']) {
-                                    case 0:
-                                        $type = "BMOS";
-                                        break;
-                                    case 1:
-                                        $type = "PMOS";
-                                        break;
-                                    case 2:
-                                        $type = "AMOS";
-                                        break;
-                                    case 3:
-                                        $type = "NMOS";
-                                        break;
-                                    case 4:
-                                        $type = "FMOS";
-                                        break;
-                                    case 5:
-                                        $type = "EMOS";
-                                        break;
-                                }
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                $query = "SELECT * FROM mos ORDER BY mos asc";
+                                $results = mysqli_query($link, $query);
+                                foreach ($results as $result)  {
+                                    $type;
+                                    switch($result['mostype']) {
+                                        case 0:
+                                            $type = "BMOS";
+                                            break;
+                                        case 1:
+                                            $type = "PMOS";
+                                            break;
+                                        case 2:
+                                            $type = "AMOS";
+                                            break;
+                                        case 3:
+                                            $type = "NMOS";
+                                            break;
+                                        case 4:
+                                            $type = "FMOS";
+                                            break;
+                                        case 5:
+                                            $type = "EMOS";
+                                            break;
+                                    }
 
-                                echo "<tr>";
-                                echo "<td>" . $result['MOS'] . "</td>";
-                                echo "<td>" . $result['mosname'] . "</td>";
-                                echo "<td>" . $type . "</td>";
-                                echo "<tr>";
-                            }
-                            ?>
-                        </tbody>
+                                    echo "<tr>";
+                                    if($result['mostype'] == 1) {
+                                        echo "<td><a href=\"" . $result['MOS'] . ".php\">" . $result['MOS'] . "</a></td>";
+                                    } else {
+                                        echo "<td>" . $result['MOS'] . "</td>";
+                                    }
+                                    echo "<td>" . $result['mosname'] . "</td>";
+                                    echo "<td>" . $type . "</td>";
+                                    echo "<tr>";
+                                }
+                                ?>
+                            </tbody>
                         </table>
                     </div>
                 </main>

@@ -15,22 +15,7 @@
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2 text-light">Policy</h1>
                     </div>
-                    <table class="table table-dark table-striped text-light table-sm">
-                        <thead>
-                            <th>Reference</th>
-                            <th>Document Title</th>
-                            <th>Date Published</th>
-                            <th>Date Edited</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1MD-SOP-1</td>
-                                <td><a href="UCUJ.php">Uniform Code of Unit Justice</a></td>
-                                <td>Unknown</td>
-                                <td>Unknown</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <iframe  width="100%" height="1000px" src="1st Marine Divison Uniform Code.pdf"></iframe>
                 </main>
             </div>
         </div>

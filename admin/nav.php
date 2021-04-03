@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light" href="awards.php">
+                <a class="nav-link text-light" href="policy.php">
                     <span data-feather="Awards"></span>
                     Policy
                 </a>

@@ -23,11 +23,12 @@
                 <a class="nav-link active" aria-current="page" href="apply.php"><i class="fas fa-clipboard"></i> Apply</a>
                 <?php 
                     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+                        echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"admin/dashboard.php\"><i class=\"fas fa-desktop\"></i> Dashboard</a>";
                         echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"sign-out.php\"><i class=\"fas fa-id-card\"></i> Sign Out</a>";
                     } else {
                         echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"sign-in.php\"><i class=\"fas fa-id-card\"></i> Sign In</a>";
                     }
-                    ?>
+                ?>
             </ul>
         </div>
     </div>
