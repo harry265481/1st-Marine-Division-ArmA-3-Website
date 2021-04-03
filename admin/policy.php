@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Dashboard</title>
+        <title>1st Marine Division - Policy</title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>
