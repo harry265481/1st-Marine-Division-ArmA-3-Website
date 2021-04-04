@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light" href="mos.php">
+                <a class="nav-link text-light" href="moslist.php">
                     <span data-feather="MOS"></span>
                     MOS
                 </a>

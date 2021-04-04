@@ -13,7 +13,7 @@ include_once '../config.php'
     <head>
         <title>1st Marine Division - MOS</title>
         <?php include '../header.php' ?>
-        <link rel="stylesheet" href="sign-in.css">
+        <link rel="stylesheet" href="index.css">
     </head>
     <body>
         <?php include_once 'header.php' ?>
@@ -25,56 +25,7 @@ include_once '../config.php'
                         <h1 class="h2 text-light">MOS</h1>
                         <div class="btn-toolbar mb-2 mb-md-0"></div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped align-middle table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                                $query = "SELECT * FROM mos ORDER BY mos asc";
-                                $results = mysqli_query($link, $query);
-                                foreach ($results as $result)  {
-                                    $type;
-                                    switch($result['mostype']) {
-                                        case 0:
-                                            $type = "BMOS";
-                                            break;
-                                        case 1:
-                                            $type = "PMOS";
-                                            break;
-                                        case 2:
-                                            $type = "AMOS";
-                                            break;
-                                        case 3:
-                                            $type = "NMOS";
-                                            break;
-                                        case 4:
-                                            $type = "FMOS";
-                                            break;
-                                        case 5:
-                                            $type = "EMOS";
-                                            break;
-                                    }
-
-                                    echo "<tr>";
-                                    if($result['mostype'] == 1) {
-                                        echo "<td><a href=\"" . $result['MOS'] . ".php\">" . $result['MOS'] . "</a></td>";
-                                    } else {
-                                        echo "<td>" . $result['MOS'] . "</td>";
-                                    }
-                                    echo "<td>" . $result['mosname'] . "</td>";
-                                    echo "<td>" . $type . "</td>";
-                                    echo "<tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    <?php include_once 'mos/' . $_GET['mos'] . '.php' ?>
                 </main>
             </div>
         </div>
