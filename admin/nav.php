@@ -20,6 +20,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-light" href="units.php">
+                    <span data-feather="Units"></span>
+                    Units
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-light" href="moslist.php">
                     <span data-feather="MOS"></span>
                     MOS

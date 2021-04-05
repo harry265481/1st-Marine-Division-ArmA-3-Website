@@ -345,21 +345,19 @@ include_once 'config.php';
         $branch = mysqli_fetch_row(mysqli_query($link, "SELECT rank FROM personnel WHERE ID=" . $id));
         return $branch[0];
     }
-
-    //Returns name of the rank of a member
+    
+    /**
+     * getMemberRankAbbrev
+     *
+     * @param  int $id
+     * @return string
+     */
     function getMemberRankAbbrev($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank FROM personnel WHERE ID=" . $id));
         $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT abbrev FROM rank WHERE ID=" . $rank[0]));
         $string = $rankrow[0];
         return $string;
-    }
-
-    //Returns name of the rank of a member
-    function getRankName($id) {
-        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name FROM rank WHERE ID=" . $id));
-        return $rank[0];
     }
 
     //Returns pay grade of a member as {type}{number}
@@ -369,6 +367,14 @@ include_once 'config.php';
         $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT paygrade FROM rank WHERE ID=" . $rank[0]));
         $string = substr($rankrow[0], 0, 1) . substr($rankrow[0], 2, 1);
         return $string;
+    }
+
+    //Returns name of the rank of a member
+
+    function getRankName($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name FROM rank WHERE ID=" . $id));
+        return $rank[0];
     }
 
     //Returns Array of awards in ascending order of precedence (ribbons only)
@@ -382,7 +388,12 @@ include_once 'config.php';
         return $awardarray;
     }
 
-    //Returns Array of award filenames in ascending order of precedence (ribbons only)
+    /**
+     * getMemberAwardsFileName
+     *
+     * @param  int $id
+     * @return array(string)
+     */
     function getMemberAwardsFileName($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $awards = mysqli_query($link, "SELECT awardID FROM awardrecord WHERE memberID='" . $id . "' ORDER BY awardID desc");
@@ -397,8 +408,13 @@ include_once 'config.php';
         }
         return $awardarray;
     }
-
-    //Returns an array of IDs in order
+    
+    /**
+     * createRibbonGrid
+     *
+     * @param  array $array
+     * @return array
+     */
     function createRibbonGrid($array) {
         $grid = array();
         $row = 0;
@@ -413,19 +429,25 @@ include_once 'config.php';
         }
         return $grid;
     }
-
-    //Returns branch ID of a member
-    //0 - USMC
-    //1 - USN
+    
+    /**
+     * getMemberBranchID
+     *
+     * @param  int $id
+     * @return int
+     */
     function getMemberBranchID($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $branch = mysqli_fetch_row(mysqli_query($link, "SELECT branch FROM personnel WHERE ID=" . $id));
         return $branch[0];
     }
-
-    //Returns branch ID of a member
-    //0 - USMC
-    //1 - USN
+    
+    /**
+     * getMemberBranchNameAbbrev
+     *
+     * @param  int $id
+     * @return string
+     */
     function getMemberBranchNameAbbrev($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $branch = mysqli_fetch_row(mysqli_query($link, "SELECT branch FROM personnel WHERE ID=" . $id));
@@ -438,7 +460,12 @@ include_once 'config.php';
         }
     }
 
-    //Returns if the member is a pilot
+    /**
+     * isMemberPilot
+     *
+     * @param  int $id
+     * @return bool
+     */
     function isMemberPilot($id) {
         $pilot = mysqli_fetch_row(mysqli_query($link, "SELECT pilot FROM personnel WHERE ID=" . $id));
         if ($pilot[0] == 1) {
@@ -448,8 +475,13 @@ include_once 'config.php';
         }
         return false;
     }
-
-    //Returns ID of the rank of a member
+    
+    /**
+     * getPositionName
+     *
+     * @param  int $id
+     * @return int
+     */
     function getPositionName($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $position = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $id));
@@ -504,15 +536,19 @@ include_once 'config.php';
         }
     }
 
-    /*Returns a table cell for retirements
-        $type(int) - type of retirement
-        0 - Honorable Discharge
-        1 - General Discharge
-        2 - Administrative Separation
-        3 - Other than Honorable
-        4 - Bad Conduct Discharge
-        5 - Dishonorable Discharge
-        6 - Retired */
+    /**
+     * buildRetirementRecord
+     *
+     * @param  int $type
+     *  0 - Honorable Discharge
+     *  1 - General Discharge
+     *  2 - Administrative Separation
+     *  3 - Other than Honorable
+     *  4 - Bad Conduct Discharge
+     *  5 - Dishonorable Discharge
+     *  6 - Retired
+     * @return string 
+     */
     function buildRetirementRecord($type) {
         switch($type) {
             case 0:
@@ -539,27 +575,42 @@ include_once 'config.php';
         }
         return false;
     }
-
-    /*Returns a table cell for promotions
-      Queries the rank table for the rank name and paygrade 
-    */
+    
+    /**
+     * buildPromotionRecord
+     *
+     * @param  int $rankID
+     * @return string table row
+     */
     function buildPromotionRecord($rankID) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name, paygrade FROM rank WHERE ID=" . $rankID));
         $string = $rankrow[0] . " " . $rankrow[1];
         return "<td>Promoted to " . $string . "</td>";
     }
-
-    /*Returns a table cell for demotions
-      Queries the rank table for the rank name and paygrade 
-    */
+ 
+    /**
+     * buildDemotionsRecord
+     *
+     * @param  int $rankID
+     * @return string table row
+     */
     function buildDemotionsRecord($rankID) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name, paygrade FROM rank WHERE ID=" . $rankID));
         $string = $rankrow[0] . " " . $rankrow[1];
         return "<td>Demoted to " . $string . "</td>";
     }
-
+    
+    /**
+     * buildTransferRecord
+     *
+     * @param  int $oldunit
+     * @param  int $newunit
+     * @param  int $oldpos
+     * @param  int $newpos
+     * @return string
+     */
     function buildTransferRecord($oldunit, $newunit, $oldpos, $newpos) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $oldunitrow = mysqli_fetch_row(mysqli_query($link, "SELECT unitname FROM units WHERE ID=" . $oldunit));
@@ -567,5 +618,49 @@ include_once 'config.php';
         $oldposrow = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $oldpos));
         $newposrow = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $newpos));
         return "<td>Transferred from" . $oldunitrow[0] . " " . $oldposrow[0] . " to " . $newunitrow[0] . " " . $newposrow[0] . "</td>";
+    }
+
+    function buildUnitMemberTable($unitid) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $results = mysqli_query($link, "SELECT * FROM personnel WHERE unitID=" . $unitid . " ORDER BY rank desc");
+        if($results == "false") {
+            return false;
+        }
+        foreach ($results as $result)  {
+            $statusrow = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM status WHERE ID=" . $result['status']));
+            $rank = getRankName($result['rank']);
+            $imagename = getMemberGrade($result['ID']);
+        
+            $branch;
+            if($result['branch'] == 0) {
+                $branch = "marine";
+            } else if($result['branch'] == 1) {
+                $branch = "navy";
+            }
+            $imagestring = "../images/ranks/" . $branch . "/small/" . $imagename;
+        
+            echo "<tr>";
+            echo    "<td><img class=\"mx-auto d-block\" height=\"30px\" src=" . $imagestring . ".png></td>";
+            echo    "<td>" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
+            echo    "<td><span class=\"badge rounded-pill bg-" . $statusrow[2] . " text-" . $statusrow[3] . "\">" . $statusrow[1] . "</span></td>";
+            echo    "<td>" . $rank . "</td>";
+            echo    "<td>" . $result['DOE'] . "</td>";
+            echo    "<td>";
+            echo        "<div class=\"dropdown\">";
+            echo            "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\"></button>";
+            echo            "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">";
+            echo                "<li><a class=\"dropdown-item\" href=\"promote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-up\"></i> Promote</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"demote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-down\"></i> Demote</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"transfer.php?id=" . $result['ID'] . "\"><i class=\"fas fa-arrows-alt-h\"></i> Transfer</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Graduation</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"loa.php?id=" . $result['ID'] . "\"><i class=\"fas fa-user-clock\"></i> LOA</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
+            echo            "</ul>";
+            echo        "</div>";
+            echo    "</td>";
+            echo    "<td><a class=\"text-light\" href=\"../member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
+            echo "</tr>";
+        }
+        return true;
     }
 ?>
