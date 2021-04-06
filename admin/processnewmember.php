@@ -12,7 +12,7 @@
   
   $insert = "INSERT INTO personnel 
               (FirstName, LastName, rank, DOE, DOR, points, branch, pilot, MOS, position, unitID, status) 
-              VALUES (\'" . $_POST['firstname'] . "', '" 
+              VALUES ('" . $_POST['firstname'] . "', '" 
                         . $_POST['surname'] . "', '" 
                         . $_POST['rank'] . "', '" 
                         . $_POST['doe'] . "', '" 
