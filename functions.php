@@ -530,7 +530,7 @@ include_once 'config.php';
             case 6:
                 return "<td>Placed on ELOA</td>";
                 break;
-            case 6:
+            case 7:
                 return "<td>Returned from ELOA</td>";
                 break;
         }
