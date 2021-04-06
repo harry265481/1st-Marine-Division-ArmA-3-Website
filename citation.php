@@ -11,8 +11,36 @@
         $year1 = date_format(date_create($recordinforow[2]), "y");
         $year2 = date_format(date_create($recordinforow[2]), "Y");
 
+        //0 - LCpl/PFC
+        //1 - Sgt/Cpl
+        //2 - SNCO
+        //3 - Company/Warrant Grade
+        //4 - Field Grade
+        $type;
+        $namey;
+
         //Init citation
-        $citation = imagecreatefrompng("images/citation/Company-Grade-Officer.png");
+        if($recordinforow[1] <= 7) {
+            $citation = imagecreatefrompng("images/citation/LCpl-PFC-Citation.png");
+            $type = 0;
+            $namex = 1240;
+            $namey = 1030;
+            $rankx = 1467;
+            $ranky = 1098;
+        } else if($recordinforow[1] >= 8 && $recordinforow[1] <= 11) {
+            $citation = imagecreatefrompng("images/citation/Sgt-Cpl-Citation.png");
+            $type = 1;
+        } else if($recordinforow[1] >= 12 && $recordinforow[1] <= 20) {
+            $citation = imagecreatefrompng("images/citation/SNCO-Citation.png");
+            $type = 2;
+        } else if(($recordinforow[1] >= 22 && $recordinforow[1] <= 26) || ($recordinforow[1] >= 29 && $recordinforow[1] <= 34)) {
+            $citation = imagecreatefrompng("images/citation/Company-Grade-Officer.png");
+            $type = 3;
+            $namey = 1050;
+        } else if($recordinforow[1] >= 35) {
+            $citation = imagecreatefrompng("images/citation/Field-Grade-Officer.png");
+            $type = 4;
+        }
 
         //CONSTANTS: text size: 7; Font: FRABK.ttf
         putenv('GDFONTPATH=' . realpath('.'));
@@ -26,13 +54,13 @@
         $namebb = imagettfbbox($fontsize, $angle, $font, $name);
         $namewidth = $namebb[2] - $namebb[0];
         $namex = (imagesx($citation) / 2) - ($namewidth / 2);
-        $namey = 1050;
+        
         imagettftext($citation, $fontsize, $angle, $namex, $namey, $black, $font, $name);
 
         //Rank
         $rankbb = imagettfbbox($fontsize, $angle, $font, $rankname);
         $rankwidth = $rankbb[2] - $rankbb[0];
-        $rankx = (imagesx($citation) / 2) - ($rankwidth / 2);
+        $rankx = $rankx - ($rankwidth / 2);
         $ranky = 1098;
         imagettftext($citation, $fontsize, $angle, $rankx, $ranky, $black, $font, $rankname);
 

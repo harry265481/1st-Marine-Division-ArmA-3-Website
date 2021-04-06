@@ -5,11 +5,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 } else {
     include_once '../config.php';
-    $query = "SELECT adminlevel FROM users WHERE id=" . $_SESSION['id'];
-    $levelresult = mysqli_query($link, $query);
+    $levelresult = mysqli_query($link, "SELECT adminlevel FROM users WHERE id=" . $_SESSION['id']);
     $userrow = mysqli_fetch_row($levelresult);
     if($userrow[0] == 0) {
-        header("location: index.php");
+        header('HTTP/1.1 403 Forbidden');
         exit;
     }
 }

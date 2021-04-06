@@ -1,6 +1,5 @@
 <?php
   include_once '../config.php';
-  var_dump($_POST);
 
   $firstname = $_POST['firstname'];
   $surname = $_POST['surname'];
