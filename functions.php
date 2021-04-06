@@ -595,7 +595,7 @@ include_once 'config.php';
      * @param  int $rankID
      * @return string table row
      */
-    function buildDemotionsRecord($rankID) {
+    function buildDemotionRecord($rankID) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name, paygrade FROM rank WHERE ID=" . $rankID));
         $string = $rankrow[0] . " " . $rankrow[1];
