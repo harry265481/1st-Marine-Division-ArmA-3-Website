@@ -2,48 +2,41 @@
 include_once 'session.php';
 include_once '../config.php';
 
-$query = "SELECT * FROM personnel WHERE ID=" . $_GET['id'];
-$results = mysqli_query($link, $query);
-$row = mysqli_fetch_row($results);
-$firstname = $row[1];
-$surname = $row[2];
-$rank = $row[3];
-$shortname = substr($firstname, 0, 1) . ". " . $surname;
-$rankquery = "SELECT rank_name FROM rank WHERE ID=" . $rank;
-$rankrow = mysqli_fetch_row(mysqli_query($link, $rankquery));
+$row = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM personnel WHERE ID=" . $_GET['id']));
+$shortname = substr($row[1], 0, 1) . ". " . $row[2];
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Demote</title>
+        <title>1st Marine Division - Transfer</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">
         <?php include_once 'header.php' ?>
         <div class="container-fluid">
-        <div class="row">
+            <div class="row">
                 <?php include_once 'nav.php'; ?>
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-dark">
-                    <form method="post" action="processdemote.php?id=<?php echo $_GET['id'] ?>"">
+                    <form method="post" action="processdischarge.php?id=<?php echo $_GET['id'] ?>">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2 text-light">Demote - <?php echo $shortname ?></h1>
+                            <h1 class="h2 text-light">Discharge - <?php echo $shortname ?></h1>
                             <div class="btn-toolbar mb-2 mb-md-0"></div>
                         </div>
                         <div class="row g-2">
                             <div class="col-md">
                                 <div class="text-light">
-                                    <h4>Current Rank: <?php echo $rankrow[0] ?></h4>
+                                    
                                 </div>
                             </div>
                             <div class="col-md">
-                                <select class="form-select text-dark" id="rank" name="rank">
-                                    <?php 
-                                        $rankquery = "SELECT ID, rank_name FROM rank";
-                                        $ranks = mysqli_query($link, $rankquery);
-                                        foreach($ranks as $rank) {
-                                            echo "<option value=\"" . $rank['ID'] . "\">" . $rank['rank_name'] . "</option>";
-                                        }
-                                    ?>
+                                <select class="form-select text-dark" id="type" name="type">
+                                    <option value="0">Honorable</option>
+                                    <option value="1">General</option>
+                                    <option value="2">Admin Sep</option>
+                                    <option value="3">Other than honorable</option>
+                                    <option value="4">Bad Conduct</option>
+                                    <option value="5">Dishonorable</option>
+                                    <option value="6">Retired</option>
                                 </select>
                             </div>
                         </div>
