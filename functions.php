@@ -631,6 +631,8 @@ include_once 'config.php';
             $rank = getRankName($result['rank']);
             $imagename = getMemberGrade($result['ID']);
         
+            $position = getPositionName($result['position']);
+
             $branch;
             if($result['branch'] == 0) {
                 $branch = "marine";
@@ -642,6 +644,7 @@ include_once 'config.php';
             echo "<tr>";
             echo    "<td><img class=\"mx-auto d-block\" height=\"30px\" src=" . $imagestring . ".png></td>";
             echo    "<td>" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
+            echo    "<td>" . $position  ."</td>";
             echo    "<td><span class=\"badge rounded-pill bg-" . $statusrow[2] . " text-" . $statusrow[3] . "\">" . $statusrow[1] . "</span></td>";
             echo    "<td>" . $rank . "</td>";
             echo    "<td>" . $result['DOE'] . "</td>";
@@ -652,7 +655,7 @@ include_once 'config.php';
             echo                "<li><a class=\"dropdown-item\" href=\"promote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-up\"></i> Promote</a></li>";
             echo                "<li><a class=\"dropdown-item\" href=\"demote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-down\"></i> Demote</a></li>";
             echo                "<li><a class=\"dropdown-item\" href=\"transfer.php?id=" . $result['ID'] . "\"><i class=\"fas fa-arrows-alt-h\"></i> Transfer</a></li>";
-            echo                "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Graduation</a></li>";
+            echo                "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Qualification</a></li>";
             echo                "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
             echo            "</ul>";
             echo        "</div>";
