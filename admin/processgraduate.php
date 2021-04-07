@@ -12,7 +12,7 @@ if($usetoday == "true") {
 }
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO records (memberID, recordType, coursetype, recorddate) VALUES (" . $id . ", 5," . $course . ", " . $date . ")";
+mysqli_query($link, "INSERT INTO records (memberID, recordType, coursetype, recorddate) VALUES (" . $id . ", 5," . $course . ", " . $date . ")");
 
 header( "refresh:5;url=members.php" );
 echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';

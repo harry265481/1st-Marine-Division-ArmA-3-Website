@@ -18,11 +18,10 @@ if($type == 6) } {
 }
 
 //Update personnel record
-$updaterecord = "UPDATE personnel SET unitID = 20, status = " . $status . " WHERE ID=" . $id;
-mysqli_query($link, $updaterank);
+mysqli_query($link, "UPDATE personnel SET unitID = 20, status = " . $status . " WHERE ID=" . $id);
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO records (memberID, recordType, retirementtype, recorddate) VALUES (" . $id . ", 1," . $type . ", " . $date . ")";
+mysqli_query($link, "INSERT INTO records (memberID, recordType, retirementtype, recorddate) VALUES (" . $id . ", 1," . $type . ", " . $date . ")");
 
 header( "refresh:5;url=members.php" );
 echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';
