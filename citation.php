@@ -54,7 +54,7 @@
             $month1x = 1880;
             $month1y = 1430;
             $month2x = 1365;
-            $month2y = 2290;
+            $month2y = 2280;
             $year1x = 525;
             $year1y = 1500;
             $year2x = 705;
