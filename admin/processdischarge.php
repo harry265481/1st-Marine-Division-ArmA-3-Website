@@ -11,7 +11,7 @@ if($usetoday == "true") {
     $date = date("Y-m-d");
 }
 
-if($type == 6) } {
+if($type == 6) {
     $status = 4;
 } else {
     $status = 5;
