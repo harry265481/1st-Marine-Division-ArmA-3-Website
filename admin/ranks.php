@@ -39,7 +39,7 @@ include_once '../config.php'
                         </thead>
                         <tbody>
                             <?php
-                                $query = "SELECT * FROM rank ORDER BY ID desc";
+                                $query = "SELECT * FROM rank ORDER BY rankorder desc";
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 0) {
@@ -75,7 +75,7 @@ include_once '../config.php'
                         </thead>
                         <tbody>
                         <?php
-                                $query = "SELECT * FROM rank ORDER BY ID desc";
+                                $query = "SELECT * FROM rank ORDER BY rankorder desc";
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 1) {
