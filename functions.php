@@ -620,7 +620,7 @@ include_once 'config.php';
         return "<td>Transferred from" . $oldunitrow[0] . " " . $oldposrow[0] . " to " . $newunitrow[0] . " " . $newposrow[0] . "</td>";
     }
 
-    function buildUnitMemberTable($unitid) {
+    function buildUnitMemberTable($unitid, $path) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $results = mysqli_query($link, "SELECT * FROM personnel WHERE unitID=" . $unitid . " ORDER BY rank desc");
         if($results == "false") {
@@ -639,7 +639,7 @@ include_once 'config.php';
             } else if($result['branch'] == 1) {
                 $branch = "navy";
             }
-            $imagestring = "../images/ranks/" . $branch . "/small/" . $imagename;
+            $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
         
             echo "<tr>";
             echo    "<td><img class=\"mx-auto d-block\" height=\"30px\" src=" . $imagestring . ".png></td>";
