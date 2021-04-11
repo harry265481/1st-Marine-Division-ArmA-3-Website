@@ -649,6 +649,7 @@ include_once 'config.php';
             echo    "<td>" . $rank . "</td>";
             echo    "<td>" . $result['DOE'] . "</td>";
             echo    "<td>";
+            if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             echo        "<div class=\"dropdown\">";
             echo            "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\"></button>";
             echo            "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">";
@@ -659,6 +660,7 @@ include_once 'config.php';
             echo                "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
             echo            "</ul>";
             echo        "</div>";
+            }
             echo    "</td>";
             echo    "<td><a class=\"text-light\" href=\"../member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
             echo "</tr>";

@@ -40,13 +40,14 @@
         </div>
         <div class="spacer">
         </div>
-        <div class="container-fluid text-center grey">
-            <h2 class="title">WHO WE ARE</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla imperdiet vel ex varius rhoncus. Mauris fringilla dapibus iaculis. Fusce scelerisque fermentum imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla rutrum quis orci in aliquet. Nullam at ligula in tellus viverra condimentum at sit amet sapien. Nulla in turpis magna. Mauris commodo placerat neque ac consectetur.<br><br>
-               Pellentesque et sapien ut orci mattis luctus venenatis in nisl. Integer fermentum dui id nisl dignissim dignissim. Aenean sit amet ipsum sem. Donec nec dolor pretium, ornare nunc at, malesuada elit. Nulla vulputate urna sit amet odio malesuada, in mollis sem dictum. Suspendisse eu dolor sodales, maximus nunc eget, malesuada purus. Quisque odio nulla, tempor vitae mauris at, fringilla convallis elit. Ut sit amet risus sodales, tempus augue vitae, pulvinar nisl. Cras est orci, vulputate a vulputate vitae, congue in leo. Quisque leo lorem, elementum nec mauris ac, ullamcorper pharetra ex.<br><br>
-               Nullam vitae enim sit amet eros pharetra suscipit. Suspendisse aliquet elit vel lacus interdum, eget dignissim lacus ornare. Maecenas tristique eleifend euismod. Vivamus sed ante dapibus nisi tristique consectetur quis maximus orci. Mauris molestie auctor arcu in ornare. Donec lacus metus, dapibus nec mi a, pulvinar finibus eros. Curabitur efficitur orci nisl, eu scelerisque dui ultrices nec.<br><br>
-               Quisque vestibulum tincidunt luctus. Donec viverra commodo leo fringilla efficitur. Vestibulum et purus imperdiet, pellentesque purus at, molestie tortor. Praesent at dictum tortor. Donec quis nisl posuere, aliquet eros sed, convallis tellus. Quisque fringilla non leo non interdum. Cras ac pellentesque orci. Phasellus vestibulum odio mi, eget imperdiet metus tincidunt a. Proin ullamcorper tellus ex, eget ullamcorper est luctus in. Nunc est est, porta et libero ac, accumsan scelerisque massa. Duis scelerisque elementum dolor convallis hendrerit. Vivamus in ante massa. Vivamus id porttitor mauris. Vivamus suscipit turpis ac viverra laoreet. Praesent lobortis metus lectus, quis ultrices tortor sagittis eget. Morbi fermentum dapibus posuere.<br><br>
-               Donec et convallis mauris, id sodales lorem. Sed ut purus arcu. Duis id ipsum vel elit varius vehicula. Morbi faucibus metus sed nunc pretium, quis hendrerit justo convallis. Phasellus quam odio, posuere non quam ullamcorper, iaculis ullamcorper sem. Donec posuere suscipit nibh ultrices pulvinar. Sed sit amet urna pellentesque, fringilla justo at, lacinia felis. In sagittis in nisl id ultrices. Sed pretium tellus massa, vitae maximus felis dictum sit amet. Pellentesque ullamcorper, quam sed convallis semper, est eros condimentum mauris, id hendrerit libero nisl et elit. Suspendisse orci erat, convallis finibus est in, vehicula consectetur ipsum.</p>
+        <div class="container-fluid text-center">
+            <div class="col-sm-6">
+                <div id="ts3viewer_1124353" style="width:350px; height:500px; ">
+            </div>
+            <div class="col-sm-6">
+                <iframe src="https://discord.com/widget?id=817490859540217856&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+            </div>
+        </div>
         </div>
         <script>
             function showMenu() {
@@ -57,6 +58,11 @@
                     x.className = x.className.replace(" show", "");
                 }   
             }
+        </script>
+        <script src="https://static.tsviewer.com/short_expire/js/ts3viewer_loader.js"></script>
+        <script>
+        var ts3v_url_1 = "https://www.tsviewer.com/ts3viewer.php?ID=1124353&text=757575&text_size=12&text_family=6&text_s_color=000000&text_s_weight=normal&text_s_style=normal&text_s_variant=normal&text_s_decoration=none&text_i_color=&text_i_weight=normal&text_i_style=normal&text_i_variant=normal&text_i_decoration=none&text_c_color=&text_c_weight=normal&text_c_style=normal&text_c_variant=normal&text_c_decoration=none&text_u_color=000000&text_u_weight=normal&text_u_style=normal&text_u_variant=normal&text_u_decoration=none&text_s_color_h=&text_s_weight_h=bold&text_s_style_h=normal&text_s_variant_h=normal&text_s_decoration_h=none&text_i_color_h=000000&text_i_weight_h=bold&text_i_style_h=normal&text_i_variant_h=normal&text_i_decoration_h=none&text_c_color_h=&text_c_weight_h=normal&text_c_style_h=normal&text_c_variant_h=normal&text_c_decoration_h=none&text_u_color_h=&text_u_weight_h=bold&text_u_style_h=normal&text_u_variant_h=normal&text_u_decoration_h=none&iconset=default_colored_2014_tsv";
+        ts3v_display.init(ts3v_url_1, 1124353, 100);
         </script>
     </body>
 </html>
