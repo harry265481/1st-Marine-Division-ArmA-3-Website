@@ -5,18 +5,18 @@ include_once 'config.php';
     //id      | int | id of the member
     //grade   | str | grade given as "{firstLetter}{number}"
     //$branch | int | id of branch
-    function generateUniform($id, $grade, $branch) {
+    function generateUniform($id, $grade, $branch, $path = "") {
         $bg;
         $branchname;
         //check branch and create resource from background
         //marine
         if($branch == 0) {
             $branchname = "marine";
-            $bg = imagecreatefrompng("images/uniform/USMCBG.png");
+            $bg = imagecreatefrompng($path . "images/uniform/USMCBG.png");
             //navy
         } else if($branch == 1) {
             $branchname = "navy";
-            $bg = imagecreatefrompng("images/uniform/USNBG.png");
+            $bg = imagecreatefrompng($path . "images/uniform/USNBG.png");
         }
 
         //Get grade type; E or O
@@ -24,7 +24,7 @@ include_once 'config.php';
         $gradenum = substr($grade, 1, 1);
 
         //get uniform and create a resource
-        $uniform = imagecreatefrompng("images/uniform/" . $branchname . "/" . $grade . ".png");
+        $uniform = imagecreatefrompng($path . "images/uniform/" . $branchname . "/" . $grade . ".png");
         imagecopy($bg, $uniform, 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
         
         //create colors
@@ -32,16 +32,16 @@ include_once 'config.php';
 
         //Marine only stuff
         if($branch == 0) {
-            imagecopy($bg, imagecreatefrompng("images/uniform/marine/marinehead.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+            imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/marinehead.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
             if($gradetype == "E") {
-                imagecopy($bg, imagecreatefrompng("images/uniform/marine/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
             } else if($gradetype == "W") {
-                imagecopy($bg, imagecreatefrompng("images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
             } else if($gradetype == "O") {
                 if($gradenum <= 3) {
-                    imagecopy($bg, imagecreatefrompng("images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 } else if($gradenum >= 4) {
-                    imagecopy($bg, imagecreatefrompng("images/uniform/marine/cover-F.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-F.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 }
             }
         }
@@ -72,10 +72,10 @@ include_once 'config.php';
                     $textheight = $bb[7] - $bb[1];
                     $namex = 102 - ($textwidth / 2);
                     $namey = 235 - ($textheight / 2);
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/NPJ.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPJ.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                     imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/faceE.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceE.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
 
                 //HMC (E-7) or above
                 //If grade is  greater than or equal to 7; use 'officer jacket' version and print text at -2 deg
@@ -87,10 +87,10 @@ include_once 'config.php';
                     $textheight = $bb[7] - $bb[1];
                     $namex = 102 - ($textwidth / 2);
                     $namey = 258 - ($textheight / 2);
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/NPS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                     imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/faceS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/cover-" . $grade . ".png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-" . $grade . ".png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 }
 
             //if member is an officer
@@ -103,15 +103,15 @@ include_once 'config.php';
                 $textheight = $bb[7] - $bb[1];
                 $namex = 103 - ($textwidth / 2);
                 $namey = 257 - ($textheight / 2);
-                imagecopy($bg, imagecreatefrompng("images/uniform/navy/NPO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                imagecopy($bg, imagecreatefrompng("images/uniform/navy/faceO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 if($gradenum == 0) {
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/cover-O0png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-O0png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 } else if($gradenum >= 1 && $gradenum < 4) {
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/cover-J.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-J.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 } else if($gradenum >= 4) {
-                    imagecopy($bg, imagecreatefrompng("images/uniform/navy/cover-S.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-S.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
                 }
             }
         }
@@ -146,7 +146,7 @@ include_once 'config.php';
                 } else if(count($row) == 1) {
                     $dstx = $onewidesrcx - ($columncount * $ribbonwidth);
                 }
-                $curr_ribbon = imagecreatefromjpeg("images/awards/ribbons/" . $column[0] . ".jpg");
+                $curr_ribbon = imagecreatefromjpeg($path . "images/awards/ribbons/" . $column[0] . ".jpg");
                 imagecopyresampled($bg, $curr_ribbon, $dstx, $dsty, 0, 0, $ribbonwidth, $ribbonheight, imagesx($curr_ribbon), imagesy($curr_ribbon));
                 $columncount = $columncount + 1;
             }
@@ -231,14 +231,14 @@ include_once 'config.php';
             }
 
             if($rifle > 0) {
-                $riflebadge = imagecreatefrompng("images/awards/badges/" . $riflefile . ".png");
+                $riflebadge = imagecreatefrompng($path . "images/awards/badges/" . $riflefile . ".png");
                 $aspect = imagesx($riflebadge) / imagesy($riflebadge);
                 $rifleh = $riflew * $aspect;
                 imagecopyresampled($bg, $riflebadge, $riflex, $badgey, 0, 0, $riflew, $rifleh, imagesx($riflebadge), imagesy($riflebadge));
             }
             
             if($pistol > 0) {
-                $pistolbadge = imagecreatefrompng("images/awards/badges/" . $pistolfile . ".png");
+                $pistolbadge = imagecreatefrompng($path . "images/awards/badges/" . $pistolfile . ".png");
                 $aspect;
                 if(imagesx($pistolbadge) > imagesy($pistolbadge)) {
                     $aspect = imagesy($pistolbadge) / imagesx($pistolbadge);
@@ -251,7 +251,7 @@ include_once 'config.php';
         }
         
         //Border
-        imagecopy($bg, imagecreatefrompng("images/uniform/border.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
+        imagecopy($bg, imagecreatefrompng($path . "images/uniform/border.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
         
         //export
         ob_start();
@@ -264,10 +264,10 @@ include_once 'config.php';
 
     function generatePilotPatch($id, $grade, $branch) {
         //Init patch
-        $patch = imagecreatefrompng("images/patch/Leather.png");
+        $patch = imagecreatefrompng($path . "images/patch/Leather.png");
 
         //Add badge
-        $aviatorbadge = imagecreatefrompng("images/patch/naval-aviator-gold.png");
+        $aviatorbadge = imagecreatefrompng($path . "images/patch/naval-aviator-gold.png");
         $beige = imagecolorallocate($patch, 245, 210, 147);
         $badgew = 255;
         $badgeh = 92;
@@ -662,7 +662,7 @@ include_once 'config.php';
             echo        "</div>";
             }
             echo    "</td>";
-            echo    "<td><a class=\"text-light\" href=\"../member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
+            echo    "<td><a class=\"text-light\" href=\"member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
             echo "</tr>";
         }
         return true;
