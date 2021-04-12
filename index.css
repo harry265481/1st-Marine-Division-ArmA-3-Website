@@ -33,3 +33,10 @@ body {
 iframe {
     width:100%;
 }
+
+.carousel-caption {
+    background-color:rgba(0,0,0,0.6);
+    bottom: 70px;
+    position: absolute;
+    margin: 0;
+}

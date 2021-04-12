@@ -8,27 +8,81 @@
     </head>
     <body>
         <?php include 'nav.php' ?>
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div id="carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="images/slide1.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
                 </div>
                 <div class="carousel-item">
                     <img src="images/slide2.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>We aim to provide a large scale combined arms military simulation experience that combines entertainment and professionalism.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/slide3.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/slide4.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/slide5.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/slide6.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/slide7.png" class="d-block w-100">
+                    <div class="carousel-caption">
+                        <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
+                        <a href="apply.php">
+                            <button type="button" class="btn btn-danger">Apply</button>.
+                        </a>
+                    </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
         <div class="spacer"></div>
         <div id="servers" class="container-fluid text-center">
