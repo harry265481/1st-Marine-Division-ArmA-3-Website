@@ -38,16 +38,21 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <div class="spacer">
-        </div>
-        <div class="container-fluid text-center">
-            <div class="col-sm-6">
-                <div id="ts3viewer_1124353" style="width:350px; height:500px; ">
+        <div class="spacer"></div>
+        <div id="servers" class="container-fluid text-center">
+            <div class="row">
+                <h2 class="anchor text-light">Communication</h2>
+                <div class="col-sm-6">
+                    <div class="server">
+                        <div id="ts3viewer_1124353" style="width:auto; height:500px; "></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="server">
+                        <iframe src="https://discord.com/widget?id=817490859540217856&theme=dark" height="500px" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <iframe src="https://discord.com/widget?id=817490859540217856&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-            </div>
-        </div>
         </div>
         <script>
             function showMenu() {
