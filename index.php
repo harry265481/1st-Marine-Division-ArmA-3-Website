@@ -12,8 +12,6 @@
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -21,12 +19,6 @@
                 </div>
                 <div class="carousel-item">
                     <img src="images/slide2.png" class="d-block w-100">
-                </div>
-                <div class="carousel-item">
-                    <img src="images/slide3.png" class="d-block w-100">
-                </div>
-                <div class="carousel-item">
-                    <img src="images/slide4.png" class="d-block w-100">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -41,7 +33,6 @@
         <div class="spacer"></div>
         <div id="servers" class="container-fluid text-center">
             <div class="row">
-                <h2 class="anchor text-light">Communication</h2>
                 <div class="col-sm-6">
                     <div class="server">
                         <div id="ts3viewer_1124353" style="width:auto; height:500px; "></div>
