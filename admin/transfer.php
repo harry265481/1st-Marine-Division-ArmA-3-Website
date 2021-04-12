@@ -1,5 +1,6 @@
 <?php
 include_once 'session.php';
+include_once '../functions.php';
 include_once '../config.php';
 
 $query = "SELECT * FROM personnel WHERE ID=" . $_GET['id'];
@@ -11,6 +12,7 @@ $rank = $row[3];
 $position = $row[10];
 $unit = $row[11];
 $mos = $row[9];
+$status = $row[12];
 $shortname = substr($firstname, 0, 1) . ". " . $surname;
 $positionrow = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $position));
 $unitrow = mysqli_fetch_row(mysqli_query($link, "SELECT unitname FROM units WHERE ID=" . $unit));
@@ -62,6 +64,23 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                         $units = mysqli_query($link, "SELECT ID, unitname FROM units ORDER BY unitorder asc");
                                         foreach($units as $unit) {
                                             echo "<option value=\"" . $unit['ID'] . "\">" . $unit['unitname'] . "</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md">
+                                <div class="text-light">
+                                    <h4>Current Status: <?php echo getStatusName($status) ?></h4>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <select class="form-select text-dark" id="status" name="status">
+                                    <?php 
+                                        $statuses = mysqli_query($link, "SELECT ID, status FROM status");
+                                        foreach($statuses as $status) {
+                                            echo "<option value=\"" . $status['ID'] . "\">" . $status['status'] . "</option>";
                                         }
                                     ?>
                                 </select>

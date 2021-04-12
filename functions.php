@@ -320,6 +320,21 @@ include_once 'config.php';
         return $generateBase64;
     }
 
+    //Returns Status name of a member
+    function getMemberStatusName($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $status = mysqli_fetch_row(mysqli_query($link, "SELECT status FROM personnel WHERE ID=" . $id));
+        $statusname = mysqli_fetch_row(mysqli_query($link, "SELECT status FROM personnel WHERE ID=" . $status));
+        return $statusname[0];
+    }
+
+    //Returns name of a status
+    function getStatusName($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $statusname = mysqli_fetch_row(mysqli_query($link, "SELECT status FROM status WHERE ID=" . $id));
+        return $statusname[0];
+    }
+
     //Returns LastName of a member
     function getMemberLastName($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
