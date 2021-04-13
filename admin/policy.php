@@ -29,6 +29,12 @@
                                 <td>Unknown</td>
                                 <td>Unknown</td>
                             </tr>
+                            <tr>
+                                <td>1MD-SOP-2</td>
+                                <td><a href="AwardSOP.php">Awards and Decorations</a></td>
+                                <td>14 APR 2021</td>
+                                <td>14 APR 2021</td>
+                            </tr>
                         </tbody>
                     </table>
                 </main>
