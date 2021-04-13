@@ -657,7 +657,7 @@ include_once 'config.php';
         foreach ($results as $result)  {
             $statusrow = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM status WHERE ID=" . $result['status']));
 
-            if($result['branch'] == 1) {
+            if($result['branch'] == 1 && $result['rank'] < 21) {
 
                 $grade = getMemberGradeLong($result['ID']);
                 $rankres = mysqli_fetch_row(mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND ratingID=" . $result['rating']));
