@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Roster</title>
+        <title>1st Marine Division - Apply</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="apply.css">
