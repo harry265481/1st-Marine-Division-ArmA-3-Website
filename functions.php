@@ -657,13 +657,13 @@ include_once 'config.php';
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
         
             echo "<tr>";
-            echo    "<td><img class=\"mx-auto d-block\" height=\"30px\" src=" . $imagestring . ".png></td>";
-            echo    "<td>" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
+            echo    "<td width=\"30px\"><img class=\"mx-auto d-block\"  height=\"30px\" src=" . $imagestring . ".png></td>";
+            echo    "<td width=\"130px\">" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
             echo    "<td>" . $position  ."</td>";
-            echo    "<td><span class=\"badge rounded-pill bg-" . $statusrow[2] . " text-" . $statusrow[3] . "\">" . $statusrow[1] . "</span></td>";
-            echo    "<td>" . $rank . "</td>";
-            echo    "<td>" . $result['DOE'] . "</td>";
-            echo    "<td>";
+            echo    "<td width=\"70px\"><span class=\"badge rounded-pill bg-" . $statusrow[2] . " text-" . $statusrow[3] . "\">" . $statusrow[1] . "</span></td>";
+            echo    "<td class=\"d-none d-lg-table-cell\" width=\"200px\">" . $rank . "</td>";
+            echo    "<td width=\"100px\">" . $result['DOE'] . "</td>";
+            echo    "<td width=\"22px\">";
             if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             echo        "<div class=\"dropdown\">";
             echo            "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\"></button>";
@@ -677,7 +677,7 @@ include_once 'config.php';
             echo        "</div>";
             }
             echo    "</td>";
-            echo    "<td><a class=\"text-light\" href=\"member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
+            echo    "<td width=\"25px\"><a class=\"text-light\" href=\"member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
             echo "</tr>";
         }
         return true;
