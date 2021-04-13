@@ -25,7 +25,7 @@ $moscode = $mosrow[0];
 
 $branch;
 $imagestring;
-if($row[8] == 0) {
+if($row[8] == 0 ) {
     if($abbrevrow[2] == 0) {
         $branch = "marine";
     } else if($abbrevrow[2] == 1) {
