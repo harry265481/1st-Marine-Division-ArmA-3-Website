@@ -157,7 +157,7 @@ if($days > 365) {
                                                         echo "<td>" . $record['recorddate'] . "</td>";
                                                         echo buildRecord($record);
                                                         if($record['recordType'] == 2) {
-                                                            echo "<td><a href=\"citation.php?id=" . $record['ID'] . "\">Citation</td>";
+                                                            echo "<td><a href=\"../citation.php?id=" . $record['ID'] . "\">Citation</td>";
                                                         } else {
                                                             echo "<td>-</td>";
                                                         }

@@ -6,8 +6,7 @@ include_once 'config.php';
     //grade   | str | grade given as "{firstLetter}{number}"
     //$branch | int | id of branch
     function generateUniform($id, $grade, $branch, $path = "") {
-        $bg;
-        $branchname;
+        
         //check branch and create resource from background
         //marine
         if($branch == 0) {

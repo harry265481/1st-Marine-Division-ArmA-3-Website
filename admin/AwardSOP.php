@@ -32,7 +32,7 @@
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h3">Medals and Ribbons</h1>
                     </div>
-                    <table>
+                    <table class="table table-dark table-striped align-middle table-sm">
                         <thead>
                             <tr>
                                 <th>Ribbon</th>
@@ -67,6 +67,7 @@
                                             break;
                                     }
                                     echo "<td>" . $result['awardescription'] . "</td>";
+                                    echo "<td></td>";
                                 }
                             ?>
                         </tbody>
