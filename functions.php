@@ -383,12 +383,26 @@ include_once 'config.php';
         return $string;
     }
 
-    //Returns name of the rank of a member
+    //Returns pay grade of a member as {type}{number}
+    function getMemberGradeLong($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank FROM personnel WHERE ID=" . $id));
+        $rankrow = mysqli_fetch_row(mysqli_query($link, "SELECT paygrade FROM rank WHERE ID=" . $rank[0]));
+        return $rankrow[0];
+    }
 
+    //Returns name of the rank of a member
     function getRankName($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank_name FROM rank WHERE ID=" . $id));
         return $rank[0];
+    }
+
+    //Returns name of the rating of a member
+    function getMemberRateID($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $rating = mysqli_fetch_row(mysqli_query($link, "SELECT rating FROM personnel WHERE ID=" . $id));
+        return $rating[0];
     }
 
     //Returns Array of awards in ascending order of precedence (ribbons only)
@@ -642,12 +656,20 @@ include_once 'config.php';
         }
         foreach ($results as $result)  {
             $statusrow = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM status WHERE ID=" . $result['status']));
-            $rank = getRankName($result['rank']);
+
+            if($result['branch'] == 1) {
+
+                $grade = getMemberGradeLong($result['ID']);
+                $rating = getMemberRateID($result['ID']);
+                $rankres = mysqli_fetch_row(mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND raringID=" . $rating));
+                $rank = $rankres[0];
+            } else {
+                $rank = getRankName($result['rank']);
+            }
+
             $imagename = getMemberGrade($result['ID']);
-        
             $position = getPositionName($result['position']);
 
-            $branch;
             if($result['branch'] == 0) {
                 $branch = "marine";
             } else if($result['branch'] == 1) {
@@ -663,18 +685,20 @@ include_once 'config.php';
             echo    "<td class=\"d-none d-lg-table-cell\" width=\"200px\">" . $rank . "</td>";
             echo    "<td width=\"100px\">" . $result['DOE'] . "</td>";
             echo    "<td width=\"22px\">";
+
             if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            echo        "<div class=\"dropdown\">";
-            echo            "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\"></button>";
-            echo            "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">";
-            echo                "<li><a class=\"dropdown-item\" href=\"promote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-up\"></i> Promote</a></li>";
-            echo                "<li><a class=\"dropdown-item\" href=\"demote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-down\"></i> Demote</a></li>";
-            echo                "<li><a class=\"dropdown-item\" href=\"transfer.php?id=" . $result['ID'] . "\"><i class=\"fas fa-arrows-alt-h\"></i> Transfer</a></li>";
-            echo                "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Qualification</a></li>";
-            echo                "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
-            echo            "</ul>";
-            echo        "</div>";
+                echo        "<div class=\"dropdown\">";
+                echo            "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\"></button>";
+                echo            "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">";
+                echo                "<li><a class=\"dropdown-item\" href=\"promote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-up\"></i> Promote</a></li>";
+                echo                "<li><a class=\"dropdown-item\" href=\"demote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-down\"></i> Demote</a></li>";
+                echo                "<li><a class=\"dropdown-item\" href=\"transfer.php?id=" . $result['ID'] . "\"><i class=\"fas fa-arrows-alt-h\"></i> Transfer</a></li>";
+                echo                "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Qualification</a></li>";
+                echo                "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
+                echo            "</ul>";
+                echo        "</div>";
             }
+
             echo    "</td>";
             echo    "<td width=\"25px\"><a class=\"text-light\" href=\"member.php?id=" . $result['ID'] . "\"><i class=\"fas fa-id-badge\"></i></a></td>";
             echo "</tr>";
