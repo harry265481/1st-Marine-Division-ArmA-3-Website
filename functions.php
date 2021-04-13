@@ -262,9 +262,9 @@ include_once 'config.php';
         return $generateBase64;
     }
 
-    function generatePilotPatch($id, $grade, $branch) {
+    function generatePilotPatch($id, $grade, $branch, $path) {
         //Init patch
-        $patch = imagecreatefrompng("images/patch/Leather.png");
+        $patch = imagecreatefrompng($path . "images/patch/Leather.png");
 
         //Add badge
         $aviatorbadge = imagecreatefrompng($path . "images/patch/naval-aviator-gold.png");

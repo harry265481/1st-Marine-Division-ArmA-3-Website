@@ -76,7 +76,7 @@ if($days > 365) {
                 <?php include_once 'nav.php'; ?>
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-dark">
                     <img class="mx-auto d-block" src="data:image/png;base64,<?php echo generateUniform($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id']), "../"); ?>" />
-                    <?php if($row[8] == 1) { echo "<img class=\"mx-auto d-block\" src=\"data:image/png;base64," . generatePilotPatch($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id'])) . "\" />";  } ?>
+                    <?php if($row[8] == 1) { echo "<img class=\"mx-auto d-block\" src=\"data:image/png;base64," . generatePilotPatch($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id']), "../") . "\" />";  } ?>
                     <div class="container emp-profile text-light">
                         <div class="row">
                             <div class="col-md-4">
