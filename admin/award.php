@@ -3,7 +3,7 @@ include_once 'session.php';
 include_once '../config.php';
 
 $row = mysqli_fetch_row(mysqli_query($link, "SELECT FirstName, LastName FROM personnel WHERE ID=" . $_GET['id']));
-$shortname = substr($row[1], 0, 1) . ". " . $row[2];
+$shortname = substr($row[0], 0, 1) . ". " . $row[1];
 ?>
 <!DOCTYPE html>
 <html lang="en">
