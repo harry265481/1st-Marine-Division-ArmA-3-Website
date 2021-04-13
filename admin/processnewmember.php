@@ -25,8 +25,7 @@
                         . $_POST['unit'] .  "', '" 
                         . $_POST['status'] . "')";
   if (mysqli_query($link, $insert)) {
-      header( "refresh:5;url=members.php" );
-      echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';
+      header("Location: members.php");
     } else {
       echo "Error: " . $insert . "<br>" . mysqli_error($link);
     }

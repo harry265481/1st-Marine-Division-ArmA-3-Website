@@ -695,6 +695,7 @@ include_once 'config.php';
                 echo            "<li><a class=\"dropdown-item\" href=\"demote.php?id=" . $result['ID'] . "\"><i class=\"fas fa-angle-double-down\"></i> Demote</a></li>";
                 echo            "<li><a class=\"dropdown-item\" href=\"transfer.php?id=" . $result['ID'] . "\"><i class=\"fas fa-arrows-alt-h\"></i> Transfer</a></li>";
                 echo            "<li><a class=\"dropdown-item\" href=\"graduate.php?id=" . $result['ID'] . "\"><i class=\"fas fa-graduation-cap\"></i> Qualification</a></li>";
+                echo            "<li><a class=\"dropdown-item\" href=\"award.php?id=" . $result['ID'] . "\"><i class=\"fas fa-medal\"></i></i> Award</a></li>";
                 echo            "<li><a class=\"dropdown-item\" href=\"discharge.php?id=" . $result['ID'] . "\"><i class=\"fas fa-times-circle\"></i> Discharge</a></li>";
                 echo        "</ul>";
                 echo    "</div>";

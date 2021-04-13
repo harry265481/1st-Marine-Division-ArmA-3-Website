@@ -3,7 +3,7 @@
 include_once '../config.php';
 
 $id = $_GET['id'];
-$course = $_POST['course'];
+$award = $_POST['award'];
 $date = $_POST['date'];
 $usetoday = $_POST['today'];
 
@@ -12,7 +12,7 @@ if($usetoday == "true") {
 }
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO records (memberID, recordType, coursetype, recorddate) VALUES (" . $id . ", 5," . $course . ", " . $date . ")");
+mysqli_query($link, "INSERT INTO award (memberID, awardID, awarddate) VALUES (" . $id . ", " . $award . ", " . $date . ")");
 
 header("Location: members.php");
 ?>
