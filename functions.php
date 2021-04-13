@@ -386,7 +386,7 @@ include_once 'config.php';
     //Returns pay grade of a member as {type}{number}
     function getMemberGradeLong($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
+        
         $rank = mysqli_fetch_row(mysqli_query($link, "SELECT rank FROM personnel WHERE ID=" . $id));
         $rankrow = mysqli_fetch_assoc(mysqli_query($link, "SELECT paygrade FROM rank WHERE ID=" . $rank[0]));
         return $rankrow['paygrade'];
@@ -660,9 +660,8 @@ include_once 'config.php';
 
             if($result['branch'] == 1 && $result['rank'] < 21) {
                 $grade = getMemberGradeLong($result['ID']);
-                $query = mysqli_query($link, mysqli_prepare($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND ratingID=" . $result['rating']));
-                echo $grade;
-                echo $result['rating'];
+                $grade = substr($grade, 0, 1) . "\\" . substr($grade, 1, 2);
+                $query = mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND ratingID=" . $result['rating']);
                 $rankres = mysqli_fetch_row($query);
                 $rank = $rankres[0];
             } else {
