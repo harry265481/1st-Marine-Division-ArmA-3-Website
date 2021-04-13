@@ -660,7 +660,7 @@ include_once 'config.php';
             if($result['branch'] == 1) {
 
                 $grade = getMemberGradeLong($result['ID']);
-                $rankres = mysqli_fetch_row(mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND ratingID=" . $result['ratings']));
+                $rankres = mysqli_fetch_row(mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=" . $grade . " AND ratingID=" . $result['rating']));
                 $rank = $rankres[0];
             } else {
                 $rank = getRankName($result['rank']);
