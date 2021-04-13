@@ -19,15 +19,13 @@
                 (FirstName, LastName, rank, DOE, DOR, points, branch, pilot, MOS, position) 
                 VALUES ('" . $firstname . "', '" . $surname . "', '" . $rank . "', '" . $today . "', '" . $today . "', '0', '" . $branch . "', '0', '" . $MOS .  "', 'Recruit')";
     if (mysqli_query($link, $insert)) {
-        header( "refresh:5;url=members.php" );
-        echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';
+      header("Location: members.php");
       } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($link);
       }
       $last_id = mysqli_insert_id($link);
       mysqli_query($link, "INSERT INTO records (memberID, recordType, recorddate) VALUES (" . $last_id . ", 0, " . $date . ")");
     } else {
-      header( "refresh:5;url=.php" );
-      echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';
+      header("Location: members.php");
   }
 ?>

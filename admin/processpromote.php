@@ -16,7 +16,5 @@ mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
 
 //Add record to record table
 mysqli_query($link, "INSERT INTO records (memberID, recordType, promorank, recorddate) VALUES (" . $id . ", 2," . $rank . ", " . $date . ")");
-
-header( "refresh:5;url=members.php" );
-echo 'You\'ll be redirected in about 5 secs. If not, click <a href="members.php">here</a>.';
+header("Location: members.php");
 ?>
