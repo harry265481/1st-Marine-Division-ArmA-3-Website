@@ -8,8 +8,10 @@ $date = $_POST['date'];
 $usetoday = $_POST['today'];
 
 if($usetoday == "true") {
-    $date = date("Y-m-d");
+    $date = date("d-M-Y");
 }
+
+$date = date_format($date, "d-M-Y");
 
 //Add record to record table
 mysqli_query($link, "INSERT INTO award (memberID, awardID, awarddate) VALUES (" . $id . ", " . $award . ", " . $date . ")");

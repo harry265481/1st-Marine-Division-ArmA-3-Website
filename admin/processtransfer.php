@@ -10,8 +10,11 @@ $usetoday = $_POST['today'];
 $status = $_POST['status'];
 
 if($usetoday == "true") {
-    $date = date("Y-m-d");
+    $date = date("d-M-Y");
 }
+
+$date = date_format($date, "d-M-Y");
+
 $current = mysqli_fetch_row(mysqli_query($link, "SELECT unitID, position FROM personnel WHERE ID=" . $id));
 $oldunit = $current[0];
 $oldpos = $current[1];

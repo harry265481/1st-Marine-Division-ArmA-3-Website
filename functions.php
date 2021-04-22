@@ -1,5 +1,5 @@
 <?php
-include_once 'config.php';
+    include_once 'config.php';
 
     //Generate 3D uniform for the member
     //id      | int | id of the member

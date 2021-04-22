@@ -10,7 +10,7 @@
   $branchquery = "SELECT branch FROM rank WHERE ID=" . $rank;
   $branches = mysqli_query($link, $branchquery);
   $branchrow = mysqli_fetch_row($branches);
-  $today = date("Y-m-d");
+  $today = date("d-M-Y");
   $branch = $branchrow[0];
 
   mysqli_query($link, "UPDATE applications SET appstatus = " . $status . " WHERE ID=" . $_GET['id']);

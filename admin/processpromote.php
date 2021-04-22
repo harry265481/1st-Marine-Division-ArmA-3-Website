@@ -8,8 +8,10 @@ $date = $_POST['date'];
 $usetoday = $_POST['today'];
 
 if($usetoday == "true") {
-    $date = date("Y-m-d");
+    $date = date("d-M-Y");
 }
+
+$date = date_format($date, "d-M-Y");
 
 //Update personnel record
 mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
