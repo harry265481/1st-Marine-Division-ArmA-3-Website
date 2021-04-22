@@ -24,7 +24,7 @@
                     <div class="carousel-caption">
                         <h5>Join us in becoming leaders in the ArmA community that blends quality and quantity in a combined arms experience.</h5>
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                     <img src="images/slide2.png" class="d-block w-100">
                     <div class="carousel-caption">
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="carousel-caption">
                         <h5>We aim to provide a large scale combined arms military simulation experience that combines entertainment and professionalism.</h5>
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <img src="images/slide4.png" class="d-block w-100">
                     <div class="carousel-caption">
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                     <div class="carousel-caption">
                         <h5>Our expectations in a sentence: To envelop individuals in a militaristic environment priding itself in combat knowledge without the militaristic social greetings and addressment.</h5>
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                     <img src="images/slide6.png" class="d-block w-100">
                     <div class="carousel-caption">
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                     <img src="images/slide7.png" class="d-block w-100">
                     <div class="carousel-caption">
                         <a href="apply.php">
-                            <button type="button" class="btn btn-danger">Apply</button>.
+                            <button type="button" class="btn btn-danger">Apply</button>
                         </a>
                     </div>
                 </div>
