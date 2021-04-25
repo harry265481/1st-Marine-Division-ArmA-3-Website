@@ -45,8 +45,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link text-light" href="policy.php">
-                    <span data-feather="Awards"></span>
+                    <span data-feather="Policy"></span>
                     Policy
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="attendance.php">
+                    <span data-feather="Attendance"></span>
+                    Attendance
                 </a>
             </li>
         </ul>
