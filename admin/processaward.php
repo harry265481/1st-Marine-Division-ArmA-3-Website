@@ -12,7 +12,7 @@ if($usetoday == "true") {
     $date = date_create($date);
 }
 
-$date = date_format($date, "d\-M\-Y");
+$date = date_format($date, "{d-M-Y}");
 
 //Add record to record table
 if(mysqli_query($link, "INSERT INTO awardrecord (memberID, awardID, awarddate) VALUES (" . $id . ", " . $award . ", " . $date . ")") == false) {
