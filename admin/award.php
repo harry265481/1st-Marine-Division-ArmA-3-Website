@@ -17,7 +17,7 @@ $shortname = substr($row[0], 0, 1) . ". " . $row[1];
             <div class="row">
                 <?php include_once 'nav.php'; ?>
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-dark">
-                    <form method="post" action="processgraduate.php?id=<?php echo $_GET['id'] ?>">
+                    <form method="post" action="processaward.php?id=<?php echo $_GET['id'] ?>">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2 text-light">Award - <?php echo $shortname ?></h1>
                             <div class="btn-toolbar mb-2 mb-md-0"></div>
