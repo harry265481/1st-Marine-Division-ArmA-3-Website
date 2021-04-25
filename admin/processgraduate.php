@@ -9,12 +9,13 @@ $usetoday = $_POST['today'];
 
 if($usetoday == "true") {
     $date = date("d-M-Y");
+    $date = date_create($date);
 }
 
-$date = date_format($date, "d-M-Y");
+$date = date_format($date, "d\-M\-Y");
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO records (memberID, recordType, coursetype, recorddate) VALUES (" . $id . ", 5," . $course . ", " . $date . ")");
+mysqli_query($link, "INSERT INTO records (memberID, recordType, coursetype, recorddate) VALUES (" . $id . ", 5," . $course . ", '" . $date . "')");
 
 header("Location: members.php");
 ?>

@@ -11,9 +11,11 @@ $status = $_POST['status'];
 
 if($usetoday == "true") {
     $date = date("d-M-Y");
+    $date = date_create($date);
 }
 
-$date = date_format($date, "d-M-Y");
+$date = date_format($date, "d\-M\-Y");
+
 
 $current = mysqli_fetch_row(mysqli_query($link, "SELECT unitID, position FROM personnel WHERE ID=" . $id));
 $oldunit = $current[0];
@@ -23,7 +25,7 @@ mysqli_query($link, "UPDATE personnel SET position=" . $pos . ", unitID=" . $uni
 
 //Add record to record table
 mysqli_query($link, "INSERT INTO records (memberID, recordType, transferfrom transferto, oldpos, newpos, recorddate) 
-                                  VALUES (" . $id . ", 4," . $oldunit . ", " . $unit . ", " . $oldpos . ", " . $pos . ")");
+                                  VALUES (" . $id . ", 4," . $oldunit . ", " . $unit . ", " . $oldpos . ", " . $pos . ", '". $date . "'")");
 header("Location: members.php");
 
 ?>
