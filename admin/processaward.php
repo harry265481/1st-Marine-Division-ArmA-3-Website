@@ -14,7 +14,8 @@ if($usetoday == "true") {
 $date = date_format($date, "d-M-Y");
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO awardrecord (memberID, awardID, awarddate) VALUES (" . $id . ", " . $award . ", " . $date . ")");
+if(mysqli_query($link, "INSERT INTO awardrecord (memberID, awardID, awarddate) VALUES (" . $id . ", " . $award . ", " . $date . ")")) {
+    header("Location: members.php");
+}
 
-header("Location: members.php");
 ?>
