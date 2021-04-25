@@ -31,9 +31,9 @@ $shortname = substr($row[0], 0, 1) . ". " . $row[1];
                             <div class="col-md">
                                 <select class="form-select text-dark" id="award" name="award">
                                     <?php 
-                                        $courses = mysqli_query($link, "SELECT ID, awardname FROM courses");
+                                        $courses = mysqli_query($link, "SELECT ID, coursename FROM courses");
                                         foreach($courses as $course) {
-                                            echo "<option value=\"" . $course['ID'] . "\">" . $course['awardname'] . "</option>";
+                                            echo "<option value=\"" . $course['ID'] . "\">" . $course['coursename'] . "</option>";
                                         }
                                     ?>
                                 </select>
