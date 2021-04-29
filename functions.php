@@ -710,12 +710,18 @@
 
     function buildAttendanceRow($unitid, $path) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        $results = mysqli_query($link, "SELECT ID, FirstName, LastName, rank FROM personnel WHERE unitID=" . $unitid . " ORDER BY rank desc");
+        $results = mysqli_query($link, "SELECT ID, FirstName, LastName, branch, rank FROM personnel WHERE unitID=" . $unitid . " ORDER BY rank desc");
         if($results == "false") {
             return false;
         }
         foreach ($results as $result)  {
             $imagename = getMemberGrade($result['ID']);
+
+            if($result['branch'] == 0) {
+                $branch = "marine";
+            } else if($result['branch'] == 1) {
+                $branch = "navy";
+            }
 
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
         
