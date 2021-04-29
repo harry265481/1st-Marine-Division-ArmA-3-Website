@@ -729,7 +729,7 @@
             echo    "<td width=\"30px\"><img class=\"mx-auto d-block\"  height=\"30px\" src=" . $imagestring . ".png></td>";
             echo    "<td width=\"130px\">" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
             echo    "<td width=\"22px\">";
-            echo        "<select name=\"attendance[" . $result[ID] . "][presence]\" >";
+            echo        "<select name=\"attendance[" . $result['ID'] . "][presence]\" >";
             echo            "<option value=\"present\">Present</option>";
             echo            "<option value=\"absent\">Absent</option>";
             echo            "<option value=\"absent\">LOA</option>";
