@@ -717,12 +717,6 @@
         foreach ($results as $result)  {
             $imagename = getMemberGrade($result['ID']);
 
-            if($result['branch'] == 0) {
-                $branch = "marine";
-            } else if($result['branch'] == 1) {
-                $branch = "navy";
-            }
-
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
         
             echo "<tr>";
