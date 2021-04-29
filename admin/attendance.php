@@ -21,7 +21,7 @@ include_once '../functions.php';
                         <div class="btn-toolbar mb-2 mb-md-0"></div>
                     </div>
                     <div class="table-responsive">
-                        <div class="btn-toolbar mb-2 mb-md-0\"></div>";
+                        <div class="btn-toolbar mb-2 mb-md-0\"></div>
                         <table class="table table-dark table-striped align-middle table-sm">
                             <thead>
                                 <tr>
