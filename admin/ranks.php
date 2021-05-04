@@ -25,7 +25,7 @@ include_once '../config.php'
                         <h1 class="h2 text-light">Ranks</h1>
                         <div class="btn-toolbar mb-2 mb-md-0"></div>
                     </div>
-                    <h2 class="text-light">Marine</h2>
+                    <h2 class="text-light">Army</h2>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped align-middle table-sm">
                         <thead>
@@ -43,7 +43,7 @@ include_once '../config.php'
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 0) {
-                                        $imagename = $result['abbrev'];
+                                        $imagename = $result['ID'];
                                         $limgstr = "../images/ranks/army/large/" . $imagename;
                                         $simgstr = "../images/ranks/army/small/" . $imagename;
 
@@ -60,7 +60,7 @@ include_once '../config.php'
                         </tbody>
                         </table>
                     </div>
-                    <h2 class="text-light">Navy</h2>
+                    <h2 class="text-light">Air Force</h2>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped align-middle table-sm">
                         <thead>
@@ -78,7 +78,7 @@ include_once '../config.php'
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 1) {
-                                        $imagename = $result['abbrev'];
+                                        $imagename = $result['ID'];
 
                                         $limgstr = "../images/ranks/airforce/large/" . $imagename;
                                         $simgstr = "../images/ranks/airforce/small/" . $imagename;
