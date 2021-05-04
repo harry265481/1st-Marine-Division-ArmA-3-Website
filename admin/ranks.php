@@ -43,10 +43,9 @@ include_once '../config.php'
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 0) {
-                                        $imagename = substr($result['paygrade'], 0, 1) . substr($result['paygrade'], 2, 1);
-
-                                        $limgstr = "../images/ranks/marine/large/" . $imagename;
-                                        $simgstr = "../images/ranks/marine/small/" . $imagename;
+                                        $imagename = $result['abbrev'];
+                                        $limgstr = "../images/ranks/army/large/" . $imagename;
+                                        $simgstr = "../images/ranks/army/small/" . $imagename;
 
                                         echo "<tr>";
                                         echo "<td width=\"70px\"><img width=\"70px\" src=" . $limgstr . ".png></td>";
@@ -79,10 +78,10 @@ include_once '../config.php'
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 1) {
-                                        $imagename = substr($result['paygrade'], 0, 1) . substr($result['paygrade'], 2, 1);
+                                        $imagename = $result['abbrev'];
 
-                                        $limgstr = "../images/ranks/navy/large/" . $imagename;
-                                        $simgstr = "../images/ranks/navy/small/" . $imagename;
+                                        $limgstr = "../images/ranks/airforce/large/" . $imagename;
+                                        $simgstr = "../images/ranks/airforce/small/" . $imagename;
 
                                         echo "<tr>";
                                         echo "<td width=\"70px\"><img width=\"70px\" src=" . $limgstr . ".png></td>";

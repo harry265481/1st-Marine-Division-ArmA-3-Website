@@ -539,7 +539,7 @@
     function buildRecord($record) {
         switch($record['recordType']) {
             case 0:
-                return "<td>Enlisted in the 1st Marine Division</td>";
+                return "<td>Enlisted in the 1st Infantry Division</td>";
                 break;
             case 1:
                 return buildRetirementRecord($record['retirementtype']);
@@ -581,10 +581,10 @@
     function buildRetirementRecord($type) {
         switch($type) {
             case 0:
-                return "<td>Discharged from the 1st Marine Division - Honorable</td>";
+                return "<td>Discharged from the 1st Infantry Division - Honorable</td>";
                 break;
             case 1:
-                return "<td>Discharged from the 1st Marine Division - General</td>";
+                return "<td>Discharged from the 1st Infantry Division - General</td>";
                 break;
             case 2:
                 return "<td>Administrative Seperation</td>";
@@ -599,7 +599,7 @@
                 return "<td>Dishonorable Discharge</td>";
                 break;
             case 6:
-                return "<td>Retired from the 1st Marine Division</td>";
+                return "<td>Retired from the 1st Infantry Division</td>";
                 break;
         }
         return false;
@@ -657,23 +657,14 @@
         }
         foreach ($results as $result)  {
             $statusrow = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM status WHERE ID=" . $result['status']));
-
-            if($result['branch'] == 1 && $result['rank'] < 21) {
-                $grade = getMemberGradeLong($result['ID']);
-                $query = mysqli_query($link, "SELECT fullname FROM ratings WHERE grade=\"" . $grade . "\" AND ratingID=" . $result['rating']);
-                $rankres = mysqli_fetch_row($query);
-                $rank = $rankres[0];
-            } else {
-                $rank = getRankName($result['rank']);
-            }
-
-            $imagename = getMemberGrade($result['ID']);
+            $rank = getRankName($result['rank']);
+            $imagename = getMemberRankAbbrev($result['ID']);
             $position = getPositionName($result['position']);
 
             if($result['branch'] == 0) {
-                $branch = "marine";
+                $branch = "army";
             } else if($result['branch'] == 1) {
-                $branch = "navy";
+                $branch = "airforce";
             }
 
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;

@@ -74,8 +74,7 @@ if($days > 365) {
     <body class="bg-dark">
         <?php include 'nav.php' ?>
         <div class="spacer grey"></div>
-        <img class="mx-auto d-block" src="data:image/png;base64,<?php echo generateUniform($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id'])); ?>" />
-        <?php if($row[8] == 1) { echo "<img class=\"mx-auto d-block\" src=\"data:image/png;base64," . generatePilotPatch($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id']), "") . "\" />";  } ?>
+        <!--<img class="mx-auto d-block" src="data:image/png;base64,<?php // echo generateUniform($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id'])); ?>" /> -->
         <div class="container emp-profile text-light">
             <div class="row">
                 <div class="col-md-4">

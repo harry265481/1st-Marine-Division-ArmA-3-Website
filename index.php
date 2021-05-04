@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Home</title>
+        <title>1st Infantry Division - Home</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="index.css">
     </head>
