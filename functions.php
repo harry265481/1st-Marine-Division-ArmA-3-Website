@@ -709,9 +709,9 @@
             $imagename = $result['rank'];
 
             if($result['branch'] == 0) {
-                $branch = "marine";
+                $branch = "army";
             } else if($result['branch'] == 1) {
-                $branch = "navy";
+                $branch = "airforce";
             }
 
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
