@@ -12,11 +12,11 @@ $promodate = $row[5];
 $branchID = $row[7];
 $position = $row[10];
 
-$abbrevquery = "SELECT rank_name, paygrade, branch FROM rank WHERE ID=" . $row[3] . " AND branch=" . $row[7];
+$abbrevquery = "SELECT ID, rank_name, paygrade, branch FROM rank WHERE ID=" . $row[3] . " AND branch=" . $row[7];
 $abbrevresults = mysqli_query($link, $abbrevquery);
 $abbrevrow = mysqli_fetch_row($abbrevresults);
 $rank = $abbrevrow[0];
-$imagename = substr($abbrevrow[1], 0, 1) . substr($abbrevrow[1], 2, 1);
+$imagename = $abbrevquery['0']
 
 $mosquery = "SELECT MOS, mosname FROM mos WHERE ID=" . $row[9];
 $mosresults = mysqli_query($link, $mosquery);
@@ -25,16 +25,12 @@ $moscode = $mosrow[0];
 
 $branch;
 $imagestring;
-if($row[8] == 0 ) {
-    if($abbrevrow[2] == 0) {
-        $branch = "marine";
-    } else if($abbrevrow[2] == 1) {
-        $branch = "navy";
-    }
-    $imagestring = "../images/ranks/" . $branch . "/large/" . $imagename . ".png";
-} else if($row[8] == 1) {
-    $imagestring = "../images/ranks/marine/large/pilot/" . $imagename . ".png";
+if($abbrevrow[2] == 0) {
+    $branch = "army";
+} else if($abbrevrow[2] == 1) {
+    $branch = "airforce";
 }
+$imagestring = "../images/ranks/" . $branch . "/large/" . $imagename . ".png";
 
 $days = dateDifference($joindate, date("Y-m-d"));
 $tis;
