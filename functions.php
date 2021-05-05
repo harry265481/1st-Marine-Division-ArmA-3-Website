@@ -61,8 +61,11 @@
                 imagesavealpha($rank2, true);
                 $rankx = 238 - (imagesx($rank) / 2);
                 $ranky = 182;
-                imagecopyresampled($bg, $rank, $rankx, $ranky, 0, 0, 29, 79, imagesx($rank), imagesy($rank));
-                imagecopyresampled($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, 29, 79, imagesx($rank2), imagesy($rank2));
+                $rankw = 65;
+                $aspect = imagesx($rank) / imagesy($rank);
+                $rankh = $rankw * $aspect;
+                imagecopyresampled($bg, $rank, $rankx, $ranky, 0, 0, $rankw, $rankh, imagesx($rank), imagesy($rank));
+                imagecopyresampled($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, $rankw, $rankh, imagesx($rank2), imagesy($rank2));
             }
 
         }
