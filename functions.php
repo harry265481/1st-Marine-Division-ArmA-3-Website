@@ -51,7 +51,7 @@
                 //29 * 79
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
                 $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
-                $rankx = 238;
+                $rankx = 230;
                 $ranky = 141;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
