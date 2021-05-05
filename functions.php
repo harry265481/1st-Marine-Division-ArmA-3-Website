@@ -10,111 +10,37 @@
         //check branch and create resource from background
         //marine
         if($branch == 0) {
-            $branchname = "marine";
-            $bg = imagecreatefrompng($path . "images/uniform/USMCBG.png");
+            $branchname = "army";
+            $bg = imagecreatefrompng($path . "images/uniform/army.png");
             //navy
         } else if($branch == 1) {
-            $branchname = "navy";
-            $bg = imagecreatefrompng($path . "images/uniform/USNBG.png");
+            $branchname = "airforce";
+            $bg = imagecreatefrompng($path . "images/uniform/airforce.png");
         }
 
         //Get grade type; E or O
         $gradetype = substr($grade, 0, 1);
         $gradenum = substr($grade, 1, 1);
-
-        //get uniform and create a resource
-        $uniform = imagecreatefrompng($path . "images/uniform/" . $branchname . "/" . $grade . ".png");
-        imagecopy($bg, $uniform, 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
         
         //create colors
         $white = imagecolorallocate($bg, 255, 255, 255);
 
-        //Marine only stuff
-        if($branch == 0) {
-            imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/marinehead.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-            if($gradetype == "E") {
-                imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-            } else if($gradetype == "W") {
-                imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-            } else if($gradetype == "O") {
-                if($gradenum <= 3) {
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-C.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                } else if($gradenum >= 4) {
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/marine/cover-F.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                }
-            }
-        }
-
         //place nameplate and text
-        //Only applies to navy
-        if($branch == 1) {
+        //Army nameplate
+        if($branch == 0) {
             //CONSTANTS: text size: 7; Font: FRABK.ttf
             putenv('GDFONTPATH=' . realpath('.'));
             $font =  dirname(__FILE__) . '/FRABK.ttf';
-            $fontsize = 7;
-            $angle;
-
-            //Get grade type; E or O
-            $gradetype = substr($grade, 0, 1);
-            $gradenum = substr($grade, 1, 1);
-
-            //if member is enlisted ranks
-            if($gradetype == "E") {
-
-                //HM3 (E-6) or below
-                //If grade is less than or equal to 6; use 'crackerjack' version and print text at -5 deg
-                if($gradenum <= 6) {
-                    $angle = 5;
-                    $name = getMemberLastName($id);
-                    $bb = imagettfbbox($fontsize, $angle, $font, $name);
-                    $textwidth = $bb[2] - $bb[0];
-                    $textheight = $bb[7] - $bb[1];
-                    $namex = 102 - ($textwidth / 2);
-                    $namey = 235 - ($textheight / 2);
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPJ.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceE.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-E.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-
-                //HMC (E-7) or above
-                //If grade is  greater than or equal to 7; use 'officer jacket' version and print text at -2 deg
-                } else if ($gradenum >= 7) {
-                    $angle = 0;
-                    $name = getMemberLastName($id);
-                    $bb = imagettfbbox($fontsize, $angle, $font, $name);
-                    $textwidth = $bb[2] - $bb[0];
-                    $textheight = $bb[7] - $bb[1];
-                    $namex = 102 - ($textwidth / 2);
-                    $namey = 258 - ($textheight / 2);
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceS.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-" . $grade . ".png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                }
-
-            //if member is an officer
-            //If grade type is O; use officer version; -2 deg
-            } else if ($gradetype == "O") {
-                $angle = 0;
-                $name = getMemberLastName($id);
-                $bb = imagettfbbox($fontsize, $angle, $font, $name);
-                $textwidth = $bb[2] - $bb[0];
-                $textheight = $bb[7] - $bb[1];
-                $namex = 103 - ($textwidth / 2);
-                $namey = 257 - ($textheight / 2);
-                imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/NPO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
-                imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/faceO.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                if($gradenum == 0) {
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-O0png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                } else if($gradenum >= 1 && $gradenum < 4) {
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-J.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                } else if($gradenum >= 4) {
-                    imagecopy($bg, imagecreatefrompng($path . "images/uniform/navy/cover-S.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-                }
-            }
+            $fontsize = 50;
+            $angle = 0;
+            $name = getMemberLastName($id);
+            $bb = imagettfbbox($fontsize, $angle, $font, $name);
+            $textwidth = $bb[2] - $bb[0];
+            $textheight = $bb[7] - $bb[1];
+            $namex = 593 - ($textwidth / 2);
+            $namey = 802 - ($textheight / 2);
         }
-
+/*
         //Ribbons
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
@@ -248,10 +174,7 @@
                 imagecopyresampled($bg, $pistolbadge, $pistolx, $badgey, 0, 0, $pistolw, $pistolh, imagesx($pistolbadge), imagesy($pistolbadge));
             }
         }
-        
-        //Border
-        imagecopy($bg, imagecreatefrompng($path . "images/uniform/border.png"), 0, 0, 0, 0, imagesx($uniform), imagesy($uniform));
-        
+        */
         //export
         ob_start();
         imagepng($bg);
