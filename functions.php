@@ -45,8 +45,8 @@
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . ".png");
                 $rankx = 182 - (imagesx($rank) / 2);
                 $ranky = 720;
-                imagecopy($bg, $rank, $rankx, $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
-                imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) - $rankx), $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
+                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
+                imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) - $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
             } else {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . ".png");
                 $rankx = 182 - (imagesx($rank) / 2);
