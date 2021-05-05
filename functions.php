@@ -60,7 +60,7 @@
                 imagealphablending($rank2, false);
                 imagesavealpha($rank2, true);
                 $rankx = 238 - (imagesx($rank) / 2);
-                $ranky = 182;
+                $ranky = 141;
                 $rankw = 65;
                 $aspect = imagesx($rank) / imagesy($rank);
                 $rankh = $rankw * $aspect;
