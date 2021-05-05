@@ -48,20 +48,21 @@
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
             } else {
+                //29 * 79
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . ".png");
                 imagealphablending($rank, false);
                 imagesavealpha($rank, true);
                 $angle = 30;
-                $rank2 = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
-                $rank = imagerotate($rank, -$angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
+                $rank2 = imagerotate($rank, -$angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
+                $rank = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
                 imagealphablending($rank, false);
                 imagesavealpha($rank, true);
                 imagealphablending($rank2, false);
                 imagesavealpha($rank2, true);
                 $rankx = 238 - (imagesx($rank) / 2);
                 $ranky = 182;
-                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
-                imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
+                imagecopyresampled($bg, $rank, $rankx, $ranky, 0, 0, 29, 79, imagesx($rank), imagesy($rank));
+                imagecopyresampled($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, 29, 79, imagesx($rank2), imagesy($rank2));
             }
 
         }
