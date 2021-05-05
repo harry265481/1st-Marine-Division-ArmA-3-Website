@@ -50,14 +50,11 @@
             } else {
                 //29 * 79
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
-                $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
-                $rankx = 230;
+                $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
+                $rankx = 238;
                 $ranky = 141;
-                $rankw = 65;
-                $aspect = imagesx($rank) / imagesy($rank);
-                $rankh = $rankw * $aspect;
-                imagecopyresampled($bg, $rank, $rankx, $ranky, 0, 0, $rankw, $rankh, imagesx($rank), imagesy($rank));
-                imagecopyresampled($bg, $rank2, imagesx($bg) - $rankx, $ranky, 0, 0, $rankw, $rankh, imagesx($rank2), imagesy($rank2));
+                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
+                imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
             }
 
         }
