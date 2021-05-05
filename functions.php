@@ -49,9 +49,19 @@
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
             } else {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . ".png");
-                $rankx = 182 - (imagesx($rank) / 2);
-                $ranky = 720;
-                imagecopyresampled($bg, $rank, $rankx, $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
+                imagealphablending($rank, false);
+                imagesavealpha($rank, true);
+                $angle = 30;
+                $rank2 = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
+                $rank = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
+                imagealphablending($rank, false);
+                imagesavealpha($rank, true);
+                imagealphablending($rank2, false);
+                imagesavealpha($rank2, true);
+                $rankx = 238 - (imagesx($rank) / 2);
+                $ranky = 182;
+                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
+                imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
             }
 
         }
