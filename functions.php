@@ -65,7 +65,7 @@
                 $aspect = imagesx($rank) / imagesy($rank);
                 $rankh = $rankw * $aspect;
                 imagecopyresampled($bg, $rank, $rankx, $ranky, 0, 0, $rankw, $rankh, imagesx($rank), imagesy($rank));
-                imagecopyresampled($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, $rankw, $rankh, imagesx($rank2), imagesy($rank2));
+                //imagecopyresampled($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, $rankw, $rankh, imagesx($rank2), imagesy($rank2));
             }
 
         }
