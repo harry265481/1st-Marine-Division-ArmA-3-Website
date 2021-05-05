@@ -53,7 +53,7 @@
                 imagesavealpha($rank, true);
                 $angle = 30;
                 $rank2 = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
-                $rank = imagerotate($rank, $angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
+                $rank = imagerotate($rank, -$angle, imageColorAllocateAlpha($rank, 0, 0, 0, 127));
                 imagealphablending($rank, false);
                 imagesavealpha($rank, true);
                 imagealphablending($rank2, false);
