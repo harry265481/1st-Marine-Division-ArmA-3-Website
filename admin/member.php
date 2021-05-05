@@ -15,7 +15,7 @@ $position = $row[10];
 $abbrevquery = "SELECT ID, rank_name, paygrade, branch FROM rank WHERE ID=" . $row[3] . " AND branch=" . $row[7];
 $abbrevresults = mysqli_query($link, $abbrevquery);
 $abbrevrow = mysqli_fetch_row($abbrevresults);
-$rank = $abbrevrow[0];
+$rank = $abbrevrow[1];
 $imagename = $abbrevrow[0];
 
 $mosquery = "SELECT MOS, mosname FROM mos WHERE ID=" . $row[9];
@@ -25,9 +25,9 @@ $moscode = $mosrow[0];
 
 $branch;
 $imagestring;
-if($abbrevrow[2] == 0) {
+if($abbrevrow[3] == 0) {
     $branch = "army";
-} else if($abbrevrow[2] == 1) {
+} else if($abbrevrow[3] == 1) {
     $branch = "airforce";
 }
 $imagestring = "../images/ranks/" . $branch . "/large/" . $imagename . ".png";
