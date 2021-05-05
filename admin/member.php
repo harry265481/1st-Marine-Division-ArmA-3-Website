@@ -16,7 +16,7 @@ $abbrevquery = "SELECT ID, rank_name, paygrade, branch FROM rank WHERE ID=" . $r
 $abbrevresults = mysqli_query($link, $abbrevquery);
 $abbrevrow = mysqli_fetch_row($abbrevresults);
 $rank = $abbrevrow[0];
-$imagename = $abbrevquery['0'];
+$imagename = $abbrevquery[0];
 
 $mosquery = "SELECT MOS, mosname FROM mos WHERE ID=" . $row[9];
 $mosresults = mysqli_query($link, $mosquery);
