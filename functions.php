@@ -32,14 +32,28 @@
             putenv('GDFONTPATH=' . realpath('.'));
             $font =  dirname(__FILE__) . '/FRABK.ttf';
             $fontsize = 40;
-                $angle = 0;
-                $name = getMemberLastName($id);
-                $bb = imagettfbbox($fontsize, $angle, $font, $name);
-                $textwidth = $bb[2] - $bb[0];
-                $textheight = $bb[7] - $bb[1];
-                $namex = 593 - ($textwidth / 2);
-                $namey = 802 - ($textheight / 2);
-                imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
+            $angle = 0;
+            $name = getMemberLastName($id);
+            $bb = imagettfbbox($fontsize, $angle, $font, $name);
+            $textwidth = $bb[2] - $bb[0];
+            $textheight = $bb[7] - $bb[1];
+            $namex = 593 - ($textwidth / 2);
+            $namey = 802 - ($textheight / 2);
+            imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
+            
+            if(getMemberRankID($id) < 22) {
+                $rank = imagecreatefrompng($path . "images/uniform/armyranks" . getMemberRankID($id) . ".png");
+                $rankx = 182 - (imagesx($rank) / 2);
+                $ranky = 720;
+                imagecopyresampled($bg, $rank, $rankx, $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
+                imagecopyresampled($bg, $rank, imagesx($bg) - $rankx, $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
+            } else {
+                $rank = imagecreatefrompng($path . "images/uniform/armyranks" . getMemberRankID($id) . ".png");
+                $rankx = 182 - (imagesx($rank) / 2);
+                $ranky = 720;
+                imagecopyresampled($bg, $rank, $rankx, $ranky, imagesx($rank), imagesy($rank), imagesx($rank), imagesy($rank));
+            }
+
         }
 /*
         //Ribbons
