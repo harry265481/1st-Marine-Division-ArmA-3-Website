@@ -32,13 +32,14 @@
             putenv('GDFONTPATH=' . realpath('.'));
             $font =  dirname(__FILE__) . '/FRABK.ttf';
             $fontsize = 50;
-            $angle = 0;
-            $name = getMemberLastName($id);
-            $bb = imagettfbbox($fontsize, $angle, $font, $name);
-            $textwidth = $bb[2] - $bb[0];
-            $textheight = $bb[7] - $bb[1];
-            $namex = 593 - ($textwidth / 2);
-            $namey = 802 - ($textheight / 2);
+                $angle = 0;
+                $name = getMemberLastName($id);
+                $bb = imagettfbbox($fontsize, $angle, $font, $name);
+                $textwidth = $bb[2] - $bb[0];
+                $textheight = $bb[7] - $bb[1];
+                $namex = 593 - ($textwidth / 2);
+                $namey = 802 - ($textheight / 2);
+                imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
         }
 /*
         //Ribbons
@@ -174,7 +175,7 @@
                 imagecopyresampled($bg, $pistolbadge, $pistolx, $badgey, 0, 0, $pistolw, $pistolh, imagesx($pistolbadge), imagesy($pistolbadge));
             }
         }
-        */
+*/
         //export
         ob_start();
         imagepng($bg);
