@@ -112,7 +112,6 @@
                     $medicallapelx2 = 1313 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $medicallapelx1, $medicallapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $medicallapelx2, $medicallapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
-                }
                 } else if($armybranch == 3) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/OFF-CYBERL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/OFF-CYBERR.png");
