@@ -713,4 +713,32 @@
         }
         return true;
     }
+
+    function buildMassAwardRow($unitid, $path) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $results = mysqli_query($link, "SELECT ID, FirstName, LastName, branch, rank FROM personnel WHERE unitID=" . $unitid . " ORDER BY rank desc");
+        if($results == "false") {
+            return false;
+        }
+        foreach ($results as $result)  {
+            $imagename = $result['rank'];
+
+            if($result['branch'] == 0) {
+                $branch = "army";
+            } else if($result['branch'] == 1) {
+                $branch = "airforce";
+            }
+
+            $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
+        
+            echo "<tr>";
+            echo    "<td width=\"30px\"><img class=\"mx-auto d-block\"  height=\"30px\" src=" . $imagestring . ".png></td>";
+            echo    "<td width=\"130px\">" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
+            echo    "<td width=\"22px\">";
+            echo        "<input type=\"checkbox\" value=\"" . $result['ID'] . "\" name=\"award[]\">";
+            echo    "</td>";
+            echo "</tr>";
+        }
+        return true;
+    }
 ?>
