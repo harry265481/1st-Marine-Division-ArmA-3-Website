@@ -735,7 +735,7 @@
             echo    "<td width=\"30px\"><img class=\"mx-auto d-block\"  height=\"30px\" src=" . $imagestring . ".png></td>";
             echo    "<td width=\"130px\">" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
             echo    "<td width=\"22px\">";
-            echo        "<input type=\"checkbox\" value=\"" . $result['ID'] . "\" name=\"award[]\">";
+            echo        "<input type=\"checkbox\" value=\"" . $result['ID'] . "\" name=\"member[]\">";
             echo    "</td>";
             echo "</tr>";
         }

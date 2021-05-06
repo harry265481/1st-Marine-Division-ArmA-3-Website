@@ -54,14 +54,15 @@ include_once '../functions.php';
                                 </tbody>
                             </table>
                         </div>
-                        <select name="event">
+                        <select name="curraward">
                             <?php
-                                $events = mysqli_query($link, "SELECT * FROM events ORDER BY eventdate desc");
-                                foreach($events as $event) {
-                                    echo "<option value=\"" . $event['ID'] . "\">" . $event['eventtitle'] . " " . $event['eventdate'] .  "</option>";
+                                $awards = mysqli_query($link, "SELECT ID, awardname FROM awards ORDER BY precedence asc");
+                                foreach($awards as $award) {
+                                    echo "<option value=\"" . $award['ID'] . "\">" . $award['awardname'] .  "</option>";
                                 }
                             ?>
                         </select><br>
+                        <input type="date"><br>
                         <input type="submit" class="btn btn-primary" value="Submit">
                     </form>
                 </main>
