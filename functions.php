@@ -5,7 +5,7 @@
     //id      | int | id of the member
     //grade   | str | grade given as "{firstLetter}{number}"
     //$branch | int | id of branch
-    function generateUniform($id, $grade, $branch, $path = "") {
+    function generateUniform($id, $grade, $branch, $path = "", $armybranch) {
         
         //check branch and create resource from background
         //marine
@@ -47,6 +47,16 @@
                 $ranky = 720;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
+
+                if($armybranch == 1) {
+                    $lapelpinl = imagecreatefrompng($path . "images/uniform/ENL-INFL.png");
+                    $lapelpinr = imagecreatefrompng($path . "images/uniform/ENL-INFR.png");
+                    $infantrylapely = 316 - (imagesy($lapelpinl) / 2);
+                    $infantrylapelx1 = 693 - (imagesx($lapelpinl) / 2);
+                    $infantrylapelx2 = 1350 - (imagesx($lapelpinr) / 2);
+                    imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
+                    imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
+                }
             } else {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
                 $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
@@ -58,8 +68,8 @@
                 $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
                 $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
                 $officerlapely = 317 - (imagesy($lapelpinl) / 2);
-                $officerlapelx1 = 682 - (imagesx($lapelpinl) / 2);;
-                $officerlapelx2 = 1377 - (imagesx($lapelpinl) / 2);;
+                $officerlapelx1 = 682 - (imagesx($lapelpinl) / 2);
+                $officerlapelx2 = 1377 - (imagesx($lapelpinl) / 2);
                 imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                 imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
             }
@@ -272,6 +282,13 @@
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $status = mysqli_fetch_row(mysqli_query($link, "SELECT status FROM personnel WHERE ID=" . $id));
         $statusname = mysqli_fetch_row(mysqli_query($link, "SELECT status FROM personnel WHERE ID=" . $status));
+        return $statusname[0];
+    }
+
+    //Returns ID of army branch of a member
+    function getMemberArmyBranchID($id) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $armybranch = mysqli_fetch_row(mysqli_query($link, "SELECT armybranch FROM personnel WHERE ID=" . $id));
         return $statusname[0];
     }
 
