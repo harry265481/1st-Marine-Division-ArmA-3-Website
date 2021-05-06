@@ -36,16 +36,16 @@ include_once '../functions.php';
                                     <?php
                                         $battunits = mysqli_query($link, "SELECT * FROM units WHERE parents='' AND active=1 ORDER BY unitorder asc");
                                         foreach($battunits as $batt) {
-                                                buildAttendanceRow($batt['ID'], "../");
+                                            buildMassAwardRow($batt['ID'], "../");
                                             $compunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $batt['ID'] . " AND active=1 ORDER BY unitorder asc");
                                             foreach($compunits as $comp) {
-                                                buildAttendanceRow($comp['ID'], "../");
+                                                buildMassAwardRow($comp['ID'], "../");
                                                 $platunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $comp['ID'] . " AND active=1 ORDER BY unitorder asc");
                                                 foreach($platunits as $plat) {
-                                                    buildAttendanceRow($plat['ID'], "../");
+                                                    buildMassAwardRow($plat['ID'], "../");
                                                     $squadunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $plat['ID'] . " AND active=1 ORDER BY unitorder asc");
                                                     foreach($squadunits as $squad) {
-                                                        buildAttendanceRow($squad['ID'], "../");
+                                                        buildMassAwardRow($squad['ID'], "../");
                                                     }
                                                 }
                                             }
