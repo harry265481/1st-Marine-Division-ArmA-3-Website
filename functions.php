@@ -48,7 +48,7 @@
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
 
-                if($armybranch == 1) {
+                if($armybranch == 0) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/ENL-INFL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/ENL-INFR.png");
                     $infantrylapely = 316 - (imagesy($lapelpinl) / 2);
@@ -289,7 +289,7 @@
     function getMemberArmyBranchID($id) {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $armybranch = mysqli_fetch_row(mysqli_query($link, "SELECT armybranch FROM personnel WHERE ID=" . $id));
-        return $statusname[0];
+        return $armybranch[0];
     }
 
     //Returns name of a status
