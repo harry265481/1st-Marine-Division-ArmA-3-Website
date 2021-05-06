@@ -107,6 +107,7 @@ if($days > 365) {
                                     </li>
                                 </ul>
                                 <div class="tab-content">
+                                    <!-- Awards Tab -->
                                     <div class="tab-pane fade show active" id="awards">
                                         <table class="table table-dark table-striped align-middle table-sm">
                                             <thead>
@@ -136,6 +137,7 @@ if($days > 365) {
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!-- Records Tab -->
                                     <div class="tab-pane fade" id="records">
                                         <table class="table table-dark table-striped align-middle table-sm">
                                             <thead>

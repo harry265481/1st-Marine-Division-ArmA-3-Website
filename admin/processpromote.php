@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 include_once '../config.php';
 
@@ -9,9 +9,10 @@ $usetoday = $_POST['today'];
 
 if($usetoday == "true") {
     $date = date("d-M-Y");
+    $date = date_create($date);
 }
 
-$date = date_format($date, "d-M-Y");
+$date = date_format($date, "d\-M\-Y");
 
 //Update personnel record
 mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
