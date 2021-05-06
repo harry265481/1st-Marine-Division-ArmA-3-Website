@@ -5,7 +5,7 @@ include_once '../config.php';
 $id = $_GET['id'];
 $rank = $_POST['rank'];
 $date = $_POST['date'];
-if(isset($_POST['today']) { $usetoday = $_POST['today']; }
+if(isset($_POST['today'])) { $usetoday = $_POST['today']; }
 
 if($usetoday == "true") {
     $date = date("d-M-Y");
