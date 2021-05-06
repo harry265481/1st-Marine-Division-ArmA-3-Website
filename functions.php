@@ -47,6 +47,13 @@
                 $ranky = 720;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
+            } else {
+                $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
+                $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
+                $rankx = 230;
+                $ranky = 141;
+                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
+                imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
 
                 $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
                 $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
@@ -55,13 +62,6 @@
                 $officerlapelx2 = 1377;
                 imagecopy($bg, $lapelpinl, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                 imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
-            } else {
-                $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
-                $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
-                $rankx = 230;
-                $ranky = 141;
-                imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
-                imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
             }
 
         }
