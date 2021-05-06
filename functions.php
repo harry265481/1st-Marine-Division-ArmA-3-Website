@@ -54,8 +54,8 @@
                     $infantrylapely = 316 - (imagesy($lapelpinl) / 2);
                     $infantrylapelx1 = 693 - (imagesx($lapelpinl) / 2);
                     $infantrylapelx2 = 1350 - (imagesx($lapelpinr) / 2);
-                    imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
-                    imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
+                    imagecopy($bg, $lapelpinl, $infantrylapelx1, $infantrylapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
+                    imagecopy($bg, $lapelpinr, $infantrylapelx2, $infantrylapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
                 }
             } else {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
