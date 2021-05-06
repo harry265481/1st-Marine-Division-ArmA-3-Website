@@ -9,9 +9,9 @@ $usetoday = $_POST['today'];
 
 if($usetoday == "true") {
     $date = date("d-M-Y");
-    $date = date_create($date);
 }
 
+$date = date_create($date);
 $date = date_format($date, "d\-M\-Y");
 
 //Update personnel record
