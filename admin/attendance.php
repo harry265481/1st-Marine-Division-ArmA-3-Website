@@ -15,7 +15,7 @@ include_once '../functions.php';
             <div class="row">
                 <?php include_once 'nav.php'; ?>
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-dark">
-                    <fo rm>
+                    <form>
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2 text-light">Attendance</h1>
                             <h1></h1>
@@ -51,8 +51,8 @@ include_once '../functions.php';
                             }
                         ?>
                         </div>
-                        <input type="date" name="date"><br>
-                        <input type="submit" value="Submit">
+                        <input type="date" class="form-control" name="date"><br>
+                        <input type="submit" class="btn btn-primary" value="Submit">
                     </form>
                 </main>
             </div>
