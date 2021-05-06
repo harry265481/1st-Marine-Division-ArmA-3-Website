@@ -1,4 +1,5 @@
 <?php
+    include_once '../config.php';
     var_dump($_POST);
     $members = $_POST['member'];
     $curraward = $_POST['curraward'];
