@@ -60,14 +60,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Sign In</title>
+        <title>1st Infantry Division - Sign In</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>
     <body class="text-center">
        <main class="form-signin">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <img class="mb-4" src="images/1MD.png" width="200px">
+                <img class="mb-4" src="images/1ID.png" width="200px">
                 <h1 class="h3 mb-3 fw-normal" style="color: white;">Sign In</h1>
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username">
