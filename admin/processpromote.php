@@ -20,6 +20,5 @@ mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
 
 //Add record to record table
 mysqli_query($link, "INSERT INTO records (memberID, recordType, promorank, recorddate) VALUES ('" . $id . "', '2', '" . $rank . "', '" . $date . "')");
-mysqli_error($link);
-//header("Location: members.php");
+header("Location: members.php");
 ?>
