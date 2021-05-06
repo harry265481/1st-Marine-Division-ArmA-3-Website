@@ -55,6 +55,12 @@
                     Attendance
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="events.php">
+                    <span data-feather="Events"></span>
+                    Events
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
