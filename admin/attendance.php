@@ -56,7 +56,7 @@ include_once '../functions.php';
                         </div>
                         <select name="event">
                             <?php
-                                mysqli_query($link, "SELECT * FROM events ORDER BY eventdate desc");
+                                $events = mysqli_query($link, "SELECT * FROM events ORDER BY eventdate desc");
                                 foreach($events as $event) {
                                     echo "<option value=\"" . $event['ID'] . "\">" . $event['eventtitle'] . " " . $event['eventdate'] .  "</option>";
                                 }
