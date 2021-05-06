@@ -47,8 +47,15 @@
                 $ranky = 720;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
+
+                $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
+                $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
+                $officerlapely = 317 - (imagesy($lapelpinl) / 2);
+                $officerlapelx1 = 682;
+                $officerlapelx2 = 1377;
+                imagecopy($bg, $lapelpinl, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
+                imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
             } else {
-                //29 * 79
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
                 $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
                 $rankx = 230;
@@ -58,7 +65,7 @@
             }
 
         }
-/*
+        /*
         //Ribbons
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
@@ -192,7 +199,7 @@
                 imagecopyresampled($bg, $pistolbadge, $pistolx, $badgey, 0, 0, $pistolw, $pistolh, imagesx($pistolbadge), imagesy($pistolbadge));
             }
         }
-*/
+        */
         //export
         ob_start();
         imagepng($bg);
