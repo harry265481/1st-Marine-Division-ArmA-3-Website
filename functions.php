@@ -110,8 +110,8 @@
             $ribbonwidth = 108;
             $ribbonheight = 30;
             $threewidesrcx = 1494;
-            $twowidesrcx = 1332;
-            $onewidesrcx = 1368;
+            $twowidesrcx = 1440;
+            $onewidesrcx = 1386;
 
         foreach($ribbonrack as $row) {
             foreach($row as $column) {
