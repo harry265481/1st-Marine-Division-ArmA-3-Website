@@ -106,21 +106,12 @@
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
         $columncount = 0;
-        if($branch == 0) {
             $ribbony = 258;
-            $ribbonwidth = 19;
-            $ribbonheight = 4;
+            $ribbonwidth = 108;
+            $ribbonheight = 30;
             $threewidesrcx = 1494;
             $twowidesrcx = 1332;
             $onewidesrcx = 1368;
-        } else {
-            $ribbony = 258;
-            $ribbonwidth = 19;
-            $ribbonheight = 4;
-            $threewidesrcx = 1494;
-            $twowidesrcx = 1332;
-            $onewidesrcx = 1368;
-        }
 
         foreach($ribbonrack as $row) {
             foreach($row as $column) {
