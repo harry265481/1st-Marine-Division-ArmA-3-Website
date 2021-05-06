@@ -1,4 +1,5 @@
 <?php
+    include_once '../config.php';
     $date = $_POST['date'];
     $title = $_POST['title'];
 
