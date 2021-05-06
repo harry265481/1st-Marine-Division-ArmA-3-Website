@@ -15,7 +15,7 @@ $rankrow = mysqli_fetch_row(mysqli_query($link, $rankquery));
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Promote</title>
+        <title>1st Infantry Division - Promote</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">

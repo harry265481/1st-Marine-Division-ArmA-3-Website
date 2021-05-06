@@ -1,10 +1,9 @@
 <?php
-
-var_dump($_POST);
+include_once '../config.php';
 $attendances = $_POST['attendance'];
 foreach($attendances as $ID=>$attendance) {
     foreach($attendance as $curr) {
-        echo $ID . " " . $curr . "<br>";
+        mysqli_query($link, "INSERT INTO attendance () VALUES ()");
     }
 }
 ?>
