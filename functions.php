@@ -101,7 +101,7 @@
 
         }
 
-        /*
+        
         //Ribbons
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
@@ -139,7 +139,7 @@
             $columncount = 0;
             $rowcount = $rowcount + 1;
         }
-        */
+        
         /*
         //marksmenship badges
         if($branch == 0) {
