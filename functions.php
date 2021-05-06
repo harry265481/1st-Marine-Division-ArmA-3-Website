@@ -31,7 +31,7 @@
             //CONSTANTS: text size: 7; Font: FRABK.ttf
             putenv('GDFONTPATH=' . realpath('.'));
             $font =  dirname(__FILE__) . '/FRABK.ttf';
-            $fontsize = 40;
+            $fontsize = 30;
             $angle = 0;
             $name = getMemberLastName($id);
             $bb = imagettfbbox($fontsize, $angle, $font, $name);
