@@ -58,8 +58,8 @@
                 $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
                 $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
                 $officerlapely = 317 - (imagesy($lapelpinl) / 2);
-                $officerlapelx1 = 682;
-                $officerlapelx2 = 1377;
+                $officerlapelx1 = 682 - (imagesx($lapelpinl) / 2);;
+                $officerlapelx2 = 1377 - (imagesx($lapelpinl) / 2);;
                 imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                 imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
             }
