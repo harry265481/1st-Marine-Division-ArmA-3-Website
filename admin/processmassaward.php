@@ -2,8 +2,9 @@
     var_dump($_POST);
     $members = $_POST['member'];
     $curraward = $_POST['curraward'];
+    $date = $_POST['date'];
     foreach($members as $member) {
-        if(mysqli_query($link, "INSERT INTO attendance (memberID, awardID, awardDate) VALUES ('" . $member . "', '" . $curraward . "', '" . $curr . "')")) {
+        if(mysqli_query($link, "INSERT INTO awardrecord (memberID, awardID, awarddate) VALUES ('" . $member . "', '" . $curraward . "', '" . $curr . "')")) {
             echo mysqli_error($link);
         } else {
             header("Location: members.php");

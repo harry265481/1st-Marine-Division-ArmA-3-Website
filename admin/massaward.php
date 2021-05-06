@@ -62,7 +62,7 @@ include_once '../functions.php';
                                 }
                             ?>
                         </select><br>
-                        <input type="date"><br>
+                        <input type="date" name="date"><br>
                         <input type="submit" class="btn btn-primary" value="Submit">
                     </form>
                 </main>
