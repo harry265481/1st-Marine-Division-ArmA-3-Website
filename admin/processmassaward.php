@@ -4,10 +4,13 @@
     $curraward = $_POST['curraward'];
     $date = $_POST['date'];
     foreach($members as $member) {
+        echo $member . " | " . $curraward . " | " . $date . " <br>";
+        /*
         if(mysqli_query($link, "INSERT INTO awardrecord (memberID, awardID, awarddate) VALUES ('" . $member . "', '" . $curraward . "', '" . $date . "')")) {
             echo mysqli_error($link);
         } else {
             header("Location: members.php");
         }
+        */
     }
 ?>
