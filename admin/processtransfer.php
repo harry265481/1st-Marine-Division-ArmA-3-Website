@@ -6,14 +6,16 @@ $pos = $_POST['pos'];
 $unit = $_POST['unit'];
 $mos = $_POST['mos'];
 $date = $_POST['date'];
-$usetoday = $_POST['today'];
 $status = $_POST['status'];
 
-if($usetoday == "true") {
-    $date = date("d-M-Y");
-    $date = date_create($date);
+if(isset($_POST['today'])) { 
+    $usetoday = $_POST['today'];
+    if($usetoday == "true") {
+        $date = date("d-M-Y");
+    } 
 }
 
+$date = date_create($date);
 $date = date_format($date, "d\-M\-Y");
 
 

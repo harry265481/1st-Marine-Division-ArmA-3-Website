@@ -5,13 +5,14 @@ include_once '../config.php';
 $id = $_GET['id'];
 $rank = $_POST['rank'];
 $date = $_POST['date'];
-$usetoday = $_POST['today'];
-
-if($usetoday == "true") {
-    $date = date("d-M-Y");
-    $date = date_create($date);
+if(isset($_POST['today'])) { 
+    $usetoday = $_POST['today'];
+    if($usetoday == "true") {
+        $date = date("d-M-Y");
+    } 
 }
 
+$date = date_create($date);
 $date = date_format($date, "d\-M\-Y");
 
 //Update personnel record
