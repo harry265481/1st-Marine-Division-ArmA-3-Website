@@ -8,7 +8,7 @@ $shortname = substr($row[0], 0, 1) . ". " . $row[1];
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Transfer</title>
+        <title>1st Infantry Division - Transfer</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">
