@@ -34,7 +34,7 @@
             $textwidth = $bb[2] - $bb[0];
             $textheight = $bb[7] - $bb[1];
             $namex = 300 - ($textwidth / 2);
-            $namey = 403 - ($textheight / 2);
+            $namey = 400 - ($textheight / 2);
             imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
             
             if(getMemberRankID($id) < 22) {
