@@ -34,7 +34,7 @@
             $textwidth = $bb[2] - $bb[0];
             $textheight = $bb[7] - $bb[1];
             $namex = 300 - ($textwidth / 2);
-            $namey = 413 - ($textheight / 2);
+            $namey = 403 - ($textheight / 2);
             imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
             
             if(getMemberRankID($id) < 22) {
@@ -79,9 +79,9 @@
 
                 $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
                 $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
-                $officerlapely = 317 - (imagesy($lapelpinl) / 2);
-                $officerlapelx1 = 159 - (imagesx($lapelpinl) / 2);
-                $officerlapelx2 = 688 - (imagesx($lapelpinl) / 2);
+                $officerlapely = 159 - (imagesy($lapelpinl) / 2);
+                $officerlapelx1 = 341 - (imagesx($lapelpinl) / 2);
+                $officerlapelx2 = 689 - (imagesx($lapelpinl) / 2);
                 imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                 imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 if($armybranch == 0) {
