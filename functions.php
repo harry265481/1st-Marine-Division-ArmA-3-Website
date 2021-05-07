@@ -18,10 +18,6 @@
             $bg = imagecreatefrompng($path . "images/uniform/airforce.png");
         }
 
-        //Get grade type; E or O
-        $gradetype = substr($grade, 0, 1);
-        $gradenum = substr($grade, 1, 1);
-        
         //create colors
         $white = imagecolorallocate($bg, 255, 255, 255);
 
@@ -31,93 +27,93 @@
             //CONSTANTS: text size: 7; Font: FRABK.ttf
             putenv('GDFONTPATH=' . realpath('.'));
             $font =  dirname(__FILE__) . '/FRABK.ttf';
-            $fontsize = 30;
+            $fontsize = 15;
             $angle = 0;
             $name = getMemberLastName($id);
             $bb = imagettfbbox($fontsize, $angle, $font, $name);
             $textwidth = $bb[2] - $bb[0];
             $textheight = $bb[7] - $bb[1];
-            $namex = 593 - ($textwidth / 2);
-            $namey = 802 - ($textheight / 2);
+            $namex = 300 - ($textwidth / 2);
+            $namey = 413 - ($textheight / 2);
             imagettftext($bg, $fontsize, $angle, $namex, $namey, $white, $font, $name);
             
             if(getMemberRankID($id) < 22) {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . ".png");
-                $rankx = 182 - (imagesx($rank) / 2);
-                $ranky = 720;
+                $rankx = 80 - (imagesx($rank) / 2);
+                $ranky = 356;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank, imagesx($bg) - (imagesx($rank) + $rankx), $ranky, 0, 0, imagesx($rank), imagesy($rank));
 
                 if($armybranch == 0) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/ENL-INFL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/ENL-INFR.png");
-                    $infantrylapely = 316 - (imagesy($lapelpinl) / 2);
-                    $infantrylapelx1 = 693 - (imagesx($lapelpinl) / 2);
-                    $infantrylapelx2 = 1350 - (imagesx($lapelpinr) / 2);
+                    $infantrylapely = 158 - (imagesy($lapelpinl) / 2);
+                    $infantrylapelx1 = 346 - (imagesx($lapelpinl) / 2);
+                    $infantrylapelx2 = 675 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $infantrylapelx1, $infantrylapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $infantrylapelx2, $infantrylapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
                 } else if($armybranch == 1) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/ENL-USL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/ENL-AVIR.png");
-                    $aviationlapely = 316 - (imagesy($lapelpinl) / 2);
-                    $aviationlapelx1 = 693 - (imagesx($lapelpinl) / 2);
+                    $aviationlapely = 158 - (imagesy($lapelpinl) / 2);
+                    $aviationlapelx1 = 346 - (imagesx($lapelpinl) / 2);
                     $aviationlapelx2 = 1350 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $aviationlapelx1, $aviationlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $aviationlapelx2, $aviationlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
                 } else if($armybranch == 2) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/ENL-USL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/ENL-MEDR.png");
-                    $medicallapely = 316 - (imagesy($lapelpinl) / 2);
-                    $medicallapelx1 = 693 - (imagesx($lapelpinl) / 2);
-                    $medicallapelx2 = 1350 - (imagesx($lapelpinr) / 2);
+                    $medicallapely = 158 - (imagesy($lapelpinl) / 2);
+                    $medicallapelx1 = 346 - (imagesx($lapelpinl) / 2);
+                    $medicallapelx2 = 675 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $medicallapelx1, $medicallapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $medicallapelx2, $medicallapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr ));
                 }
             } else {
                 $rank = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "L.png");
                 $rank2 = imagecreatefrompng($path . "images/uniform/armyranks/" . getMemberRankID($id) . "R.png");
-                $rankx = 230;
-                $ranky = 141;
+                $rankx = 120;
+                $ranky = 90;
                 imagecopy($bg, $rank, $rankx, $ranky, 0, 0, imagesx($rank), imagesy($rank));
                 imagecopy($bg, $rank2, imagesx($bg) - (imagesx($rank2) + $rankx), $ranky, 0, 0, imagesx($rank2), imagesy($rank2));
 
                 $lapelpinl = imagecreatefrompng($path . "images/uniform/OFFL.png");
                 $lapelpinr = imagecreatefrompng($path . "images/uniform/OFFR.png");
                 $officerlapely = 317 - (imagesy($lapelpinl) / 2);
-                $officerlapelx1 = 682 - (imagesx($lapelpinl) / 2);
-                $officerlapelx2 = 1377 - (imagesx($lapelpinl) / 2);
+                $officerlapelx1 = 159 - (imagesx($lapelpinl) / 2);
+                $officerlapelx2 = 688 - (imagesx($lapelpinl) / 2);
                 imagecopy($bg, $lapelpinl, $officerlapelx1, $officerlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                 imagecopy($bg, $lapelpinr, $officerlapelx2, $officerlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 if($armybranch == 0) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/OFF-INFL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/OFF-INFR.png");
-                    $infantrylapely = 410 - (imagesy($lapelpinl) / 2);
-                    $infantrylapelx1 = 731 - (imagesx($lapelpinl) / 2);
-                    $infantrylapelx2 = 1313 - (imagesx($lapelpinr) / 2);
+                    $infantrylapely = 205 - (imagesy($lapelpinl) / 2);
+                    $infantrylapelx1 = 365 - (imagesx($lapelpinl) / 2);
+                    $infantrylapelx2 = 656 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $infantrylapelx1, $infantrylapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $infantrylapelx2, $infantrylapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 } else if($armybranch == 1) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/OFF-AVIL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/OFF-AVIR.png");
-                    $aviationlapely = 410 - (imagesy($lapelpinl) / 2);
-                    $aviationlapelx1 = 731 - (imagesx($lapelpinl) / 2);
-                    $aviationlapelx2 = 1313 - (imagesx($lapelpinr) / 2);
+                    $aviationlapely = 205 - (imagesy($lapelpinl) / 2);
+                    $aviationlapelx1 = 365 - (imagesx($lapelpinl) / 2);
+                    $aviationlapelx2 = 656 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $aviationlapelx1, $aviationlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $aviationlapelx2, $aviationlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 } else if($armybranch == 2) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/OFF-MEDL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/OFF-MEDR.png");
-                    $medicallapely = 410 - (imagesy($lapelpinl) / 2);
-                    $medicallapelx1 = 731 - (imagesx($lapelpinl) / 2);
-                    $medicallapelx2 = 1313 - (imagesx($lapelpinr) / 2);
+                    $medicallapely = 205 - (imagesy($lapelpinl) / 2);
+                    $medicallapelx1 = 365 - (imagesx($lapelpinl) / 2);
+                    $medicallapelx2 = 656 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $medicallapelx1, $medicallapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $medicallapelx2, $medicallapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 } else if($armybranch == 3) {
                     $lapelpinl = imagecreatefrompng($path . "images/uniform/OFF-CYBERL.png");
                     $lapelpinr = imagecreatefrompng($path . "images/uniform/OFF-CYBERR.png");
-                    $cyberlapely = 410 - (imagesy($lapelpinl) / 2);
-                    $cyberlapelx1 = 731 - (imagesx($lapelpinl) / 2);
-                    $cyberlapelx2 = 1313 - (imagesx($lapelpinr) / 2);
+                    $cyberlapely = 205 - (imagesy($lapelpinl) / 2);
+                    $cyberlapelx1 = 365 - (imagesx($lapelpinl) / 2);
+                    $cyberlapelx2 = 656 - (imagesx($lapelpinr) / 2);
                     imagecopy($bg, $lapelpinl, $cyberlapelx1, $cyberlapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
                     imagecopy($bg, $lapelpinr, $cyberlapelx2, $cyberlapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
                 }
@@ -130,12 +126,12 @@
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
         $columncount = 0;
-            $ribbony = 686;
-            $ribbonwidth = 108;
-            $ribbonheight = 30;
-            $threewidesrcx = 1494;
-            $twowidesrcx = 1440;
-            $onewidesrcx = 1386;
+            $ribbony = 343;
+            $ribbonwidth = 53;
+            $ribbonheight = 15;
+            $threewidesrcx = 747;
+            $twowidesrcx = 720;
+            $onewidesrcx = 693;
 
         foreach($ribbonrack as $row) {
             foreach($row as $column) {
