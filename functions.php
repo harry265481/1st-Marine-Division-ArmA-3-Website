@@ -121,17 +121,16 @@
 
         }
 
-        
         //Ribbons
         $ribbonrack = createRibbonGrid(getMemberAwardsFileName($id));
         $rowcount = 0;
         $columncount = 0;
-            $ribbony = 343;
-            $ribbonwidth = 53;
-            $ribbonheight = 15;
-            $threewidesrcx = 747;
-            $twowidesrcx = 720;
-            $onewidesrcx = 693;
+        $ribbony = 343;
+        $ribbonwidth = 53;
+        $ribbonheight = 15;
+        $threewidesrcx = 747;
+        $twowidesrcx = 720;
+        $onewidesrcx = 693;
 
         foreach($ribbonrack as $row) {
             foreach($row as $column) {
@@ -255,6 +254,13 @@
         ob_end_clean();
         $generateBase64 = base64_encode($image_data);
         return $generateBase64;
+    }
+
+    function placeLapelPins($dst, $lfilename, $rfilename, $left, $top, $path) {
+        $lpin = imagecreatefrompng($path . "images/uniform/" . $lfilename);
+        $rpin = imagecreatefrompng($path . "images/uniform/" . $rfilename);
+        imagecopy($bg, $lapelpinl, $medicallapelx1, $medicallapely, 0, 0, imagesx($lapelpinl), imagesy($lapelpinl));
+        imagecopy($bg, $lapelpinr, $medicallapelx2, $medicallapely, 0, 0, imagesx($lapelpinr), imagesy($lapelpinr));
     }
 
     function generatePilotPatch($id, $grade, $branch, $path) {
