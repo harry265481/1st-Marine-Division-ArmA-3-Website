@@ -7,7 +7,7 @@ include_once 'functions.php';
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Roster</title>
+        <title><?php echo $unitname ?> - Roster</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="index.css">
     </head>
