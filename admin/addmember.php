@@ -5,7 +5,7 @@ include_once '../config.php';
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Application</title>
+        <title><?php echo $unitname ?> - Application</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">

@@ -65,7 +65,7 @@ if($days > 365) {
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Members</title>
+        <title><?php echo $unitname ?> - Members</title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="../member.css">
     </head>

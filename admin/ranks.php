@@ -11,7 +11,7 @@ include_once '../config.php'
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Ranks</title>
+        <title><?php echo $unitname ?> - Ranks</title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>

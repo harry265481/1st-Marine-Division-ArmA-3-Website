@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - awards</title>
+        <title><?php echo $unitname ?> - awards</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">

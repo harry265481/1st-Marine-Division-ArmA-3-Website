@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - <!--Page Title --></title>
+        <title><?php echo $unitname ?> - <!--Page Title --></title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>

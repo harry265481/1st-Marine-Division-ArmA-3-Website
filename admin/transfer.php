@@ -21,7 +21,7 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Transfer</title>
+        <title><?php echo $unitname ?> - Transfer</title>
         <?php include '../header.php' ?>
     </head>
     <body class="bg-dark">

@@ -11,7 +11,7 @@ include_once '../config.php'
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - MOS</title>
+        <title><?php echo $unitname ?> - MOS</title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>
