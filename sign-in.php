@@ -60,7 +60,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Marine Division - Sign In</title>
+        <title><?php echo $unitname ?> - Sign In</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
     </head>

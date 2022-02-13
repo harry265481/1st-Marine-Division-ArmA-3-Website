@@ -1,8 +1,9 @@
 <?php session_start(); ?>
+<?php include_once 'config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>1st Infantry Division - Home</title>
+        <title><?php echo $unitname ?> - Home</title>
         <?php include 'header.php' ?>
         <link rel="stylesheet" href="index.css">
     </head>
