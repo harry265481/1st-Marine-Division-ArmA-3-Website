@@ -658,7 +658,7 @@
         foreach ($results as $result)  {
             $statusrow = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM status WHERE ID=" . $result['status']));
             $rank = getRankName($result['rank']);
-            $imagename = getMemberRankAbbrev($result['ID']);
+            $imagename = getMemberRankID($result['ID']);
             $position = getPositionName($result['position']);
 
             if($result['branch'] == 0) {
