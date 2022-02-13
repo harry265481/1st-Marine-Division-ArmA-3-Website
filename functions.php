@@ -581,10 +581,10 @@
     function buildRetirementRecord($type) {
         switch($type) {
             case 0:
-                return "<td>Discharged from the 1st Infantry Division - Honorable</td>";
+                return "<td>Discharged from the " . $unitname . " - Honorable</td>";
                 break;
             case 1:
-                return "<td>Discharged from the 1st Infantry Division - General</td>";
+                return "<td>Discharged from the " . $unitname . " - General</td>";
                 break;
             case 2:
                 return "<td>Administrative Seperation</td>";
@@ -599,7 +599,7 @@
                 return "<td>Dishonorable Discharge</td>";
                 break;
             case 6:
-                return "<td>Retired from the 1st Infantry Division</td>";
+                return "<td>Retired from the " . $unitname . "</td>";
                 break;
         }
         return false;
@@ -662,9 +662,9 @@
             $position = getPositionName($result['position']);
 
             if($result['branch'] == 0) {
-                $branch = "army";
+                $branch = "marines";
             } else if($result['branch'] == 1) {
-                $branch = "airforce";
+                $branch = "navy";
             }
 
             $imagestring = $path . "images/ranks/" . $branch . "/small/" . $imagename;
