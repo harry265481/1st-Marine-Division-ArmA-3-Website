@@ -26,7 +26,7 @@ include_once 'functions.php';
                     </div>
                     <div class="table-responsive">
                     <?php
-                        $battunits = mysqli_query($link, "SELECT * FROM units WHERE parents='' AND active=1 ORDER BY unitorder asc");
+                        $battunits = mysqli_query($link, "SELECT * FROM units WHERE parents='' ORDER BY unitorder asc");
                         foreach($battunits as $batt) {
                             echo "<h1 class=\"h2 text-light\">" . $batt['unitname'] . "</h1>";
                             echo "<div class=\"btn-toolbar mb-2 mb-md-0\"></div>";
@@ -47,7 +47,7 @@ include_once 'functions.php';
                                     buildUnitMemberTable($batt['ID'], "");
                             echo    "</tbody>";
                             echo "</table>";
-                            $compunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $batt['ID'] . " AND active=1 ORDER BY unitorder asc");
+                            $compunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $batt['ID'] . " ORDER BY unitorder asc");
                             foreach($compunits as $comp) {
                                 echo "<h1 class=\"h3 text-light\">" . $comp['unitname'] . "</h1>";
                                 echo "<div class=\"btn-toolbar mb-2 mb-md-0\"></div>";
@@ -68,7 +68,7 @@ include_once 'functions.php';
                                         buildUnitMemberTable($comp['ID'], "");
                                 echo    "</tbody>";
                                 echo "</table>";
-                                    $platunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $comp['ID'] . " AND active=1 ORDER BY unitorder asc");
+                                    $platunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $comp['ID'] . " ORDER BY unitorder asc");
                                     foreach($platunits as $plat) {
                                         echo "<h1 class=\"h4 text-light\">" . $plat['unitname'] . "</h1>";
                                         echo "<div class=\"btn-toolbar mb-2 mb-md-0\"></div>";
@@ -89,7 +89,7 @@ include_once 'functions.php';
                                                 buildUnitMemberTable($plat['ID'], "");
                                         echo    "</tbody>";
                                         echo "</table>";
-                                        $squadunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $plat['ID'] . " AND active=1 ORDER BY unitorder asc");
+                                        $squadunits = mysqli_query($link, "SELECT * FROM units WHERE parents=" . $plat['ID'] . " ORDER BY unitorder asc");
                                         foreach($squadunits as $squad) {
                                             echo "<h1 class=\"h5 text-light\">" . $squad['unitname'] . "</h1>";
                                             echo "<div class=\"btn-toolbar mb-2 mb-md-0\"></div>";
