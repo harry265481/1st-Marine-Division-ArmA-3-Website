@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="server">
-                    <iframe src="https://discord.com/widget?id=815913721683378207&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                        <iframe src="https://discord.com/widget?id=817490859540217856&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                     </div>
                 </div>
             </div>
