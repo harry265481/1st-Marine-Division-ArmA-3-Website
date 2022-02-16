@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="images/43rdMEU.png" width="35px"></a>
+        <a class="navbar-brand" href="#"><img src="images/unit-icon.png" width="35px"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -13,10 +13,10 @@
                     <a class="nav-link active" aria-current="page" href="roster.php"><i class="fas fa-clipboard-list"></i> Roster</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="ts3server://43rdmeu.teamspeak.chat/?port=9987"><i class="fab fa-teamspeak"></i></a>
+                    <a class="nav-link active" aria-current="page" href="ts3server://"><i class="fab fa-teamspeak"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="https://discord.gg/ydpBwAJAYD"><i class="fab fa-discord"></i></a>
+                    <a class="nav-link active" aria-current="page" href="https://discord.gg/RB6Jz3gx6T"><i class="fab fa-discord"></i></a>
                 </li>
             </ul>
             <ul class="navbar-nav d-flex" style="border-color: #f00 !important">
