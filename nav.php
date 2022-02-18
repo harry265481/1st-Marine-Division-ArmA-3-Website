@@ -13,7 +13,7 @@
                     <a class="nav-link active" aria-current="page" href="roster.php"><i class="fas fa-clipboard-list"></i> Roster</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="ts3server://"><i class="fab fa-teamspeak"></i></a>
+                    <a class="nav-link active" aria-current="page" href="ts3server://ts3.1stmda3.com"><i class="fab fa-teamspeak"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="https://discord.gg/RB6Jz3gx6T"><i class="fab fa-discord"></i></a>
