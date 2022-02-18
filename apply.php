@@ -42,8 +42,6 @@
                         <option selected>Choose one</option>
                         <option value="Steam">Steam Discussion</option>
                         <option value="Reddit">Reddit</option>
-                        <option value="Clanlist">Clan List</option>
-                        <option value="Armaholic Forums">Armaholic Forums</option>
                         <option value="Member">Unit Member</option>
                     </select>
                 </div>
@@ -56,38 +54,41 @@
                     <label for="steamid" class="form-label text-dark">SteamID 64</label>
                 </div>
                 <div class="form-check">
-                    <div id="platoonhint" class="form-text text-light h3">Which Operations suit you best?</div>
-                    <input class="form-check-input" type="radio" name="platoon" id="first" value="First">
-                    <label class="form-check-label text-light" for="first">Sunday 8pm-10pm EST | 1am-3am GMT</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="platoon" id="second" value="Second">
-                    <label class="form-check-label text-light" for="second">Sunday 1pm-3pm EST | 6pm-8pm GMT</label>
-                </div>
-                <div class="form-check mb-5">
-                    <input class="form-check-input" type="radio" name="platoon" id="both" value="Both">
-                    <label class="form-check-label text-light" for="both">Both</label>
-                </div>
-                <div class="form-check">
-                    <div id="platoonhint" class="form-text text-light h3">What MOS/Career Field are you applying for?</div>
+                    <div id="platoonhint" class="form-text text-light h3">What MOS/Career Field are you interested in long term?</div>
                     <input class="form-check-input" type="radio" name="career" id="rifle" value="Rifleman">
                     <label class="form-check-label text-light" for="both">0311 Rifleman (Infantry)</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="career" id="corpsman" value="Corpsman">
-                    <label class="form-check-label text-light" for="both">L03A Field Medical Technician (Corpsman) [CLOSED]</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="career" id="pilot" value="Pilot">
-                    <label class="form-check-label text-light" for="both">7599 Student Naval Aviator (Pilot) [CLOSED]</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="career" id="armor" value="Armor">
-                    <label class="form-check-label text-light" for="both">1812 Tank Crewman (Armor) [CLOSED]</label>
                 </div>
                 <div class="form-check mb-5">
                     <input class="form-check-input" type="radio" name="career" id="weapons" value="Machine Gunner">
                     <label class="form-check-label text-light" for="both">0331 Machine Gunner (Weapons Platoon)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="radio" value="Radioman">
+                    <label class="form-check-label text-light" for="both">0621 Transmission Systems Operator (Radioman)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="artillery" value="Artillery">
+                    <label class="form-check-label text-light" for="both">0811 Artillery Cannoneer</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="armor" value="Armor">
+                    <label class="form-check-label text-light" for="both">1371 Combat Engineer</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="armor" value="Armor">
+                    <label class="form-check-label text-light" for="both">1812 Tank Crewman (Armor)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="pilot" value="Pilot">
+                    <label class="form-check-label text-light" for="both">7599 Student Naval Aviator (Pilot)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="pilot" value="Pilot">
+                    <label class="form-check-label text-light" for="both">8002 Joint Terminal Attack Controller</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="career" id="corpsman" value="Corpsman">
+                    <label class="form-check-label text-light" for="both">HM-8404 Field Medical Technician (Corpsman)</label>
                 </div>
                 <div class="form-check">
                     <div id="platoonhint" class="form-text text-light h3">Have you been or are currently in  Armed Service of the Military?<br></div>
