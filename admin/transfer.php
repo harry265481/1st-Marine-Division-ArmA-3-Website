@@ -85,11 +85,12 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                 <select class="form-select text-dark" id="status" name="status">
                                     <?php 
                                         $statuses = mysqli_query($link, "SELECT ID, status FROM status");
-                                        foreach($statuses as $status) {
-                                            echo "<option selected value=\"" . $status['ID'] . "\">" . $status['status'] . "</option>";
-                                        } else {
-                                            echo "<option value=\"" . $status['ID'] . "\">" . $status['status'] . "</option>";
-                                        }
+                                        foreach($statuses as $stat) {
+                                            if($stat['ID'] == $status) {
+                                                echo "<option selected value=\"" . $stat['ID'] . "\">" . $stat['status'] . "</option>";
+                                            } else {
+                                                echo "<option value=\"" . $stat['ID'] . "\">" . $stat['status'] . "</option>";
+                                            }
                                     ?>
                                 </select>
                             </div>
