@@ -58,7 +58,7 @@
                     <input class="form-check-input" type="radio" name="career" id="rifle" value="Rifleman">
                     <label class="form-check-label text-light" for="both">0311 Rifleman (Infantry)</label>
                 </div>
-                <div class="form-check mb-5">
+                <div class="form-checkx">
                     <input class="form-check-input" type="radio" name="career" id="weapons" value="Machine Gunner">
                     <label class="form-check-label text-light" for="both">0331 Machine Gunner (Weapons Platoon)</label>
                 </div>
