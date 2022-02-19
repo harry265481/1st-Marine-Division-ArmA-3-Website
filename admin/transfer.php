@@ -45,8 +45,12 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                 <select class="form-select text-dark" id="pos" name="pos">
                                     <?php 
                                         $positions = mysqli_query($link, "SELECT ID, positionname FROM positions WHERE positiontype=0");
-                                        foreach($positions as $position) {
-                                            echo "<option value=\"" . $position['ID'] . "\">" . $position['positionname'] . "</option>";
+                                        foreach($positions as $pos) {
+                                            if($pos['ID'] == $position) {
+                                                echo "<option selected value=\"" . $pos['ID'] . "\">" . $pos['positionname'] . "</option>";
+                                            } else {
+                                                echo "<option selected value=\"" . $pos['ID'] . "\">" . $pos['positionname'] . "</option>";
+                                            }
                                         }
                                     ?>
                                 </select>
@@ -62,8 +66,10 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                 <select class="form-select text-dark" id="unit" name="unit">
                                     <?php 
                                         $units = mysqli_query($link, "SELECT ID, unitname FROM units ORDER BY unitorder asc");
-                                        foreach($units as $unit) {
-                                            echo "<option value=\"" . $unit['ID'] . "\">" . $unit['unitname'] . "</option>";
+                                        foreach($units as $un) {
+                                            if($un['ID'] == $unit) {
+                                                echo "<option value=\"" . $un['ID'] . "\">" . $un['unitname'] . "</option>";
+                                            }
                                         }
                                     ?>
                                 </select>
@@ -80,6 +86,8 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                     <?php 
                                         $statuses = mysqli_query($link, "SELECT ID, status FROM status");
                                         foreach($statuses as $status) {
+                                            echo "<option selected value=\"" . $status['ID'] . "\">" . $status['status'] . "</option>";
+                                        } else {
                                             echo "<option value=\"" . $status['ID'] . "\">" . $status['status'] . "</option>";
                                         }
                                     ?>
@@ -96,8 +104,12 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                 <select class="form-select text-dark" id="mos" name="mos">
                                     <?php 
                                         $moss = mysqli_query($link, "SELECT ID, MOS, mosname FROM mos");
-                                        foreach($moss as $mos) {
-                                            echo "<option value=\"" . $mos['ID'] . "\">" . $mos['MOS'] . " " . $mos['mosname'] ."</option>";
+                                        foreach($moss as $mo) {
+                                            if($mo['ID'] == $mos) {
+                                                echo "<option selected value=\"" . $mo['ID'] . "\">" . $mo['MOS'] . " " . $mo['mosname'] ."</option>";
+                                            } else {
+                                                echo "<option value=\"" . $mo['ID'] . "\">" . $mo['MOS'] . " " . $mo['mosname'] ."</option>";
+                                            }
                                         }
                                     ?>
                                 </select>
