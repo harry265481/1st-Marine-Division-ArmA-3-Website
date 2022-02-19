@@ -27,7 +27,7 @@ $branch;
 $imagestring;
 if($row[8] == 0) {
     if($abbrevrow[2] == 0) {
-        $branch = "marines  ";
+        $branch = "marines";
     } else if($abbrevrow[2] == 1) {
         $branch = "navy";
     }
