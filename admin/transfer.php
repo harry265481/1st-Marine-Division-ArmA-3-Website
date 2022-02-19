@@ -91,6 +91,7 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                             } else {
                                                 echo "<option value=\"" . $stat['ID'] . "\">" . $stat['status'] . "</option>";
                                             }
+                                        }
                                     ?>
                                 </select>
                             </div>
