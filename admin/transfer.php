@@ -4,8 +4,7 @@ include_once '../functions.php';
 include_once '../config.php';
 
 $query = "SELECT * FROM personnel WHERE ID=" . $_GET['id'];
-$results = mysqli_query($link, $query);
-$row = mysqli_fetch_row($results);
+$row = mysqli_fetch_row(mysqli_query($link, $query));
 $firstname = $row[1];
 $surname = $row[2];
 $rank = $row[3];
@@ -49,7 +48,7 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                             if($pos['ID'] == $position) {
                                                 echo "<option selected value=\"" . $pos['ID'] . "\">" . $pos['positionname'] . "</option>";
                                             } else {
-                                                echo "<option selected value=\"" . $pos['ID'] . "\">" . $pos['positionname'] . "</option>";
+                                                echo "<option value=\"" . $pos['ID'] . "\">" . $pos['positionname'] . "</option>";
                                             }
                                         }
                                     ?>
