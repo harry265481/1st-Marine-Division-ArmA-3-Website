@@ -44,8 +44,8 @@ include_once '../config.php'
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 0) {
                                         $imagename = $result['ID'];
-                                        $limgstr = "../images/ranks/army/large/" . $imagename;
-                                        $simgstr = "../images/ranks/army/small/" . $imagename;
+                                        $limgstr = "../images/ranks/marines/large/" . $imagename;
+                                        $simgstr = "../images/ranks/marines/small/" . $imagename;
 
                                         echo "<tr>";
                                         echo "<td width=\"70px\"><img width=\"70px\" src=" . $limgstr . ".png></td>";
@@ -80,8 +80,8 @@ include_once '../config.php'
                                     if($result['branch'] == 1) {
                                         $imagename = $result['abbrev'];
 
-                                        $limgstr = "../images/ranks/airforce/large/" . $imagename;
-                                        $simgstr = "../images/ranks/airforce/small/" . $imagename;
+                                        $limgstr = "../images/ranks/navy/large/" . $imagename;
+                                        $simgstr = "../images/ranks/navy/small/" . $imagename;
 
                                         echo "<tr>";
                                         echo "<td width=\"70px\"><img width=\"70px\" src=" . $limgstr . ".png></td>";
