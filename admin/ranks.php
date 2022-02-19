@@ -43,7 +43,7 @@ include_once '../config.php'
                                 $results = mysqli_query($link, $query);
                                 foreach ($results as $result)  {
                                     if($result['branch'] == 0) {
-                                        $imagename = $result['abbrev'];
+                                        $imagename = $result['ID'];
                                         $limgstr = "../images/ranks/army/large/" . $imagename;
                                         $simgstr = "../images/ranks/army/small/" . $imagename;
 
