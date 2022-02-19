@@ -120,11 +120,8 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                             <div class="col-md">
                             </div>
                             <div class="col-md">
-                                <input type="date" class="form-control" name="date">
-                                <div class="form-check">
-                                    <input class="form-check-input" name="today" type="checkbox" value="true" id="flexCheckDefault" checked>
-                                    <label class="form-check-label text-light" for="flexCheckDefault">Use today's date</label>
-                                </div>
+                                <?php $date = date("Y-m-d") ?>
+                                <input type="date" class="form-control" value=<?php echo "\"" . $date . "\""?> name="date">
                             </div>
                         </div>
                         <div class="col-12">
