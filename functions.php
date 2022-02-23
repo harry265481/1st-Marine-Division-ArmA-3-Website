@@ -646,7 +646,7 @@
         $newunitrow = mysqli_fetch_row(mysqli_query($link, "SELECT unitname FROM units WHERE ID=" . $newunit));
         $oldposrow = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $oldpos));
         $newposrow = mysqli_fetch_row(mysqli_query($link, "SELECT positionname FROM positions WHERE ID=" . $newpos));
-        return "<td>Transferred from" . $oldunitrow[0] . " " . $oldposrow[0] . " to " . $newunitrow[0] . " " . $newposrow[0] . "</td>";
+        return "<td>Transferred from " . $oldunitrow[0] . " " . $oldposrow[0] . " to " . $newunitrow[0] . " " . $newposrow[0] . "</td>";
     }
 
     function buildUnitMemberTable($unitid, $path) {
