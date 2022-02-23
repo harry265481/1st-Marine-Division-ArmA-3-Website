@@ -9,7 +9,7 @@ $date = $_POST['date'];
 $status = $_POST['status'];
 $date = date_create($date);
 
-$date = date_format($date, "d-M-Y");
+$date = date_format($date, "Y-M-d");
 
 
 $current = mysqli_fetch_row(mysqli_query($link, "SELECT unitID, position FROM personnel WHERE ID=" . $id));
