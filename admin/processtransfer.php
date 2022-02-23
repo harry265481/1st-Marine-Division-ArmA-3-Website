@@ -19,8 +19,8 @@ $oldpos = $current[1];
 mysqli_query($link, "UPDATE personnel SET position=" . $pos . ", unitID=" . $unit . ", mos=" . $mos . ", status=" . $status . " WHERE ID=" . $id);
 
 //Add record to record table
-mysqli_query($link, "INSERT INTO records (memberID, recordType, transferfrom transferto, oldpos, newpos, recorddate) 
+mysqli_query($link, "INSERT INTO records (memberID, recordType, transferfrom, transferto, oldpos, newpos, recorddate) 
                                   VALUES ('" . $id . "', '4', '" . $oldunit . "', '" . $unit . "', '" . $oldpos . "', '" . $pos . "', '". $date . "')");
-header("Location: members.php");
+header("Location: member.php?=" . $id);
 
 ?>
