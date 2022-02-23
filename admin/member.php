@@ -27,13 +27,13 @@ $branch;
 $imagestring;
 if($row[8] == 0 ) {
     if($abbrevrow[2] == 0) {
-        $branch = "marine";
+        $branch = "marines";
     } else if($abbrevrow[2] == 1) {
         $branch = "navy";
     }
     $imagestring = "../images/ranks/" . $branch . "/large/" . $imagename . ".png";
 } else if($row[8] == 1) {
-    $imagestring = "../images/ranks/marine/large/pilot/" . $imagename . ".png";
+    $imagestring = "../images/ranks/marines/large/pilot/" . $imagename . ".png";
 }
 
 $days = dateDifference($joindate, date("Y-m-d"));
