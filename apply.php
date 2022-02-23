@@ -11,7 +11,7 @@
     <body class="bg-dark text-center">
         <main class="form-apply">
             <form action="submitapplication.php" method="post">
-                <img class="mb-4" src="images/1MD.png" width="150px">
+                <img class="mb-4" src="images/unit-icon.png" width="150px">
                 <h1 class="h3 mb-3 fw-normal" style="color: white;">Apply</h1>
                 <div class="row g-2">
                     <div class="col-md">

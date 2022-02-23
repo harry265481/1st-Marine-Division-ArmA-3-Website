@@ -16,7 +16,7 @@ $abbrevquery = "SELECT rank_name, paygrade, branch FROM rank WHERE ID=" . $row[3
 $abbrevresults = mysqli_query($link, $abbrevquery);
 $abbrevrow = mysqli_fetch_row($abbrevresults);
 $rank = $abbrevrow[0];
-$imagename = substr($abbrevrow[1], 0, 1) . substr($abbrevrow[1], 2, 1);
+$imagename = $row[3];
 
 $mosquery = "SELECT MOS, mosname FROM mos WHERE ID=" . $row[9];
 $mosresults = mysqli_query($link, $mosquery);
@@ -75,7 +75,7 @@ if($days > 365) {
             <div class="row">
                 <?php include_once 'nav.php'; ?>
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-dark">
-                    <!--<img class="mx-auto d-block" src="data:image/png;base64,<?php //echo generateUniform($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id']), "../"); ?>" />-->
+                    <img class="mx-auto d-block" src="data:image/png;base64,<?php echo generateUniform($_GET['id'], getMemberGrade($_GET['id']), getMemberBranchID($_GET['id']), "../"); ?>" />
                     <div class="container emp-profile text-light">
                         <div class="row">
                             <div class="col-md-4">
