@@ -733,10 +733,10 @@
 
     function getTotalUnitMembers() {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        $results = mysqli_query($link, "SELECT ID, status FROM personnel");
+        $results = mysqli_query($link, "SELECT status FROM personnel");
         $count = 0;
         foreach($results as $result) {
-            if($result[1] != 4 && $result[1] != 5) {
+            if($result[0] != 4 && $result[0] != 5) {
                 $count += 1;
             }
         }

@@ -6,15 +6,9 @@ $pos = $_POST['pos'];
 $unit = $_POST['unit'];
 $mos = $_POST['mos'];
 $date = $_POST['date'];
-$usetoday = $_POST['today'];
 $status = $_POST['status'];
 
-if($usetoday == "true") {
-    $date = date("d-M-Y");
-    $date = date_create($date);
-}
-
-$date = date_format($date, "d\-M\-Y");
+$date = date_format($date, "d-M-Y");
 
 
 $current = mysqli_fetch_row(mysqli_query($link, "SELECT unitID, position FROM personnel WHERE ID=" . $id));
