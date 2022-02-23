@@ -122,8 +122,7 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                             <div class="col-md">
                             </div>
                             <div class="col-md">
-                                <?php $date = date("Y-m-d") ?>
-                                <input type="date" class="form-control" value=<?php echo "\"" . $date . "\""?> name="date">
+                                <input type="date" class="form-control" value=<?php $date = date("Y-m-d"); echo "\"" . $date . "\""; ?> name="date">
                             </div>
                         </div>
                         <div class="col-12">

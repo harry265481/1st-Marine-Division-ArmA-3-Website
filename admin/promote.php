@@ -51,7 +51,7 @@ $rankrow = mysqli_fetch_row(mysqli_query($link, $rankquery));
                             <div class="col-md">
                             </div>
                             <div class="col-md">
-                                <input type="date" class="form-control" value=<?php echo "\"" . $date . "\""?> name="date">
+                                <input type="date" class="form-control" value=<?php $date = date("Y-m-d"); echo "\"" . $date . "\""?> name="date">
                             </div>
                         </div>
                         <div class="col-12">
