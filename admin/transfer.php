@@ -67,6 +67,8 @@ $mosrow = mysqli_fetch_row(mysqli_query($link, "SELECT MOS, mosname FROM mos WHE
                                         $units = mysqli_query($link, "SELECT ID, unitname FROM units ORDER BY unitorder asc");
                                         foreach($units as $un) {
                                             if($un['ID'] == $unit) {
+                                                echo "<option selected value=\"" . $un['ID'] . "\">" . $un['unitname'] . "</option>";
+                                            } else {
                                                 echo "<option value=\"" . $un['ID'] . "\">" . $un['unitname'] . "</option>";
                                             }
                                         }
