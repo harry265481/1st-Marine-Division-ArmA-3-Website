@@ -5,6 +5,7 @@ include_once '../config.php';
 $id = $_GET['id'];
 $rank = $_POST['rank'];
 $date = $_POST['date'];
+$date = date_create($date);
 
 $date = date_format($date, "d-M-Y");
 

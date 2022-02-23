@@ -7,6 +7,7 @@ $unit = $_POST['unit'];
 $mos = $_POST['mos'];
 $date = $_POST['date'];
 $status = $_POST['status'];
+$date = date_create($date);
 
 $date = date_format($date, "d-M-Y");
 
