@@ -20,7 +20,7 @@ mysqli_query($link, "UPDATE personnel SET position=" . $pos . ", unitID=" . $uni
 
 //Add record to record table
 mysqli_query($link, "INSERT INTO records (memberID, recordType, transferfrom transferto, oldpos, newpos, recorddate) 
-                                  VALUES (" . $id . ", 4," . $oldunit . ", " . $unit . ", " . $oldpos . ", " . $pos . ", '". $date . "')");
+                                  VALUES ('" . $id . "', '4', '" . $oldunit . "', '" . $unit . "', '" . $oldpos . "', '" . $pos . "', '". $date . "')");
 header("Location: members.php");
 
 ?>
