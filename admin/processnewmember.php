@@ -1,4 +1,4 @@
-<?php
+z<?php
   include_once '../config.php';
 
   $branches = mysqli_query($link, "SELECT branch FROM rank WHERE ID=" . $_POST['rank']);
