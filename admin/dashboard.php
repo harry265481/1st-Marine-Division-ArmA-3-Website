@@ -1,4 +1,5 @@
-<?php include_once 'session.php' ?>
+<?php include_once 'session.php';
+      include_once '../functions.php' ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,6 +17,15 @@
                         <h1 class="h2 text-light">Dashboard</h1>
                     </div>
                     <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Total Unit Members: <?php echo getTotalUnitMembers() ?></h5>
+                                <h5></h5>
+                                <h5></h5>
+                                <h5></h5>
+                                <h5></h5>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>

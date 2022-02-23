@@ -730,4 +730,16 @@
         }
         return true;
     }
+
+    function getTotalUnitMembers() {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $results = mysqli_query($link, "SELECT ID, status FROM personnel");
+        $count = 0;
+        foreach($results as $result) {
+            if($result[1] != 4 && $result[1] != 5) {
+                $count += 1;
+            }
+        }
+        return $count;
+    }
 ?>
