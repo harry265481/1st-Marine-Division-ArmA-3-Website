@@ -2,7 +2,7 @@ z<?php
   include_once '../config.php';
 
   $branches = mysqli_query($link, "SELECT branch FROM rank WHERE ID=" . $_POST['rank']);
-  $branchrow = mysqli_fetch_row($branches);
+  $branchrow = mysqli_fetch_row($branches); 
   if($_POST['pilot'] == "1") {
     $pilot = 1;
   } else {
