@@ -5,9 +5,6 @@ include_once '../config.php';
 $id = $_GET['id'];
 $rank = $_POST['rank'];
 $date = $_POST['date'];
-$date = date_create($date);
-
-$date = date_format($date, "Y-M-d");
 
 //Update personnel record
 mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);

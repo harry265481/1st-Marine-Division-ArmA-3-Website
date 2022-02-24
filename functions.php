@@ -539,7 +539,7 @@
     function buildRecord($record) {
         switch($record['recordType']) {
             case 0:
-                return "<td>Enlisted in the 1st Infantry Division</td>";
+                return "<td>Enlisted in the 1st Marine Division</td>";
                 break;
             case 1:
                 return buildRetirementRecord($record['retirementtype']);
