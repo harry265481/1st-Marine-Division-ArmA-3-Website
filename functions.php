@@ -740,4 +740,80 @@
         }
         return $count;
     }
+
+    function makeUnitCompositionTable() {
+        $infantry = 0;
+        $medical = 0;
+        $air = 0;
+        $armor = 0; 
+        $artillery = 0;
+        $weapons = 0;
+        $logistics = 0;
+
+        $units = mysqli_query($link, "SELECT id, unittype FROM units");
+        foreach($units as $unit) {
+            $members = mysqli_query($link, "SELECT id FROM personnel");
+            foreach($members as $member) {
+                switch($unit['unittype']) {
+                    case 0:
+                        $infantry += 1;
+                        break;
+                    case 1:
+                        $medical += 1;
+                        break;
+                    case 2:
+                        $air += 1;
+                        break;
+                    case 3:
+                        $armor += 1;
+                        break;
+                    case 4:
+                        $artillery += 1;
+                        break;
+                    case 5:
+                        $weapons += 1;
+                        break;
+                    case 6:
+                        $logistics += 1;
+                        break;
+                }
+            }
+        }
+        //make the table
+        echo "<table>";
+        echo    "<tr>";
+        echo        "<td>Unit<td>"
+        echo        "<td width=\"50px\">Count</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Infantry<td>"
+        echo        "<td>" . $infantry . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Medical<td>"
+        echo        "<td>" . $medical . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Air<td>"
+        echo        "<td>" . $air . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Armor<td>"
+        echo        "<td>" . $armor . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Artillery<td>"
+        echo        "<td>" . $artillery . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Weapons<td>"
+        echo        "<td>" . $weapons . "</td>"
+        echo    "</tr>";
+        echo    "<tr>";
+        echo        "<td>Logistics<td>"
+        echo        "<td>" . $logistics . "</td>"
+        echo    "</tr>";
+        echo "</table>";
+
+    }
 ?>
