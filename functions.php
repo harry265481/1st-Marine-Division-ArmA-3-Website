@@ -749,7 +749,7 @@
         $artillery = 0;
         $weapons = 0;
         $logistics = 0;
-
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $units = mysqli_query($link, "SELECT id, unittype FROM units");
         foreach($units as $unit) {
             $members = mysqli_query($link, "SELECT id FROM personnel");
