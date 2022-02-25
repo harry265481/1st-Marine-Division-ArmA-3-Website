@@ -19,14 +19,14 @@
                     <div class="container text-light">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Total Unit Members: <?php echo getTotalUnitMembers() ?></h5>
+                                <h5>Total Unit Members: <?php echo getTotalUnitMembers(); ?></h5>
                                 <h5></h5>
                                 <h5></h5>
                                 <h5></h5>
                                 <h5></h5>
                             </div>
                             <div class="col-md-3">
-                                <?php makeUnitCompositionTable() ?>
+                                <?php makeUnitCompositionTable(); ?>
                             </div>
                             <div class="col-md-3"></div>
                         </div>

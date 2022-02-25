@@ -782,36 +782,36 @@
         //make the table
         echo "<table>";
         echo    "<tr>";
-        echo        "<td>Unit<td>"
-        echo        "<td width=\"50px\">Count</td>"
+        echo        "<td>Unit<td>";
+        echo        "<td width=\"50px\">Count</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Infantry<td>"
-        echo        "<td>" . $infantry . "</td>"
+        echo        "<td>Infantry<td>";
+        echo        "<td>" . $infantry . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Medical<td>"
-        echo        "<td>" . $medical . "</td>"
+        echo        "<td>Medical<td>";
+        echo        "<td>" . $medical . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Air<td>"
-        echo        "<td>" . $air . "</td>"
+        echo        "<td>Air<td>";
+        echo        "<td>" . $air . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Armor<td>"
-        echo        "<td>" . $armor . "</td>"
+        echo        "<td>Armor<td>";
+        echo        "<td>" . $armor . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Artillery<td>"
-        echo        "<td>" . $artillery . "</td>"
+        echo        "<td>Artillery<td>";
+        echo        "<td>" . $artillery . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Weapons<td>"
-        echo        "<td>" . $weapons . "</td>"
+        echo        "<td>Weapons<td>";
+        echo        "<td>" . $weapons . "</td>";
         echo    "</tr>";
         echo    "<tr>";
-        echo        "<td>Logistics<td>"
-        echo        "<td>" . $logistics . "</td>"
+        echo        "<td>Logistics<td>";
+        echo        "<td>" . $logistics . "</td>";
         echo    "</tr>";
         echo "</table>";
 
