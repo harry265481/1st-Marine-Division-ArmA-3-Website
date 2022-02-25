@@ -6,6 +6,7 @@
         <title><?php echo $unitname ?> - Dashboard</title>
         <?php include '../header.php' ?>
         <link rel="stylesheet" href="sign-in.css">
+        <?php generateUnitCompositionPieChart() ?>
     </head>
     <body class="bg-dark">
         <?php include_once 'header.php' ?>
@@ -29,7 +30,7 @@
                                 <?php makeUnitCompositionTable(); ?>
                             </div>
                             <div class="col-md-3">
-                                <?php generateUnitCompositionPieChart() ?>
+                                <div id="piechart" style="width: 900px; height: 500px;"></div>
                             </div>
                         </div>
                     </div>
