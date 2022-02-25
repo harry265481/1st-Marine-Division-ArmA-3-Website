@@ -28,7 +28,9 @@
                             <div class="col-md-3">
                                 <?php makeUnitCompositionTable(); ?>
                             </div>
-                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                                <?php generateUnitCompositionPieChart() ?>
+                            </div>
                         </div>
                     </div>
                 </main>
