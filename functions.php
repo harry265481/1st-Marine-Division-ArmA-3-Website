@@ -816,4 +816,71 @@
         echo "</table>";
 
     }
+
+    function generateUnitCompositionPieChart() {
+        $infantry = 0;
+        $medical = 0;
+        $air = 0;
+        $armor = 0; 
+        $artillery = 0;
+        $weapons = 0;
+        $logistics = 0;
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME); 
+        $units = mysqli_query($link, "SELECT ID, unittype FROM units");
+        foreach($units as $unit) {
+            $members = mysqli_query($link, "SELECT ID FROM personnel WHERE unitID=" . $unit['ID']);
+            foreach($members as $member) {
+                switch($unit['unittype']) {
+                    case 0:
+                        $infantry += 1;
+                        break;
+                    case 1:
+                        $medical += 1;
+                        break;
+                    case 2:
+                        $air += 1;
+                        break;
+                    case 3:
+                        $armor += 1;
+                        break;
+                    case 4:
+                        $artillery += 1;
+                        break;
+                    case 5:
+                        $weapons += 1;
+                        break;
+                    case 6:
+                        $logistics += 1;
+                        break;
+                }
+            }
+        }
+
+    echo "<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>"
+    echo "<script type=\"text/javascript\">"
+    echo    "google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([";
+    echo  "['Infantry', '" . $infantry . "],";
+    echo  "['Medical'," . $medical . "],";
+    echo  "['Air', " . $air .  "],";
+    echo  "['Armor', " . $armor .  "],";
+    echo  "['Artillery', " . $artillery .  "],";
+    echo  "['Weapons', " . $weapons .  "],";
+    echo  "['Logistics', " . $logistics .  "],";
+    echo "]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    }";
 ?>
