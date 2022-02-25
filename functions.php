@@ -870,11 +870,11 @@
     echo  "['Armor', " . $armor .  "],";
     echo  "['Artillery', " . $artillery .  "],";
     echo  "['Weapons', " . $weapons .  "],";
-    echo  "['Logistics', " . $logistics .  "],";
+    echo  "['Logistics', " . $logistics .  "]";
     echo "]);
 
         var options = {
-          title: 'My Daily Activities'
+          title: 'Unit compositions'
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
