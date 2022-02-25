@@ -749,10 +749,10 @@
         $artillery = 0;
         $weapons = 0;
         $logistics = 0;
-        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        $units = mysqli_query($link, "SELECT id, unittype FROM units");
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME); 
+        $units = mysqli_query($link, "SELECT ID, unittype FROM units");
         foreach($units as $unit) {
-            $members = mysqli_query($link, "SELECT id FROM personnel");
+            $members = mysqli_query($link, "SELECT ID FROM personnel");
             foreach($members as $member) {
                 switch($unit['unittype']) {
                     case 0:
