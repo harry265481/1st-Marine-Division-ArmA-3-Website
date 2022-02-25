@@ -864,7 +864,7 @@
             function drawChart() {
 
         var data = google.visualization.arrayToDataTable([";
-    echo  "['Infantry', '" . $infantry . "],";
+    echo  "['Infantry', " . $infantry . "],";
     echo  "['Medical'," . $medical . "],";
     echo  "['Air', " . $air .  "],";
     echo  "['Armor', " . $armor .  "],";
