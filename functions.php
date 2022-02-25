@@ -881,6 +881,6 @@
 
         chart.draw(data, options);
       }
-    </script>
-    }";
+    </script>";
+    }
 ?>
