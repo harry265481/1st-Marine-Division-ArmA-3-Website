@@ -752,7 +752,7 @@
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME); 
         $units = mysqli_query($link, "SELECT ID, unittype FROM units");
         foreach($units as $unit) {
-            $members = mysqli_query($link, "SELECT ID FROM personnel");
+            $members = mysqli_query($link, "SELECT ID FROM personnel WHERE unit=" . $unit['ID']);
             foreach($members as $member) {
                 switch($unit['unittype']) {
                     case 0:
