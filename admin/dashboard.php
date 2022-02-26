@@ -30,7 +30,7 @@
                                 <?php makeUnitCompositionTable(); ?>
                             </div>
                             <div class="col-md-3">
-                                <div id="piechart" style="width: 900px; height: 500px;"></div>
+                                <div id="piechart" style="width: 400px; height: 400px;"></div>
                             </div>
                         </div>
                     </div>

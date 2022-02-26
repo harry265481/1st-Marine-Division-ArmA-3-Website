@@ -856,32 +856,34 @@
             }
         }
 
-    echo "<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>";
-    echo "<script type=\"text/javascript\">";
-    echo    "google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
+        echo "<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>";
+        echo "<script type=\"text/javascript\">";
+        echo    "google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
+                function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([";
-    echo  "['Unit', 'Members'],";
-    echo  "['Infantry', " . $infantry . "],";
-    echo  "['Medical'," . $medical . "],";
-    echo  "['Air', " . $air .  "],";
-    echo  "['Armor', " . $armor .  "],";
-    echo  "['Artillery', " . $artillery .  "],";
-    echo  "['Weapons', " . $weapons .  "],";
-    echo  "['Logistics', " . $logistics .  "]";
-    echo "]);
+            var data = google.visualization.arrayToDataTable([";
+        echo  "['Unit', 'Members'],";
+        echo  "['Infantry', " . $infantry . "],";
+        echo  "['Medical'," . $medical . "],";
+        echo  "['Air', " . $air .  "],";
+        echo  "['Armor', " . $armor .  "],";
+        echo  "['Artillery', " . $artillery .  "],";
+        echo  "['Weapons', " . $weapons .  "],";
+        echo  "['Logistics', " . $logistics .  "]";
+        echo "]);
 
-        var options = {
-          title: 'Unit compositions'
-        };
+            var options = {
+                title: 'Unit compositions',
+                backgroundColor: '#212529',
+                legend.textStyle: { color: '#f8f9fa' }
+            };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-        chart.draw(data, options);
-      }
-    </script>";
+            chart.draw(data, options);
+        }
+        </script>";
     }
 ?>
