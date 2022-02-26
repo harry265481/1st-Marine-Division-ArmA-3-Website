@@ -878,7 +878,7 @@
                 title: 'Unit composition',
                 backgroundColor: '#212529',
                 legend: { textStyle: {color: '#f8f9fa' }},
-                titleTextStyle : { color: '#f8f9fa' }}
+                titleTextStyle : { color: '#f8f9fa' }
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
