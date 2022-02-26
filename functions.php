@@ -875,9 +875,9 @@
         echo "]);
 
             var options = {
-                title: 'Unit compositions',
+                title: 'Unit composition',
                 backgroundColor: '#212529',
-                legend.textStyle: { color: '#f8f9fa' }
+                legend.textStyle: { 'color': '#f8f9fa' }
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
