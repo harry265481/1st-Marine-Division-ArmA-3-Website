@@ -21,7 +21,8 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <h5>Total Unit Members: <?php echo getTotalUnitMembers(); ?></h5>
-                                <h5></h5>
+                                <h5>Recruits YTD: <?php echo getRecruitsSinceDate(date('01-01-Y')); ?></h5>
+                                <h5>Recruits MTD: <?php echo getRecruitsSinceDate(date('01-m-Y')); ?></h5>
                                 <h5></h5>
                                 <h5></h5>
                                 <h5></h5>
