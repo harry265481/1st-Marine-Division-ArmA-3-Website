@@ -887,4 +887,12 @@
         }
         </script>";
     }
+    function getRecruitsSinceDate($date) {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $members = mysqli_query($link, "SELECT doe FROM personnel WHERE doe>=" . $date);
+        $count;
+        foreach($members as $member) {
+            $count += 1;
+        }
+    }
 ?>

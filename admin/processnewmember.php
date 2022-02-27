@@ -25,7 +25,9 @@ z<?php
                         . $_POST['unit'] .  "', '" 
                         . $_POST['status'] . "')";
   if (mysqli_query($link, $insert)) {
-      header("Location: members.php");
+    $last_id = mysqli_insert_id($link);
+    mysqli_query($link, "INSERT INTO records (memberID, recordType, recorddate) VALUES (" . $last_id . ", 0, " . $_POST['doe'] . ")");
+      header("Location: member.php?id=" . $last_id);
     } else {
       echo "Error: " . $insert . "<br>" . mysqli_error($link);
     }
