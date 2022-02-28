@@ -706,10 +706,10 @@
             return false;
         }
         foreach ($results as $result)  {
-            $imagename = getMemberGrade($result['ID']);
+            $imagename = $result['ID'];
 
             if($result['branch'] == 0) {
-                $branch = "marine";
+                $branch = "marineS";
             } else if($result['branch'] == 1) {
                 $branch = "navy";
             }
