@@ -23,7 +23,7 @@
         echo "Error: " . $sql . "<br>" . mysqli_error($link);
       }
       $last_id = mysqli_insert_id($link);
-      mysqli_query($link, "INSERT INTO records (memberID, recordType, recorddate) VALUES (" . $last_id . ", 0, " . $date . ")");
+      mysqli_query($link, "INSERT INTO records (memberID, recordType, recorddate) VALUES (" . $last_id . ", 0, '" . $date . "')");
     } else {
       header("Location: members.php");
   }
