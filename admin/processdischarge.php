@@ -5,15 +5,6 @@ include_once '../config.php';
 $id = $_GET['id'];
 $type = $_POST['type'];
 $date = $_POST['date'];
-$usetoday = $_POST['today'];
-
-if($usetoday == "true") {
-    $date = date("d-M-Y");
-    $date = date_create($date);
-}
-
-$date = date_format($date, "d\-M\-Y");
-
 
 if($type == 6) {
     $status = 4;

@@ -40,14 +40,9 @@ $shortname = substr($row[0], 0, 1) . ". " . $row[1];
                             </div>
                         </div>
                         <div class="row g-2">
+                            <div class="col-md"></div>
                             <div class="col-md">
-                            </div>
-                            <div class="col-md">
-                                <input type="date" class="form-control" name="date">
-                                <div class="form-check">
-                                    <input class="form-check-input" name="today" type="checkbox" value="true" id="flexCheckDefault" checked>
-                                    <label class="form-check-label text-light" for="flexCheckDefault">Use today's date</label>
-                                </div>
+                                <input type="date" class="form-control" value=<?php $date = date("Y-m-d"); echo "\"" . $date . "\""; ?> name="date">
                             </div>
                         </div>
                         <div class="col-12">
