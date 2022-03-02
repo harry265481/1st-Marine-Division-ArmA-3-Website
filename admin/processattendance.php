@@ -17,12 +17,10 @@ echo "</table>";
 
 echo "<table>";
     foreach ($_POST['attendance'] as $key => $value) {
+        foreach($value as $row)
         echo "<tr>";
         echo "<td>";
-        echo $key;
-        echo "</td>";
-        echo "<td>";
-        echo $value;
+        echo $row;
         echo "</td>";
         echo "</tr>";
     }
