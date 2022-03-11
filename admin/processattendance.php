@@ -17,19 +17,16 @@ echo "</table>";
 
 echo "<table>";
     foreach ($_POST['attendance'] as $key => $value) {
-        foreach($value as $row)
+        foreach($value as $row) {
         echo "<tr>";
         echo "<td>";
         echo $row;
         echo "</td>";
         echo "</tr>";
+        }
     }
 echo "</table>";
-/*
-$id = $_GET['id'];
-$rank = $_POST['rank'];
-$date = $_POST['date'];
-*/
+$attendance = "INSERT INTO attendance (memberID, eventID, "
 //Update personnel record
 //mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
 
@@ -37,4 +34,4 @@ $date = $_POST['date'];
 //mysqli_query($link, "INSERT INTO records (memberID, recordType, promorank, recorddate) VALUES (" . $id . ", 2," . $rank . ", '" . $date . "')");
 
 //header("Location: members.php");
-?>
+    ?>

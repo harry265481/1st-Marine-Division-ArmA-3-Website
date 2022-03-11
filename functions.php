@@ -721,9 +721,9 @@
             echo    "<td width=\"130px\">" . substr($result['FirstName'], 0, 1) . ". " . $result['LastName'] . "</td>";
             echo    "<td width=\"22px\">";
             echo        "<select name=\"attendance[" . $result['ID'] . "][presence]\" >";
-            echo            "<option value=\"present\">Present</option>";
-            echo            "<option value=\"absent\">Absent</option>";
-            echo            "<option value=\"absent\">LOA</option>";
+            echo            "<option value=\"0\">Present</option>";
+            echo            "<option value=\"1\">Absent</option>";
+            echo            "<option value=\"2\">LOA</option>";
             echo        "</select>";
             echo    "</td>";
             echo "</tr>";
