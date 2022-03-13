@@ -20,7 +20,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav d-flex" style="border-color: #f00 !important">
-                <a class="nav-link active" aria-current="page" href="apply.php"><i class="fas fa-clipboard"></i> Apply</a>
+                <a class="nav-link active" aria-current="page" href="https://forms.gle/8FqE1tvvAAT6yUqF7"><i class="fas fa-clipboard"></i> Apply</a>
                 <?php 
                     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         echo "<a class=\"nav-link active\" aria-current=\"page\" href=\"sign-in.php\"><i class=\"fas fa-id-card\"></i> Sign In</a>";
