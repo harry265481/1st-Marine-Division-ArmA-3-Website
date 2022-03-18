@@ -50,6 +50,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-light" href="events.php">
+                    <span data-feather="Events"></span>
+                    Events
+                </a>
+            <li class="nav-item">
                 <a class="nav-link text-light" href="attendance.php">
                     <span data-feather="Attendance"></span>
                     Attendance

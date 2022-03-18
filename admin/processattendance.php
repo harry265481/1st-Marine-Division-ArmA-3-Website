@@ -26,7 +26,7 @@ echo "<table>";
         }
     }
 echo "</table>";
-$attendance = "INSERT INTO attendance (memberID, eventID, "
+//$attendance = "INSERT INTO attendance (memberID, eventID, "
 //Update personnel record
 //mysqli_query($link, "UPDATE personnel SET rank=" . $rank . " WHERE ID=" . $id);
 
