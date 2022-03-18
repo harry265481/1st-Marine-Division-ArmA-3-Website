@@ -739,7 +739,7 @@
             if($event['type'] == 0) {
                 $type = "Operation";
             } else if($event['type'] == 1) {
-                $type = "Field Training Exercise"
+                $type = "Field Training Exercise";
             }
             echo "<tr>";
             echo "<td>" . $event['name'] . "</td>";
