@@ -731,6 +731,24 @@
         return true;
     }
 
+    function buildEventRows() {
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $events = mysqli_query($link, "SELECT * FROM events  ORDER BY date desc");
+        $type;
+        foreach($events as $event) {
+            if($event['type'] == 0) {
+                $type = "Operation";
+            } else if($event['type'] == 1) {
+                $type = "Field Training Exercise"
+            }
+            echo "<tr>";
+            echo "<td>" . $event['name'] . "</td>";
+            echo "<td>" . $event['date'] . "</td>";
+            echo "<td>" . $type . "</td>";
+            echo "</tr>";
+        }
+    }
+
     function getTotalUnitMembers() {
         $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $results = mysqli_query($link, "SELECT id FROM personnel WHERE status != 4 AND status != 5");

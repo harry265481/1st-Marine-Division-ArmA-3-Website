@@ -18,27 +18,22 @@ include_once '../functions.php';
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2 text-light">Events</h1>
                         <h1></h1>
-                        <a href="addmember.php"><button type="button" class="btn btn-outline-danger">Add Member</button></a>
+                        <a href="addevent.php"><button type="button" class="btn btn-outline-danger">Add Event</button></a>
                         <div class="btn-toolbar mb-2 mb-md-0"></div>
                     </div>
                     <div class="table-responsive">
                         <h1 class="h2 text-light"></h1>
-                        <div class="btn-toolbar mb-2 mb-md-0"></div>";
-                        <table class="table table-dark table-striped align-middle table-sm">";
+                        <div class="btn-toolbar mb-2 mb-md-0"></div>
+                        <table class="table table-dark table-striped align-middle table-sm">
                             <thead>
                                 <tr>
-                                    <th></th>
                                     <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Status</th>
-                                    <th>Rank</th>
-                                    <th>Join Date</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>Date</th>
+                                    <th>Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                buildUnitMemberTable($batt['ID'], "../");
+                                <?php buildEventRows(); ?>
                             </tbody>
                         </table>
                     </div>
